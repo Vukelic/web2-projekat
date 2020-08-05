@@ -12,6 +12,13 @@ import { NavtabsComponent } from './components/navigation/navtabs/navtabs.compon
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MaterialModule} from './material.module';
+import { AuthGuard } from './auth/auth.guard';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { TokenInterceptor } from './auth/tokenInterceptor';
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ToastrModule } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
+import { UserService } from './service/user.service';
 
 
 @NgModule({
@@ -31,9 +38,26 @@ import { MaterialModule} from './material.module';
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    ToastrModule.forRoot({
+      progressBar: true
+    })
   ],
-  providers: [],
+  providers: [
+    CookieService,
+    UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    }, 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

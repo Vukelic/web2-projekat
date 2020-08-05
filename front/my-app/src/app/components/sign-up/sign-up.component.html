@@ -10,42 +10,51 @@
                                 <h1>SignUp</h1>
                              </div>
                         </div>
-                       <form action="" method="post" name="login">
+                       <form  [formGroup]="service.formModel" autocomplete="off" (submit)="onSubmit()">
                                  <div class="form-group">
                                     <label for="exampleInputEmail1">Username</label>
-                                    <input type="text" name="username"  class="form-control" placeholder="Enter username">
+                                    <input type="text" name="username"  required formControlName="Username"  class="form-control" placeholder="Enter username">
+                                    <label class="text-danger" *ngIf="service.formModel.get('UserName').touched && service.formModel.get('UserName').errors?.required">This
+                                       field is mandatory.</label>
                                  </div>
                                  <div class="form-group">
                                     <label for="exampleInputEmail1">Password</label>
-                                    <input type="password" name="password" id="password"  class="form-control" placeholder="Enter Password">
+                                    <input type="password" name="password" required formControlName="Password" id="password"  class="form-control" placeholder="Enter Password">
+                                    <label class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.required">This
+                                       field is mandatory.</label>
+                                     <label class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.minlength">Minimum
+                                       4 characters required.</label>
                                  </div>
                                  <div class="form-group">
                                     <label for="exampleInputEmail1">Repeat Password</label>
-                                    <input type="password" name="passwordrepeat"   class="form-control"  placeholder="Repeat Password">
+                                    <input type="password" name="passwordrepeat" required formControlName="ConfirmPassword" class="form-control"  placeholder="Repeat Password">
+                                    <label class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.required">This
+                                       field is mandatory.</label>
+                                     <label class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">Confirm
+                                       Password does not match.</label>
                                  </div>
                                <div class="form-group">
                                   <label for="exampleInputEmail1">Email address</label>
-                                  <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                               </div>
+                                  <input type="email" name="email" formControlName="Email" required  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                  <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid
+                                    email address.</label>
+                                 </div>
                                <div class="form-group">
-                                 <label for="exampleInputEmail1">Firstname</label>
-                                 <input type="text" name="firstname"  class="form-control" placeholder="Enter firstname">
+                                 <label for="exampleInputEmail1">Fullname</label>
+                                 <input type="text" name="firstname"  formControlName="FullName" required class="form-control" placeholder="Enter fullname">
                               </div>
-                              <div class="form-group">
-                                 <label for="exampleInputEmail1">Lastname</label>
-                                 <input type="text" name="lastname"  class="form-control" placeholder="Enter lastname">
-                              </div>
+                             
                               <div class="form-group">
                                  <label for="exampleInputEmail1">Address</label>
-                                 <input type="text" name="adress"  class="form-control" placeholder="Enter address">
+                                 <input type="text" name="adress" formControlName="Address" required class="form-control" placeholder="Enter address">
                               </div>
                               <div class="form-group">
                                  <label for="exampleInputEmail1">Phone number</label>
-                                 <input type="text" name="phone"  class="form-control" placeholder="Enter phone number">
+                                 <input type="text" name="phone"  formControlName="PhoneNumber" required class="form-control" title="input format: xxx/xxxxxxx" placeholder="xxx/xxxxxxx">
                               </div>
                               
                                <div class="col-md-12 text-center ">
-                                  <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Get Started For Free</button>
+                                  <button type="submit"  [disabled]="!service.formModel.valid" class=" btn btn-block mybtn btn-primary tx-tfm">Get Started For Free</button>
                                </div>
                                
                                
