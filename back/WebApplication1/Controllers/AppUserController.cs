@@ -50,7 +50,8 @@ namespace WebApplication1.Controllers
 
             try
             {
-                IdentityResult result = await _userManager.CreateAsync(applicationUser, rm.password);
+                var test = rm.password;
+                var result = await _userManager.CreateAsync(applicationUser, rm.password);
                 return Ok(result);
             }
             catch (Exception ex)

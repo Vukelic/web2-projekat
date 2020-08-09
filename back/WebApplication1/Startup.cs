@@ -36,7 +36,7 @@ namespace WebApplication1
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddDbContext<ApplicationUsersContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("db2020")));
+            options.UseSqlServer(Configuration.GetConnectionString("wp2")));
 
             services.AddDefaultIdentity<User>()
                 .AddRoles<Role>()
@@ -57,6 +57,12 @@ namespace WebApplication1
 
             app.UseRouting();
 
+            app.UseCors(builder => builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            );
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -15,9 +15,9 @@ export class UserService {
     Email: ['', Validators.email],
     FullName: ['',  Validators.required],
     Address: ['', Validators.required],
-    PhoneNumber: ['', Validators.required, Validators.pattern("^[0-9]{3}\/[0-9]{7}$")],
+    PhoneNumber: ['', Validators.required],
     Passwords: this.fb.group({
-      Password: ['', [Validators.required, Validators.minLength(4)]],
+      Password: ['', [Validators.required, Validators.minLength(8)]],
       ConfirmPassword: ['', Validators.required]
     }, { validator: this.comparePasswords })
 
@@ -37,7 +37,7 @@ export class UserService {
 
   register() {
     var body = {
-      UserName: this.formModel.value.UserName,
+      Username: this.formModel.value.Username,
       Password: this.formModel.value.Passwords.Password,
       ConfirmPassword: this.formModel.value.Passwords.ConfirmPassword,
       Email: this.formModel.value.Email,
@@ -45,7 +45,8 @@ export class UserService {
       Address: this.formModel.value.Address,
       PhoneNumber: this.formModel.value.PhoneNumber
     };
-    return this.http.post(this.BaseURI + '/ApplicationUser/Register', body);
+    console.log(body);
+    return this.http.post(this.BaseURI + '/AppUser/Register', body);
   }
 
   login(formData) {
