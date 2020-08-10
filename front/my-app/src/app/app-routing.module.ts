@@ -6,6 +6,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { TokenInterceptor } from './auth/tokenInterceptor';
+import { MaincComponent } from './components/mainc/mainc.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'signup',
     component: SignUpComponent
+  },
+  {
+    path: 'mainc',
+    component: MaincComponent
   },
   {
     path: '',

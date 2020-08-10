@@ -21,6 +21,23 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './service/user.service';
 
 
+import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+import { GoogleLoginProvider, FacebookLoginProvider,AuthService } from "angularx-social-login";
+import { MaincComponent } from './components/mainc/mainc.component';
+
+
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("581918260318-f6jffpfs44bg56brtn48r5j3g9icuihg.apps.googleusercontent.com")
+  },
+  
+]);
+ 
+export function provideConfig() {
+  return config;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +45,8 @@ import { UserService } from './service/user.service';
     LoginComponent,
     SignUpComponent,
     HeaderComponent,
-    NavtabsComponent
+    NavtabsComponent,
+    MaincComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +60,8 @@ import { UserService } from './service/user.service';
     HttpClientModule,
     ToastrModule.forRoot({
       progressBar: true
-    })
+    }),
+    SocialLoginModule
   ],
   providers: [
     CookieService,
@@ -57,6 +76,12 @@ import { UserService } from './service/user.service';
       useClass: TokenInterceptor,
       multi: true,
     }, 
+    AuthService,  
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }
+  
   ],
   bootstrap: [AppComponent]
 })
