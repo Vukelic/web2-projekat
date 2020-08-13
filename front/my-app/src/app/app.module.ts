@@ -12,9 +12,7 @@ import { NavtabsComponent } from './components/navigation/navtabs/navtabs.compon
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MaterialModule} from './material.module';
-import { AuthGuard } from './auth/auth.guard';
-import { AuthInterceptor } from './auth/auth.interceptor';
-import { TokenInterceptor } from './auth/tokenInterceptor';
+
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ToastrModule } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
@@ -27,11 +25,10 @@ import { MaincComponent } from './components/mainc/mainc.component';
 
 
 let config = new AuthServiceConfig([
-  {
-    id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider("581918260318-f6jffpfs44bg56brtn48r5j3g9icuihg.apps.googleusercontent.com")
-  },
-  
+  { 
+     id: GoogleLoginProvider.PROVIDER_ID,
+     provider: new GoogleLoginProvider('178355553911-qsb81bmpj9gefihhi9q6hvbf954d2kni.apps.googleusercontent.com')
+  }
 ]);
  
 export function provideConfig() {
@@ -61,21 +58,11 @@ export function provideConfig() {
     ToastrModule.forRoot({
       progressBar: true
     }),
-    SocialLoginModule
+    SocialLoginModule.initialize(config)
   ],
   providers: [
     CookieService,
     UserService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    }, 
     AuthService,  
     {
       provide: AuthServiceConfig,

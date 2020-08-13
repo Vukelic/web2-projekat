@@ -64,7 +64,6 @@ namespace WebApplication1.Controllers
 
                 if (result.Succeeded)
                 {
-                 //   _userManager.AddToRoleAsync(applicationUser, "RegisteredUser").Wait();
 
                     string toMail = "http://localhost:54183/api/AppUser/VerifyEmail/" + applicationUser.Id;
 
@@ -143,7 +142,7 @@ namespace WebApplication1.Controllers
                 return BadRequest(new { message = "Username or password is incorrect." });
         }
 
-        private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
+    
 
         public bool VerifyToken(string providerToken)
         {
@@ -171,6 +170,39 @@ namespace WebApplication1.Controllers
 
             return true;
         }
+
+        [HttpPost]
+        [Route("SocialLogIn")]
+        public IActionResult SocialLogIn([FromBody] SocialLogInModel model)
+        {
+            var test = _appSettings.JWT_Secret;
+
+            if (!VerifyToken(model.IdToken))
+            {
+                return BadRequest(new { message = "Account token could not be verified." });
+            }
+          
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                          new Claim("UserID",model.IdToken.ToString()),
+                        new Claim("Roles",  RoleType.RegUser.ToString()),
+                    }),
+                    Expires = DateTime.UtcNow.AddMinutes(60),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Ok(new { token });
+  
+        }
+
+        private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
+
+     
+
 
     }
 }

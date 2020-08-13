@@ -3,12 +3,12 @@ import { NgForm } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
+import { AuthService, SocialUser } from 'angularx-social-login';
 import { DOCUMENT } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 import * as jwt_decode from "jwt-decode";
 import {NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -21,12 +21,20 @@ export class LoginComponent implements OnInit {
     Password: ''
   }
 
-
-  constructor(private rrouter: Router,private service: UserService, private router: Router, private toastr: ToastrService,
-    private authService: AuthService) {
-    //if(localStorage.getItem('token')!=null){
-     // this.checkToken();
-   // }
+  /*userData = {
+    UserId: '',
+    Provider: '',
+    FirstName: '',
+    LastName:'',
+    EmailAddress: '',
+    PictureUrl: '',
+    IdToken: '',
+    AuthToken: '',
+  };*/
+ // resultMessage: string;
+  constructor(private router: Router,private service: UserService, private toastr: ToastrService,
+    private authService: AuthService,private modalService: NgbModal,) {
+   
    }
 
   ngOnInit() {
@@ -50,7 +58,8 @@ export class LoginComponent implements OnInit {
     );
   }
 
-    checkToken(){
+    checkToken()
+    {
       let tokenn =localStorage.getItem('token');
      
       var decoded;
@@ -58,7 +67,7 @@ export class LoginComponent implements OnInit {
        decoded=jwt_decode(tokenn);
        
        if (decoded.Roles == "RegUser") {
-         this.rrouter.navigateByUrl('/mainc');
+         this.router.navigateByUrl('/mainc');
        }
        else if (decoded.Roles == "AdminOfAlll") {
       //   this.rrouter.navigate(['/admin-list']);
@@ -77,4 +86,21 @@ export class LoginComponent implements OnInit {
      }
   }
 
+  //logIn with google method. Takes the platform (Google) parameter.
+  logInWithGoogle(platform: string): void {
+    platform = GoogleLoginProvider.PROVIDER_ID;
+    //Sign In and get user Info using authService that we just injected
+    this.authService.signIn(platform).then(
+      (response) => {
+        
+        this.service.socialLogIn(response).subscribe(
+          (res: any) => {
+            localStorage.setItem('token', res.token); 
+            this.router.navigateByUrl('/mainc');         
+          });
+          console.log(response);
+        });
+      
+    
+  }
 }

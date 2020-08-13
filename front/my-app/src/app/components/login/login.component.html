@@ -23,8 +23,9 @@
                      </div>
                            
                            <div class="col-md-12 text-center ">
-                              <button type="submit"  [disabled]="form.invalid"class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+                              <button type="submit"  [disabled]="form.invalid"  class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
                            </div>
+                        </form>
                            <div class="col-md-12 ">
                               <div class="login-or">
                                  <hr class="hr-or">
@@ -33,22 +34,20 @@
                            </div>
                            <div class="col-md-12 mb-3">
                               <p class="text-center">
-                                 <a href="javascript:void();" class="google btn mybtn"><i class="fa fa-google-plus">
-                                 </i> Signup using Google
-                                 </a>
+                                 <i class="fa fa-google-plus"> <button class=" btn btn-block mybtn btn-primary tx-tfm" (click)="logInWithGoogle('Google')"> Signup using Google</button>
+                                 </i> 
                               </p>
                            </div>
                            <div class="col-md-12 mb-3">
                               <p class="text-center">
-                                 <a href="javascript:void();" class="google btn mybtn"><i class="fa fa-facebook-square">
-                                 </i> Signup using Facebook
-                                 </a>
+                                 <i class="fa fa-facebook-square"><button class=" btn btn-block mybtn btn-primary tx-tfm" >Signup using Facebook</button>
+                                 </i>
                               </p>
                            </div>
                            <div class="form-group">
                               <p class="text-center">Don't have account? <a routerLink="/signup" id="signup">Sign up here</a></p>
                            </div>
-                        </form>
+                        
                  
 				</div>
 			</div>

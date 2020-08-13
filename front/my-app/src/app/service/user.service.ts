@@ -52,6 +52,9 @@ export class UserService {
   login(formData) {
     return this.http.post(this.BaseURI + '/AppUser/Login', formData);
   }
+  socialLogIn(model){
+    return this.http.post(this.BaseURI + '/AppUser/SocialLogIn', model);
+}
 
  
 
