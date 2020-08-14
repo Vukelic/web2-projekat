@@ -54,13 +54,14 @@ export class LoginComponent implements OnInit {
          this.router.navigateByUrl('/mainc');
        }
        else if (decoded.Roles == "AdminOfAlll") {
-
+        this.router.navigateByUrl('/webadmin');
        }
        else if (decoded.Roles == "CarAdmin") {
        
          {
 
          }
+         
        }      
      } catch (error) 
      {

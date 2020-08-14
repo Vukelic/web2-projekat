@@ -1,6 +1,6 @@
 export const enum RoleTypes {
     
-        AdminOfAll,
+        AdminOfAlll,
         CarAdmin,
         RegUser,
         User

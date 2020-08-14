@@ -6,6 +6,8 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 import { MaincComponent } from './components/mainc/mainc.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
+import { WebAdminComponent } from './components/web-admin/web-admin.component';
+
 
 const routes: Routes = [
   {
@@ -19,6 +21,10 @@ const routes: Routes = [
   {
     path: 'mainc',
     component: MaincComponent
+  },
+  {
+    path: 'webadmin',
+    component: WebAdminComponent
   },
   {
     path: '',

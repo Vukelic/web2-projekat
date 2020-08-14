@@ -22,6 +22,8 @@ import { UserService } from './service/user.service';
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider,AuthService } from "angularx-social-login";
 import { MaincComponent } from './components/mainc/mainc.component';
+import { WebAdminComponent } from './components/web-admin/web-admin.component';
+
 
 
 let config = new AuthServiceConfig([
@@ -43,7 +45,8 @@ export function provideConfig() {
     SignUpComponent,
     HeaderComponent,
     NavtabsComponent,
-    MaincComponent
+    MaincComponent,
+    WebAdminComponent
   ],
   imports: [
     BrowserModule,

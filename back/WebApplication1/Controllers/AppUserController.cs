@@ -37,6 +37,8 @@ namespace WebApplication1.Controllers
             Configuration = configuration;
         }
 
+       
+
         [HttpPost]
         [Route("Register")]
         //POST : /api/ApplicationUser/Register
@@ -201,7 +203,9 @@ namespace WebApplication1.Controllers
 
         private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
 
-     
+       
+
+
 
 
     }

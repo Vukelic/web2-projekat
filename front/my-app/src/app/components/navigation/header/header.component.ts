@@ -26,12 +26,13 @@ export class HeaderComponent implements OnInit {
          var decoded;
           decoded=jwt_decode(tokenn);
       //ar type = decoded.Roles;
+      console.log(this.LogedUser);
       if(decoded.Roles == null){
         this.LogedUser.Role=RoleTypes.User;
       }
      
-      if (decoded.Roles == "AdminOfAll") {
-        this.LogedUser.Role=RoleTypes.AdminOfAll;
+      else if (decoded.Roles == "AdminOfAlll") {
+        this.LogedUser.Role=RoleTypes.AdminOfAlll;
       }
       
      else if (decoded.Roles == "CarAdmin") {
@@ -77,8 +78,8 @@ export class HeaderComponent implements OnInit {
     //  this.route.navigate(['/carRentalAdmin']);
     }
     
-    else if (type == "AdminOfAll") {
-      //this.route.navigate(['/websiteAdmin']);
+    else if (type == "AdminOfAlll") {
+      this.route.navigate(['/webadmin']);
     }
   }
 
