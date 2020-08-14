@@ -16,35 +16,19 @@ import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-logi
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  formModel = {
-    UserName: '',
-    Password: ''
-  }
 
-  /*userData = {
-    UserId: '',
-    Provider: '',
-    FirstName: '',
-    LastName:'',
-    EmailAddress: '',
-    PictureUrl: '',
-    IdToken: '',
-    AuthToken: '',
-  };*/
- // resultMessage: string;
+
   constructor(private router: Router,private service: UserService, private toastr: ToastrService,
     private authService: AuthService,private modalService: NgbModal,) {
    
    }
 
   ngOnInit() {
-    //this.authService.authState.subscribe((user) => {
-   //   this.korisnik = user;
-    //});
+   
   }
 
-  onSubmit(form: NgForm) {
-    this.service.login(form.value).subscribe(
+  onSubmit(formModel: NgForm) {
+    this.service.login(formModel.value).subscribe(
       (res: any) => {
         localStorage.setItem('token', res.token);
         this.checkToken();
@@ -70,14 +54,12 @@ export class LoginComponent implements OnInit {
          this.router.navigateByUrl('/mainc');
        }
        else if (decoded.Roles == "AdminOfAlll") {
-      //   this.rrouter.navigate(['/admin-list']);
+
        }
        else if (decoded.Roles == "CarAdmin") {
-       //  if(decoded.Activated=="True")
-        // this.rrouter.navigate(['/admin-home-airline']);
-         //else
+       
          {
-         //  this.rrouter.navigate(['/admin-info']);
+
          }
        }      
      } catch (error) 
@@ -91,16 +73,13 @@ export class LoginComponent implements OnInit {
     platform = GoogleLoginProvider.PROVIDER_ID;
     //Sign In and get user Info using authService that we just injected
     this.authService.signIn(platform).then(
-      (response) => {
-        
+      (response) => {        
         this.service.socialLogIn(response).subscribe(
           (res: any) => {
             localStorage.setItem('token', res.token); 
             this.router.navigateByUrl('/mainc');         
           });
           console.log(response);
-        });
-      
-    
+        });   
   }
 }

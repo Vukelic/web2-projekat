@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 import { MaincComponent } from './components/mainc/mainc.component';
+import { HeaderComponent } from './components/navigation/header/header.component';
 
 const routes: Routes = [
   {
