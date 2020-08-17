@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
-using static WebApplication1.Models.EnumClass;
+
 
 namespace WebApplication1.Models
 {
@@ -14,9 +16,16 @@ namespace WebApplication1.Models
     {
         public string Fullname { get; set; }
         public string Address { get; set; }
-        public RoleType Role { get; set; }
         public bool Activated { get; set; }
+
+        public User()
+        {
+
+        }
+
+
     }
+    
 
     public class VerifyService
     {
@@ -34,5 +43,8 @@ namespace WebApplication1.Models
             Context.Update(user);
             Context.SaveChanges();
         }
+
+        
     }
+   
 }

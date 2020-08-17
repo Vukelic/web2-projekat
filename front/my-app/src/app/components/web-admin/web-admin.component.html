@@ -11,83 +11,130 @@
                         <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
                         <h3>Welcome Admin!</h3>
                         <p>You can create discount for users!</p>
-                        <input type="submit" name="" value="Discount"/><br/>
+                       
                     </div>
                     <div class="col-md-9 register-right">
                         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Car Admin</a>
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Web Admin</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Web Admin</a>
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Car Admin</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <h3 class="register-heading">Add car admin</h3>
+                                <form [formGroup]="service.formModel" (ngSubmit)="onSubmit()">   
+                                <h3 class="register-heading">Add web admin</h3>
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Username *" value="" />
+                                            <input type="text" class="form-control" formControlName="Username"  placeholder="Username *" value="" required />
+                                            <label class="text-danger" *ngIf="service.formModel.get('Username').touched && service.formModel.get('Username').errors?.required">This
+                                                field is mandatory.</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Fullname *" value="" />
+                                            <input type="text" class="form-control" formControlName="FullName"  placeholder="Fullname *" value="" required />
+                                        </div>
+                                        <div formGroupName="Passwords">
+                                        <div class="form-group">
+                                            <input type="password" formControlName="Password"  class="form-control" placeholder="Password *" value="" required />
+                                            <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.required">This
+                                            field is mandatory.
+                                          </label>
+                                          <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.minlength">Minimum
+                                            6 characters required.
+                                          </label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Password *" value="" />
+                                            <input type="password" class="form-control" formControlName="ConfirmPassword" required placeholder="Confirm Password *" value="" />
+                                            <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.required">This
+                                            field is mandatory.
+                                          </label>
+                                          <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.minlength">Minimum
+                                            6 characters required.
+                                          </label>
                                         </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control"  placeholder="Confirm Password *" value="" />
                                         </div>
                                        
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" placeholder=" Email *" value="" />
+                                            <input type="email" class="form-control" formControlName="Email" placeholder=" Email *" value="" required />
+                                            <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid
+                                                email address.</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder=" Phone number *" value="" />
+                                            <input type="text" placeholder="xxx/xxxxxxx" pattern="^[0-9]{3}\/[0-9]{7}$" formControlName="Phone" class="form-control" required value="" />
                                         </div>
                                         <div class="form-group">
-                                          <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder=" Address *" value="" />
+                                          <input type="text" formControlName="Address"  class="form-control" placeholder=" Address *" required value="" />
                                       </div>
-                                        <input type="submit" class="btnRegister"  value="Register"/>
+                                        <button type="submit" class="btnRegister"  [disabled]="!service.formModel.valid" >Add</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <h3  class="register-heading">Add web admin</h3>
+                            </form> </div>
+                       
+                          <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <form [formGroup]="service.formModel" (ngSubmit)="onSubmit2()"> 
+                                 <h3  class="register-heading">Add car admin</h3>
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Username *" value="" />
+                                            <input type="text" class="form-control" formControlName="Username" required placeholder="Username *" value="" />
+                                            <label class="text-danger" *ngIf="service.formModel.get('Username').touched && service.formModel.get('Username').errors?.required">This
+                                                field is mandatory.</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Fullame *" value="" />
+                                            <input type="text" class="form-control" formControlName="FullName" required  placeholder="Fullname *" value="" />
+                                        </div>
+                                        <div formGroupName="Passwords">
+                                        <div class="form-group">
+                                            <input type="password" formControlName="Password" required class="form-control" placeholder="Password *" value="" />
+                                            <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.required">This
+                                            field is mandatory.
+                                          </label>
+                                          <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.minlength">Minimum
+                                            6 characters required.
+                                          </label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="email" class="form-control" placeholder="Email *" value="" />
+                                            <input type="password" class="form-control"  required formControlName="ConfirmPassword"  placeholder="Confirm Password *" value="" />
+                                            <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.required">This
+                                            field is mandatory.
+                                          </label>
+                                          <label class="text-danger"
+                                            *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.minlength">Minimum
+                                            6 characters required.
+                                          </label>
                                         </div>
-                                        <div class="form-group">
-                                            <input type="text" maxlength="10" minlength="10" class="form-control" placeholder="Phone number *" value="" />
                                         </div>
-
-
+                                       
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Password *" value="" />
+                                            <input type="email" class="form-control" formControlName="Email" required placeholder=" Email *" value="" />
+                                            <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid
+                                                email address.</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Confirm Password *" value="" />
+                                            <input type="text" placeholder="xxx/xxxxxxx" pattern="^[0-9]{3}\/[0-9]{7}$" required formControlName="Phone" class="form-control" value="" />
                                         </div>
                                         <div class="form-group">
-                                          <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder=" Address *" value="" />
+                                          <input type="text" formControlName="Address"  class="form-control" required placeholder=" Address *" value="" />
                                       </div>
-                                        <input type="submit" class="btnRegister"  value="Register"/>
+                                        <button type="submit" class="btnRegister"  [disabled]="!service.formModel.valid" >Add</button>
                                     </div>
                                 </div>
-                            </div>
+                            </form> </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -95,13 +142,14 @@
 
 <br><br>
 <section class="pricing-area pt-100 pb-100" id="pricing">
+  <form   #profileForm='ngForm' (ngSubmit)="onSubmit3(profileForm)" >
     <div class="container">
         <div class="row">
             <div class="col-xl-8 mx-auto text-center">
                 <div class="section-title">
-                    <h4>cheap rate</h4>
-                    <h2>our prices</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting.</p>
+                    <h4>create</h4>
+                    <h2>own discount</h2>
+                    <p>Choose the best.</p>
                 </div>
             </div>
         </div>
@@ -109,64 +157,62 @@
            <div class="col-xl-4">
             <div class="single-price">
               <div class="price-title">
-                <h4>standard</h4>
+                <h4>Silver </h4>
               </div>
               <div class="price-tag">
-                <h2>$25 <span>month</span></h2>
+                <h2>{{discountS}} <span>% discount</span></h2>
+                <input type="text"  #SilverD="ngModel" name="SilverD" [(ngModel)]="profileForm.SilverD" required>
               </div>
               <div class="price-item">
                 <ul>
-                    <li>100GB Monthly Bandwidth</li>
-                    <li>100 Google AdWords</li>
-                    <li>100 Domain Hosting</li>
-                    <li>SSL Shopping Cart</li>
-                    <li>24/7 Live Support</li>
+                    <li>0 -600 points</li>
                 </ul>
               </div>
-              <a href="" class="box-btn">purchase now</a>
            </div>
            </div>
            <div class="col-xl-4">
             <div class="single-price">
               <div class="price-title">
-                <h4>professional</h4>
+                <h4>Gold</h4>
               </div>
-              <div class="price-tag center">
-                <h2>$125 <span>month</span></h2>
+              <div class="price-tag">
+                <h2>{{discountG}} <span>% discount</span></h2>
+                <input type="text" #GoldD="ngModel" name="GoldD" [(ngModel)]="profileForm.GoldD" required>
               </div>
               <div class="price-item">
                 <ul>
-                    <li>100GB Monthly Bandwidth</li>
-                    <li>100 Google AdWords</li>
-                    <li>100 Domain Hosting</li>
-                    <li>SSL Shopping Cart</li>
-                    <li>24/7 Live Support</li>
+                    <li>more then 600 points</li>
                 </ul>
-              </div>
-              <a href="" class="box-btn">purchase now</a>
+              </div>       
+          
            </div>
            </div>
            <div class="col-xl-4">
             <div class="single-price">
               <div class="price-title">
-                <h4>business</h4>
+                <h4>Rent&Air</h4>
               </div>
               <div class="price-tag">
-                <h2>$225 <span>month</span></h2>
+                <h2>{{discountAR}} <span>% discount</span></h2>
+                <input type="text" #RentAirD="ngModel" name="RentAirD" [(ngModel)]="profileForm.RentAirD" required>
               </div>
               <div class="price-item">
                 <ul>
-                    <li>100GB Monthly Bandwidth</li>
-                    <li>100 Google AdWords</li>
-                    <li>100 Domain Hosting</li>
-                    <li>SSL Shopping Cart</li>
-                    <li>24/7 Live Support</li>
+                    <li>no points</li>
                 </ul>
               </div>
-              <a href="" class="box-btn">purchase now</a>
            </div>
            </div>
+           
+           <div class="col-xl-8 mx-auto text-center">
+            <div class="section-title">
+                <h2>
+                <button type="submit" [disabled]="!profileForm.valid"  class="button5">Modify</button></h2>
+            </div>
+        </div>
         </div>
     </div>
+   
+  </form>
   </section>
-          </body>
+</body>

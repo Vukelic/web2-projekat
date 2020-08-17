@@ -7,6 +7,9 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { MaincComponent } from './components/mainc/mainc.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { WebAdminComponent } from './components/web-admin/web-admin.component';
+import { MyAccountComponent } from './components/my-account/my-account.component';
+import { CarAdminComponent } from './components/car-admin/car-admin.component';
+import { CarCopmanyComponent } from './components/car-copmany/car-copmany.component';
 
 
 const routes: Routes = [
@@ -25,6 +28,18 @@ const routes: Routes = [
   {
     path: 'webadmin',
     component: WebAdminComponent
+  },
+  {
+    path: 'myacc',
+    component: MyAccountComponent
+  },
+  {
+    path: 'caradmin',
+    component: CarAdminComponent
+  },
+  {
+    path: 'carcompany',
+    component: CarCopmanyComponent
   },
   {
     path: '',

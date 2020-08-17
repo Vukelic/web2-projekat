@@ -6,9 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService, SocialUser } from 'angularx-social-login';
 import { DOCUMENT } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
-import * as jwt_decode from "jwt-decode";
 import {NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-login',
@@ -31,7 +31,18 @@ export class LoginComponent implements OnInit {
     this.service.login(formModel.value).subscribe(
       (res: any) => {
         localStorage.setItem('token', res.token);
-        this.checkToken();
+
+        const helper = new JwtHelperService();
+        const decodedToken = helper.decodeToken(res.token);
+        console.log(decodedToken.role);
+        if(decodedToken.role === "register_user"){
+          this.router.navigateByUrl('/mainc');
+        }else if(decodedToken.role === "web_admin"){
+          this.router.navigateByUrl('/webadmin');
+        }
+        else if(decodedToken.role === "car_admin"){
+          this.router.navigateByUrl('/caradmin');
+        }
       },
       err => {
         if (err.status == 400)
@@ -42,32 +53,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-    checkToken()
-    {
-      let tokenn =localStorage.getItem('token');
-     
-      var decoded;
-     try {
-       decoded=jwt_decode(tokenn);
-       
-       if (decoded.Roles == "RegUser") {
-         this.router.navigateByUrl('/mainc');
-       }
-       else if (decoded.Roles == "AdminOfAlll") {
-        this.router.navigateByUrl('/webadmin');
-       }
-       else if (decoded.Roles == "CarAdmin") {
-       
-         {
-
-         }
-         
-       }      
-     } catch (error) 
-     {
-       alert(error);
-     }
-  }
+    
 
   //logIn with google method. Takes the platform (Google) parameter.
   logInWithGoogle(platform: string): void {

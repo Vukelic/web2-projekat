@@ -41,8 +41,12 @@ namespace WebApplication1
             services.AddDbContext<MyContextBase2020>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("mydb")));
 
-            services.AddDefaultIdentity<User>()
-                .AddEntityFrameworkStores<MyContextBase2020>();
+   
+
+            services.AddDefaultIdentity<User>()     
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<MyContextBase2020>()
+                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {

@@ -4,12 +4,13 @@ import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
-import * as jwt_decode from "jwt-decode";
+
 import { AuthService } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { RoleTypes } from 'src/app/entities/enumeration.enum';
 import { LoginComponent } from '../../login/login.component';
 import { User } from 'src/app/entities/User';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-header',
@@ -17,30 +18,26 @@ import { User } from 'src/app/entities/User';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  LogedUser:User=new User("1","1","1","1","1","1","1");
+  LogedUser:User=new User("1","1","1","1","1","1");
 
   constructor(private authService: AuthService, private modalService: NgbModal, private route: Router, private router: ActivatedRoute, private logService: UserService) {
     try {
-      let tokenn =localStorage.getItem('token');
-      if(tokenn!=null){
-         var decoded;
-          decoded=jwt_decode(tokenn);
-      //ar type = decoded.Roles;
-      console.log(this.LogedUser);
-      if(decoded.Roles == null){
-        this.LogedUser.Role=RoleTypes.User;
-      }
+      let token =localStorage.getItem('token');
+      if(token!=null){
+       
+        const helper = new JwtHelperService();
+        const decodedToken = helper.decodeToken(token);
      
-      else if (decoded.Roles == "AdminOfAlll") {
-        this.LogedUser.Role=RoleTypes.AdminOfAlll;
+        if(decodedToken.role === "register_user"){
+        this.LogedUser.Role=RoleTypes.register_user;
+      }  
+      else if (decodedToken.role === "web_admin") {
+        this.LogedUser.Role=RoleTypes.web_admin;
+      }      
+      else if(decodedToken.role === "car_admin"){
+        this.LogedUser.Role=RoleTypes.car_admin;
       }
-      
-     else if (decoded.Roles == "CarAdmin") {
-       this.LogedUser.Role=RoleTypes.CarAdmin;
-     }
-     else if (decoded.Roles == "RegUser") {
-       this.LogedUser.Role=RoleTypes.RegUser;
-     }}
+    }
     
       
     } catch (error) {
@@ -56,31 +53,24 @@ export class HeaderComponent implements OnInit {
     return;
   }
 
-  getDecodedAccessToken(token: string): any {
-    try{
-        return jwt_decode(token);
-    }
-    catch(Error){
-        return null;
-    }
-  }
+  
 
   myprofile(): void
   {
     // preuzimamo token iz localstorage
     var token = localStorage.getItem('token');
-    var decoded = this.getDecodedAccessToken(token);
-    var type = decoded.Roles;
-    if(type == "RegUser") {
-      this.route.navigate(['/mainc']);
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+
+    if(decodedToken.role === "register_user"){
+      this.route.navigate(['/myacc']);
+    }else if(decodedToken.role === "web_admin"){
+      this.route.navigate(['/myacc']);
     }
-    else if (type == "CarAdmin") {
-    //  this.route.navigate(['/carRentalAdmin']);
+    else if(decodedToken.role === "car_admin"){
+      this.route.navigate(['/myacc']);
     }
     
-    else if (type == "AdminOfAlll") {
-      this.route.navigate(['/webadmin']);
-    }
   }
 
   klik(): void {

@@ -8,7 +8,6 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
-import { NavtabsComponent } from './components/navigation/navtabs/navtabs.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MaterialModule} from './material.module';
@@ -17,12 +16,17 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ToastrModule } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './service/user.service';
+import { AdminService} from './service/admin-service';
 
 
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider,AuthService } from "angularx-social-login";
 import { MaincComponent } from './components/mainc/mainc.component';
 import { WebAdminComponent } from './components/web-admin/web-admin.component';
+import { MyAccountComponent } from './components/my-account/my-account.component';
+import { CarAdminComponent } from './components/car-admin/car-admin.component';
+import { CarCopmanyComponent } from './components/car-copmany/car-copmany.component';
+
 
 
 
@@ -44,9 +48,11 @@ export function provideConfig() {
     LoginComponent,
     SignUpComponent,
     HeaderComponent,
-    NavtabsComponent,
     MaincComponent,
-    WebAdminComponent
+    WebAdminComponent,
+    MyAccountComponent,
+    CarAdminComponent,
+    CarCopmanyComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +72,7 @@ export function provideConfig() {
   providers: [
     CookieService,
     UserService,
+    AdminService,
     AuthService,  
     {
       provide: AuthServiceConfig,

@@ -1,8 +1,7 @@
 import { RoleTypes } from './enumeration.enum';
 
 export class User {
-    public FirstName: string ;
-    public LastName: string;
+    public Fullname: string;
     public Username: string;
     public Email: string;
     public Password: string;
@@ -12,16 +11,16 @@ export class User {
     public Activated: boolean;
 
 
-    constructor(FirstName:string,LastName: string,Username: string,Email: string,Password: string,Address:string,PhoneNumber: string) {
-        this.FirstName=FirstName;
-        this.LastName=LastName
+    constructor(Fullname:string,Username: string,Email: string,Password: string,Address:string,PhoneNumber: string) {
+        this.Fullname=Fullname;
         this.Username= Username;
         this.Email=Email;
         this.Password= Password;
         this.Address=Address;
         this.PhoneNumber=PhoneNumber;
-        this.Role=RoleTypes.User;
+        this.Role=RoleTypes.user;
         this.Activated=false;
     }
+   
 
 }

@@ -1,16 +1,17 @@
+
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class AdminService {
+
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
   readonly BaseURI = 'http://localhost:54183/api';
-
+  
   formModel = this.fb.group({
     Username: ['', Validators.required],
     Email: ['', Validators.email],
@@ -23,7 +24,6 @@ export class UserService {
     }, { validator: this.comparePasswords })
 
   });
-
   comparePasswords(fb: FormGroup) {
     let confirmPswrdCtrl = fb.get('ConfirmPassword');
     //passwordMismatch
@@ -36,7 +36,7 @@ export class UserService {
     }
   }
 
-  register() {
+  registerWebAdmin() {
     var body = {
       Username: this.formModel.value.Username,
       Password: this.formModel.value.Passwords.Password,
@@ -47,23 +47,30 @@ export class UserService {
       Phone: this.formModel.value.Phone
     };
     console.log(body);
-    return this.http.post(this.BaseURI + '/AppUser/Register', body);
+    return this.http.post(this.BaseURI + '/AppUser/RegisterWebAdmin', body);
   }
 
-  login(formData) {
-    return this.http.post(this.BaseURI + '/AppUser/Login', formData);
+  registerCarAdmin() {
+    var body = {
+      Username: this.formModel.value.Username,
+      Password: this.formModel.value.Passwords.Password,
+      ConfirmPassword: this.formModel.value.Passwords.ConfirmPassword,
+      Email: this.formModel.value.Email,
+      FullName: this.formModel.value.FullName,
+      Address: this.formModel.value.Address,
+      Phone: this.formModel.value.Phone
+    };
+    console.log(body);
+    return this.http.post(this.BaseURI + '/AppUser/RegisterCarAdmin', body);
   }
-  socialLogIn(model){
-    return this.http.post(this.BaseURI + '/AppUser/SocialLogIn', model);
-}
+  
 
-UserAccount(){
-  return this.http.get(this.BaseURI + '/AppUser/UserAccount');
-}
-
-
-
+  AddDiscount(formData) {
+    console.log(formData);
+      return this.http.post(this.BaseURI + '/AppUser/AddDiscount', formData);
+    }
  
-
- 
+    LoadDiscount(){
+      return this.http.get(this.BaseURI + '/AppUser/GetDiscount');
+    }
 }
