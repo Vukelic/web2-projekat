@@ -15,6 +15,8 @@ namespace WebApplication1.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Discount> Discounts { get; set; }
+        public DbSet<CarCompany> CarCompanies { get; set; }
+        public DbSet<Car> Cars { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

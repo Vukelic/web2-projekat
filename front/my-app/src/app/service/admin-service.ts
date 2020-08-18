@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { CarCompany } from "src/app/entities/CarCompany";
 
 @Injectable({
   providedIn: 'root'
@@ -72,5 +73,9 @@ export class AdminService {
  
     LoadDiscount(){
       return this.http.get(this.BaseURI + '/AppUser/GetDiscount');
+    }
+
+    createCarCompany(company: CarCompany) {
+      return this.http.post(this.BaseURI + "/AppUser/AddCarCompany", company);
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,18 @@ export class UserService {
     }, { validator: this.comparePasswords })
 
   });
+
+
+  userForm = this.fb.group({
+    Username: ['', Validators.required],
+    Email: ['', Validators.email],
+    FullName: ['',  Validators.required],
+    Address: ['', Validators.required],
+    PhoneNumber: ['', Validators.required],
+    Password: ['', [Validators.required, Validators.minLength(6)]],
+  });
+
+ 
 
   comparePasswords(fb: FormGroup) {
     let confirmPswrdCtrl = fb.get('ConfirmPassword');
@@ -61,6 +73,13 @@ UserAccount(){
   return this.http.get(this.BaseURI + '/AppUser/UserAccount');
 }
 
+UpdateUser(formData){
+  return this.http.put(this.BaseURI + '/AppUser/PutUser', formData);
+}
+
+getAllUsers() {
+  return this.http.get(this.BaseURI + "/AppUser/getall");
+}
 
 
  

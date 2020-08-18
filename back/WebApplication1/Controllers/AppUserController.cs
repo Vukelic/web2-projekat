@@ -20,6 +20,7 @@ using WebApplication1.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 
 namespace WebApplication1.Controllers
 {
@@ -34,6 +35,7 @@ namespace WebApplication1.Controllers
         private readonly MyContextBase2020 _dbcontext;
         public IConfiguration Configuration { get; }
         private static string loggedinID = "";
+        private static string socloggedinID = "";
 
         public AppUserController(UserManager<User> userManager, SignInManager<User> signInManager, 
             IOptions<ApplicationSettings> appSettings, IConfiguration configuration, MyContextBase2020 dbcontext)
@@ -146,6 +148,8 @@ namespace WebApplication1.Controllers
                         var tokenHandler = new JwtSecurityTokenHandler();
                         var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                         var token = tokenHandler.WriteToken(securityToken);
+                    
+
                         return Ok(new { token });
                     
                   
@@ -156,45 +160,43 @@ namespace WebApplication1.Controllers
             else
                 return BadRequest(new { message = "Username or password is incorrect." });
         }
-        public bool VerifyToken(string providerToken)
-        {
-            var httpClient = new HttpClient();
-            var requestUri = new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
-
-            HttpResponseMessage httpResponseMessage;
-
-            try
-            {
-                httpResponseMessage = httpClient.GetAsync(requestUri).Result;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
-            {
-                return false;
-            }
-
-            var response = httpResponseMessage.Content.ReadAsStringAsync().Result;
-            var googleApiTokenInfo = JsonConvert.DeserializeObject<GoogleApiTokenInfo>(response);
-
-            return true;
-        }
+    
 
         [HttpPost]
         [Route("SocialLogIn")]
-        public IActionResult SocialLogIn([FromBody] SocialLogInModel model)
+        public async Task<IActionResult> SocialLogIn([FromBody] SocialLogInModel model)
         {
-            var test = _appSettings.JWT_Secret;
+            var validation = await VerifyTokenAsync(model.IdToken);
 
-            if (!VerifyToken(model.IdToken))
+            if (validation.isVaild)
             {
-                return BadRequest(new { message = "Account token could not be verified." });
-            }
-          
-            var tokenDescriptor = new SecurityTokenDescriptor
+                socloggedinID = model.IdToken;
+                var socialUser = await _userManager.FindByNameAsync(validation.apiTokenInfo.email);
+
+                if (socialUser == null)
+                {
+                    var newUser = new User()
+                    {
+                        Email = validation.apiTokenInfo.email,
+                        Firstname = model.FirstName,
+                        Lastname = model.LastName,
+                        Fullname = model.FirstName + " " + model.LastName,
+                        UserName = model.FirstName,
+                        NormalizedUserName = model.FirstName.ToUpper(),
+                        EmailConfirmed = true
+
+                    };
+                    await _dbcontext.Users.AddAsync(newUser);
+                    await _dbcontext.SaveChangesAsync();
+                    loggedinID = newUser.Id;
+                    await _userManager.AddToRoleAsync(newUser, "register_user");
+                    await _userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "register_user"));
+
+                }
+
+            
+                socloggedinID = model.IdToken;
+              var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
@@ -207,9 +209,41 @@ namespace WebApplication1.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                 var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { token });
-  
+
+            
+            return Ok(new { token });
+            }
+            return Ok();
         }
+
+
+        public async Task<(bool isVaild, GoogleApiTokenInfo apiTokenInfo)> VerifyTokenAsync(string providerToken)
+        {
+            var httpClient = new HttpClient();
+            string GoogleApiTokenInfo = $"https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={providerToken}";
+            var requestUri = new Uri(string.Format(GoogleApiTokenInfo, providerToken));
+
+            HttpResponseMessage responseMessage;
+
+            try
+            {
+                responseMessage = await httpClient.GetAsync(requestUri);
+            }
+            catch (Exception)
+            {
+                return (false, null);
+            }
+
+            if (responseMessage.StatusCode != HttpStatusCode.OK)
+            {
+                return (false, null);
+            }
+
+            var response = await responseMessage.Content.ReadAsStringAsync();
+            var googleApiTokenInfo = JsonConvert.DeserializeObject<GoogleApiTokenInfo>(response);
+            return (true, googleApiTokenInfo);
+        }
+
 
         private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
 
@@ -357,12 +391,25 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
+        
         [Route("UserAccount")]
         //get : /api/AppUser/GetDiscount
         public async Task<Object> UserAccount()
         {
         
             var user = await _userManager.FindByIdAsync(loggedinID);
+            if(user == null)
+            {
+                var validation = await VerifyTokenAsync(socloggedinID);
+                Profile profile2 = new Profile();
+              //  profile2.Phone = user.PhoneNumber;
+                profile2.Fullname = validation.apiTokenInfo.family_name + validation.apiTokenInfo.given_name;
+                profile2.Username = validation.apiTokenInfo.family_name;
+                profile2.Email = validation.apiTokenInfo.email;
+                //profile2.Address = user.Address;
+                profile2.Status = "register_user";
+                return profile2;
+            }
             var role = await _userManager.GetRolesAsync(user);
             Profile profile = new Profile();
             profile.Phone = user.PhoneNumber;
@@ -374,27 +421,115 @@ namespace WebApplication1.Controllers
             return profile;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [AllowAnonymous]
         [Route("PutUser")]
-        public async Task<object> PutUser(int id, [FromBody] User u)
+        public async Task<object> PutUser(ProfileModel u)
         {
-            var user = await _userManager.FindByIdAsync(u.Id);
+            var user = await _userManager.FindByNameAsync(u.Username);
             if (user is null)
             {
-                return BadRequest(new { message = "Error processing email" });
+                return BadRequest(new { message = "Not found user" });
             }
-            user.UserName = u.UserName;
-            user.Fullname = u.Fullname;
-            user.PasswordHash = u.PasswordHash;
+            user.UserName = u.Username;
+            user.Fullname = u.FullName;
+          
             if (u.PhoneNumber != null)
                 user.PhoneNumber = u.PhoneNumber;
             user.Email = u.Email;
+            user.Address = u.Address;
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            try
+            {
+                await _userManager.ResetPasswordAsync(user, code, u.Password);
+                await _userManager.UpdateAsync(user);
+            }
+            catch (Exception)
+            {
 
-            await _userManager.UpdateAsync(user);
-
+                throw;
+            }
+           
             return user;
         }
 
 
+
+        [HttpPost]
+        [Route("AddCarCompany")]
+        public async Task<IActionResult> AddCarCompany([FromBody] CarCompanyModel model)
+        {
+            var admin = await _userManager.FindByNameAsync(model.Cadmin);
+
+            if (admin == null)
+            {
+                var adminModel = new RegisterModel()
+                {
+                //    FullName = model.Cadmin.FullName,
+               //     Email = model.Cadmin.Email,
+                 //   Address = model.Cadmin.Address,
+                 //   Phone = model.Cadmin.Phone,
+                 //   Role = "web_admin",
+                 //   Username = model.Cadmin.Username
+                };
+
+           //     model.Cadmin = adminModel;
+            }
+
+            CarCompany carCompany = new CarCompany()
+            {
+                Cadmin = admin.UserName,
+                Address = model.Address,
+                Cars = new List<Car>(),
+                CityExpositure = model.CityExpositure,
+                Description = model.Description,
+                Name = model.Name,
+                Rating = 0,
+                ImagePic = model.ImagePic
+            };
+
+
+            try
+            {
+                _dbcontext.CarCompanies.Add(carCompany);
+                _dbcontext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error with creating new car company. -> {e.Message}");
+            }
+
+            return Ok(carCompany);
+        }
+
+        /*[HttpGet]
+        [Route("getall")]
+        public async Task<List<User>> GetAll()
+        {
+            var users = _dbcontext.Users.ToList();
+
+            List<User> allUsers = new List<User>();
+            User u;
+            foreach (var user in users)
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                var status = role.FirstOrDefault().ToString();
+                u = new User()
+                {
+                    Firstname = user.Firstname,
+                    Lastname = user.Lastname,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    PasswordHash = user.PasswordHash,
+                    Address = user.Address,                 
+                    UserName = user.UserName
+                };
+                allUsers.Add(u);
+            }
+
+            return allUsers;
+        }*/
+
     }
+
 }

@@ -1,0 +1,63 @@
+/*Request Form*/
+
+.RequestForm h2 {
+    background-color: #28aae1;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    text-transform: capitalize;
+    padding: 50px 0px;
+    font-weight: 400;
+  }
+  .RequestForm .Forms {
+    padding: 20px 15px 30px;
+  
+  }
+  .RequestForm .Forms form {
+    box-shadow: 0px 1px 3px #ddd;
+    padding: 0px 40px 50px;
+    text-align: center;
+    
+  }
+  .RequestForm .Forms form .form-control {
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #efefef;
+    background-color: transparent;
+    box-shadow: none;
+    height: 40px;
+  }
+  .RequestForm .Forms form textarea.form-control {
+    height: auto;
+    resize: none;
+  }
+  .button {
+    border: none;
+    background-color: #28aae1;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    padding: 11px;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: none;
+    outline: 0;
+  }
+  .RequestForm .Forms form button:hover {
+    background-color: #232323;
+    color: #fff;
+  }
+  .RequestForm .Forms form .form-control::-moz-placeholder {
+    color: #c7c7c7;
+    opacity: 1
+  }
+  .RequestForm .Forms form .form-control:-ms-input-placeholder {
+    color: #c7c7c7
+  }
+  .RequestForm .Forms form .form-control::-webkit-input-placeholder {
+    color: #c7c7c7
+  }
+
+
+

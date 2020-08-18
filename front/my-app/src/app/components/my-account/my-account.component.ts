@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from './../../service/user.service';
+import { NgForm } from '@angular/forms';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 declare var $: any;
@@ -10,12 +11,14 @@ declare var $: any;
   styleUrls: ['./my-account.component.css']
 })
 export class MyAccountComponent implements OnInit {
-  Username: string;
-  Email: string;
-  Fullname: string;
-  Address: string;
-  PhoneNumber: string;
-  userForm: FormGroup;
+  username: string;
+  email: string;
+  fullname: string;
+  address: string;
+  phoneNumber: string;
+  password: string;
+  
+
  
 
   constructor(public service: UserService, private toastr: ToastrService) { }
@@ -29,12 +32,11 @@ export class MyAccountComponent implements OnInit {
     // poziv servisa- subscribe
     this.service.UserAccount().subscribe(
       (res: any) =>{
-      
-        this.Username = res.username;
-        this.Email = res.email;
-        this.Fullname = res.fullname;
-        this.Address = res.address;
-        this.PhoneNumber = res.phone;
+        this.username = res.username;
+        this.email = res.email;
+        this.fullname = res.fullname;
+        this.address = res.address;
+        this.phoneNumber = res.phone;
 
       },
       err => {
@@ -43,6 +45,17 @@ export class MyAccountComponent implements OnInit {
     );
   }
 
+  UpdateUserAccount(userForm: NgForm) {
+    // poziv servisa- subscribe
+  
+    this.service.UpdateUser(userForm.value).subscribe(
+      (res: any) => {
+        this.initData();  
+      },
+      err => {
+      }
+    );
+  }
 
 
 }
