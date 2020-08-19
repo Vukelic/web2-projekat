@@ -10,7 +10,6 @@ namespace WebApplication1.Models
         public long Id { get; set; }
         public string Description { get; set; }
         public string ModelOfCar { get; set; }
-        public int TypeOfCar { get; set; }
         public int NumberOfSeats { get; set; }
         public double Price { get; set; } //per day
         public double Rating { get; set; }

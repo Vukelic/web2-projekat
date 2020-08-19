@@ -502,9 +502,9 @@ namespace WebApplication1.Controllers
             return Ok(carCompany);
         }
 
-        /*[HttpGet]
-        [Route("getall")]
-        public async Task<List<User>> GetAll()
+        [HttpGet]
+        [Route("GetAllCarAdmins")]
+        public async Task<List<User>> GetAllCarAdmins()
         {
             var users = _dbcontext.Users.ToList();
 
@@ -514,21 +514,22 @@ namespace WebApplication1.Controllers
             {
                 var role = await _userManager.GetRolesAsync(user);
                 var status = role.FirstOrDefault().ToString();
-                u = new User()
+                if (status == "car_admin")
                 {
-                    Firstname = user.Firstname,
-                    Lastname = user.Lastname,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
-                    PasswordHash = user.PasswordHash,
-                    Address = user.Address,                 
-                    UserName = user.UserName
-                };
-                allUsers.Add(u);
+                    u = new User()
+                    {
+                        Fullname = user.Fullname,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,                      
+                        Address = user.Address,
+                    };
+                    allUsers.Add(u);
+                }
             }
 
             return allUsers;
-        }*/
+        }
 
     }
 

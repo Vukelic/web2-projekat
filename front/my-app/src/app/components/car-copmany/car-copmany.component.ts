@@ -16,46 +16,53 @@ var $;
 export class CarCopmanyComponent implements OnInit {
   createCompanyForm: FormGroup;
   selectedValue: any;
-  admins: User[];
+  cadmin: User[];
   cars: Car[] = [];
   constructor(private userService: UserService,
     private adminService: AdminService,
     private toastrService: ToastrService) { }
 
   ngOnInit(): void {
-  
-    this.initForm();
+    this.userService
+    .getAllCarAdmins()
+    .subscribe(
+      (res: any) => {
+        this.cadmin = res;
+        console.log(this.cadmin);
+      }
+      );
+      
+      
+     
+    this.load();
   }
   
   onSubmit() {
     const carCompany = new CarCompany(
       0,
       this.createCompanyForm.value["companyName"],
-      3.5,
+      1,
       this.createCompanyForm.value["description"],
       this.createCompanyForm.value["address"],
-     // this.createCompanyForm.value["city"],
      "",
      "",
       "",
-      //this.cars,
-    //  [],
-    this.createCompanyForm.value["cadmin"],
-   //   this.selectedValue //admin
-
+    this.selectedValue.userName
     );
     console.log(carCompany);
+    console.log("pre vr");
+    console.log(this.selectedValue);
 
     this.adminService.createCarCompany(carCompany).subscribe(
       (res: any) => {
         this.createCompanyForm.reset();
         this.toastrService.success(
-          "You are succesfully created new Car company!",
+          "Car service is created!",
           "Succesfull"
         );
       },
       err => {
-        this.toastrService.error("Error", "Oops, something went wrong :(");
+        this.toastrService.error("Error", "Error");
         console.log(err);
       }
     );
@@ -63,19 +70,17 @@ export class CarCopmanyComponent implements OnInit {
 
 
 
-  private initForm() {
+  private load() {
     let companyName = "";
     let description = "";
     let address = "";
     let cadmin = "";
-    //let admins = "";
 
     this.createCompanyForm = new FormGroup({
       companyName: new FormControl(companyName, Validators.required),
       description: new FormControl(description, Validators.required),
       address: new FormControl(address, Validators.required),
       cadmin: new FormControl(cadmin, Validators.required),
-    //  admins: new FormControl(admins, Validators.required)
     });
   }
   

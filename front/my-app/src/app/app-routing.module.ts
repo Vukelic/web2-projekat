@@ -10,7 +10,7 @@ import { WebAdminComponent } from './components/web-admin/web-admin.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { CarAdminComponent } from './components/car-admin/car-admin.component';
 import { CarCopmanyComponent } from './components/car-copmany/car-copmany.component';
-
+import { CarsComponent } from './components/cars/cars.component';
 
 const routes: Routes = [
   {
@@ -40,6 +40,10 @@ const routes: Routes = [
   {
     path: 'carcompany',
     component: CarCopmanyComponent
+  },
+  {
+    path: 'cars',
+    component: CarsComponent
   },
   {
     path: '',

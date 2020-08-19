@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './service/user.service';
 import { AdminService} from './service/admin-service';
+import { CarAdminService} from './service/car-admin-service';
 
 
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
@@ -26,6 +27,7 @@ import { WebAdminComponent } from './components/web-admin/web-admin.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { CarAdminComponent } from './components/car-admin/car-admin.component';
 import { CarCopmanyComponent } from './components/car-copmany/car-copmany.component';
+import { CarsComponent } from './components/cars/cars.component';
 
 
 
@@ -52,7 +54,8 @@ export function provideConfig() {
     WebAdminComponent,
     MyAccountComponent,
     CarAdminComponent,
-    CarCopmanyComponent
+    CarCopmanyComponent,
+    CarsComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +76,7 @@ export function provideConfig() {
     CookieService,
     UserService,
     AdminService,
+    CarAdminService,
     AuthService,  
     {
       provide: AuthServiceConfig,

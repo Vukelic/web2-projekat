@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { User } from "src/app/entities/User";
 
 @Injectable({
   providedIn: 'root'
@@ -77,8 +78,8 @@ UpdateUser(formData){
   return this.http.put(this.BaseURI + '/AppUser/PutUser', formData);
 }
 
-getAllUsers() {
-  return this.http.get(this.BaseURI + "/AppUser/getall");
+getAllCarAdmins():Observable<User[]> {
+  return this.http.get<User[]>(this.BaseURI + "/AppUser/Getallcaradmins");
 }
 
 
