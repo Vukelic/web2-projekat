@@ -3,12 +3,11 @@ export class Car {
       public id: number,
       public description: string,
       public modelofcar: string,
-      public typeofcar: number,
-      public numberofseats: number, //passengers
-      public price: number,
-      public rating: number,
+      public numberofseats: string, 
+      public price: string,
+      public rating: string,
       public imagepic: string,
       public nameOfcompany: string,
-      public isReserved: boolean
+      public isReserved: string
     ) {}
   }

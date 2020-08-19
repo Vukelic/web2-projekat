@@ -27,5 +27,52 @@ namespace WebApplication1.Controllers
         {
             return await _dbcontext.CarCompanies.ToListAsync();         
         }
+
+        [HttpPost]
+        [Route("AddCar")]
+        public async Task<IActionResult> AddCar([FromBody] CarModel model)
+        {
+          //  var cm = await _dbcontext.Cars.FindAsync(model.NameOfCompany);
+
+         //   if (cm == null)
+        //    {
+       //        var cmm = new CarModel()
+       //        {
+                    //    FullName = model.Cadmin.FullName,
+                    //     Email = model.Cadmin.Email,
+                    //   Address = model.Cadmin.Address,
+                    //   Phone = model.Cadmin.Phone,
+                    //   Role = "web_admin",
+                    //   Username = model.Cadmin.Username
+          //      };
+
+                //     model.Cadmin = adminModel;
+         //   }
+
+            Car cmodel = new Car()
+            {
+                Description = model.Description,
+                ModelOfCar = model.ModelOfCar,
+                NumberOfSeats = Convert.ToInt32(model.NumberOfSeats),
+                Price = Convert.ToDouble(model.Price),
+                Rating = Convert.ToDouble(model.Rating),
+                ImagePic = model.ImagePic,
+                NameOfCompany = model.NameOfCompany,
+                IsReserved = Convert.ToBoolean(model.IsReserved)
+            };
+
+
+            try
+            {
+                _dbcontext.Cars.Add(cmodel);
+                _dbcontext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error with creating new car company. -> {e.Message}");
+            }
+
+            return Ok(cmodel);
+        }
     }
 }

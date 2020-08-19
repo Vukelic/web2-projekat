@@ -31,12 +31,64 @@ export class CarsComponent implements OnInit {
         console.log(this.namecopmany);
       }
       );
+
+      this.load();
   }
 
   onFileChanged(event) {
     const file = event.target.files[0];
   }
-  onSubmit() {}
+  onSubmit() {
+    const car = new Car(
+      0,
+      this.createCarForm.value["description"],
+      this.createCarForm.value["modelofcar"],
+      this.createCarForm.value["seats"],
+      this.createCarForm.value["price"],
+       "0",
+     this.createCarForm.value["imagepic"],
+     this.selectedValue.name,
+    "false"
+    );
+
+    
+    console.log("pre vr");
+    console.log(this.selectedValue);
+
+    this.carAdminService.CreateCar(car).subscribe(
+      (res: any) => {
+        this.createCarForm.reset();
+        this.toastrService.success(
+          "Car is created!",
+          "Succesfull"
+        );
+      },
+      err => {
+        this.toastrService.error("Error", "Error");
+        console.log(err);
+      }
+    );
+  }
  
+  private load() {
+    let description = "";
+    let namecopmany = "";
+    let modelofcar = "";
+    let seats = "";
+    let price = "";
+    let imagepic = "";
+
+
+    this.createCarForm = new FormGroup({
+      description: new FormControl(description, Validators.required),
+      modelofcar: new FormControl(modelofcar, Validators.required),
+      seats: new FormControl(seats, Validators.required),
+      price: new FormControl(price, Validators.required),
+      imagepic: new FormControl(imagepic, Validators.required),
+      namecopmany: new FormControl(namecopmany, Validators.required),
+      
+    
+    });
+  }
 
 }
