@@ -19,4 +19,8 @@ export class CarAdminService {
       CreateCar(car: Car) {
         return this.http.post(this.BaseURI + "/CarAdmin/AddCar", car);
       }
+
+      GetAllCompaniesCarAdmin(username: string):Observable<CarCompany[]>{
+        return this.http.get<CarCompany[]>(this.BaseURI + '/CarAdmin/GetAllCompaniesCarAdmin/' + username);
+      }
 }

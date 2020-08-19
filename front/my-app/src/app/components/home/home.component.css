@@ -216,8 +216,30 @@ body {
 .main-text h2 { font-family: 'Cabin', sans-serif; letter-spacing: 9px; font-size: 23px;}
 .main-text p { font-family: 'Karla', sans-serif; letter-spacing: 8px;}
 
-.booking { background: #444; height: 300px;}
+.booking { background-image: url('/assets/w9.PNG'); width:300px; height: 300px;}
+/**/
+.item{
+	left: 0;
+	top: 0;
+	position: relative;
+	overflow: hidden;
+	margin-top:50px;
+	
+}
+.item img{
+	-webkit-transition: 0.6s ease;
+	  transition: 0.6s ease;
+	  
+}
+.item img:hover{
+	-webkit-transform: scale(1.2);
+	  transform: scale(1.2);
 
+}
+.img-thumbnail{
+	border:0px;
+	border-radius:0px;
+}
 
 /**/
 .pb-100 {

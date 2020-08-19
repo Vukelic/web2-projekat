@@ -41,11 +41,11 @@ export class CarCopmanyComponent implements OnInit {
     const carCompany = new CarCompany(
       0,
       this.createCompanyForm.value["companyName"],
-      1,
+      "1",
       this.createCompanyForm.value["description"],
       this.createCompanyForm.value["address"],
      "",
-     "",
+     this.createCompanyForm.value["imagepic"],
       "",
     this.selectedValue.userName
     );
@@ -67,7 +67,9 @@ export class CarCopmanyComponent implements OnInit {
       }
     );
   }
-
+  onFileChanged(event) {
+    const file = event.target.files[0];
+  }
 
 
   private load() {
@@ -75,12 +77,14 @@ export class CarCopmanyComponent implements OnInit {
     let description = "";
     let address = "";
     let cadmin = "";
+    let imagepic = "";
 
     this.createCompanyForm = new FormGroup({
       companyName: new FormControl(companyName, Validators.required),
       description: new FormControl(description, Validators.required),
       address: new FormControl(address, Validators.required),
       cadmin: new FormControl(cadmin, Validators.required),
+      imagepic: new FormControl(imagepic, Validators.required),
     });
   }
   

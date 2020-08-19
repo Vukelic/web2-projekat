@@ -5,7 +5,7 @@ export class CarCompany {
   constructor(
     public id: number,
     public name: string,
-    public rating: number, 
+    public rating: string, 
     public description: string,
     public address: string, 
     public cityexpositure: string,

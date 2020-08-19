@@ -9,7 +9,7 @@ namespace WebApplication1.Models
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public double Rating { get; set; }
+        public string Rating { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
         public string CityExpositure { get; set; }

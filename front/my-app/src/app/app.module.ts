@@ -28,6 +28,7 @@ import { MyAccountComponent } from './components/my-account/my-account.component
 import { CarAdminComponent } from './components/car-admin/car-admin.component';
 import { CarCopmanyComponent } from './components/car-copmany/car-copmany.component';
 import { CarsComponent } from './components/cars/cars.component';
+import { ViewCarsComponent } from './components/view-cars/view-cars.component';
 
 
 
@@ -55,7 +56,8 @@ export function provideConfig() {
     MyAccountComponent,
     CarAdminComponent,
     CarCopmanyComponent,
-    CarsComponent
+    CarsComponent,
+    ViewCarsComponent
   ],
   imports: [
     BrowserModule,
