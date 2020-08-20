@@ -40,32 +40,30 @@ export class CarsComponent implements OnInit {
   }
   onSubmit() {
     const car = new Car(
-      0,
       this.createCarForm.value["description"],
       this.createCarForm.value["modelofcar"],
-      this.createCarForm.value["seats"],
-      this.createCarForm.value["price"],
+      this.createCarForm.value["seats"] + "",
+      this.createCarForm.value["price"] + "",
        "0",
      this.createCarForm.value["imagepic"],
-     this.selectedValue.name,
+     this.selectedValue.id + " ",
     "false"
     );
 
     
     console.log("pre vr");
     console.log(this.selectedValue);
+    console.log(this.selectedValue.id);
+    console.log(this.selectedValue.Id);
 
     this.carAdminService.CreateCar(car).subscribe(
       (res: any) => {
         this.createCarForm.reset();
-        this.toastrService.success(
-          "Car is created!",
-          "Succesfull"
-        );
+        
       },
       err => {
-        this.toastrService.error("Error", "Error");
-        console.log(err);
+      console.log(err);
+        
       }
     );
   }

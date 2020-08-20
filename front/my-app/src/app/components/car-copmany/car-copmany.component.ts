@@ -39,7 +39,7 @@ export class CarCopmanyComponent implements OnInit {
   
   onSubmit() {
     const carCompany = new CarCompany(
-      0,
+      "0",
       this.createCompanyForm.value["companyName"],
       "1",
       this.createCompanyForm.value["description"],

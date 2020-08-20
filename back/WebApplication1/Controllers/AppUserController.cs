@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
             if (user != null)
                 return BadRequest(new { message = "Username already exists!." });
 
-            rm.Role = "register_user";
+            rm.Role = "web_admin";
 
             var applicationUser = new User()
             {
@@ -263,8 +263,8 @@ namespace WebApplication1.Controllers
                 Fullname = rm.FullName,
                 Address = rm.Address,
                 PhoneNumber = rm.Phone,
-              
-                Activated = false,
+           //     EmailConfirmed = true,
+            Activated = false,
 
             };
             try
@@ -319,7 +319,7 @@ namespace WebApplication1.Controllers
                 Fullname = rm.FullName,
                 Address = rm.Address,
                 PhoneNumber = rm.Phone,
-            
+           //     EmailConfirmed = true,
                 Activated = false,
 
             };
@@ -360,16 +360,17 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [Route("AddDiscount")]
-        //POST : /api/AppUser/ReadDiscount
+        //POST : /api/AppUser/AddDiscount
         public async Task<Object> AddDiscount(DiscountModel d)
         {
-            var currentData = await _dbcontext.Discounts.FindAsync(2);
-
+           var currentData = await _dbcontext.Discounts.FindAsync(2);
+          //  var currentData = new Discount();
             currentData.RentAirD = Convert.ToDouble(d.RentAirD);
             currentData.SilverD = Convert.ToDouble(d.SilverD);
             currentData.GoldD = Convert.ToDouble(d.GoldD);
 
-            _dbcontext.Discounts.Update(currentData);
+             _dbcontext.Discounts.Update(currentData);
+           // _dbcontext.Discounts.u(currentData);
             _dbcontext.SaveChanges();
             return Ok();
           

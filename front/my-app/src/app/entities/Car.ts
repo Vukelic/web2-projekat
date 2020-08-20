@@ -1,6 +1,5 @@
 export class Car {
     constructor(
-      public id: number,
       public description: string,
       public modelofcar: string,
       public numberofseats: string, 

@@ -2,7 +2,6 @@ C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\bin\Debug\netcoreapp3.1\a
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\bin\Debug\netcoreapp3.1\WebApplication1.exe
-C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.csprojAssemblyReference.cache
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.AssemblyInfoInputs.cache
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.AssemblyInfo.cs
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.RazorTargetAssemblyInfo.cache
@@ -71,3 +70,4 @@ C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\bin\Debug\netcoreapp3.1\M
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.csproj.CoreCompileInputs.cache
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\HP\Desktop\web2-projekat\back\WebApplication1\obj\Debug\netcoreapp3.1\WebApplication1.csprojAssemblyReference.cache

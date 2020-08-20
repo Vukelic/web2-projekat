@@ -227,13 +227,10 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Car", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("CarCompanyId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -247,8 +244,8 @@ namespace WebApplication1.Migrations
                     b.Property<string>("ModelOfCar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NameOfCompany")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("MyCompanyId")
+                        .HasColumnType("int");
 
                     b.Property<int>("NumberOfSeats")
                         .HasColumnType("int");
@@ -261,16 +258,16 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarCompanyId");
+                    b.HasIndex("MyCompanyId");
 
                     b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.CarCompany", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
@@ -395,9 +392,9 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Car", b =>
                 {
-                    b.HasOne("WebApplication1.Models.CarCompany", null)
+                    b.HasOne("WebApplication1.Models.CarCompany", "MyCompany")
                         .WithMany("Cars")
-                        .HasForeignKey("CarCompanyId");
+                        .HasForeignKey("MyCompanyId");
                 });
 #pragma warning restore 612, 618
         }

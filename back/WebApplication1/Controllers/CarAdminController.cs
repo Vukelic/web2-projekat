@@ -35,22 +35,25 @@ namespace WebApplication1.Controllers
         [Route("AddCar")]
         public async Task<IActionResult> AddCar([FromBody] CarModel model)
         {
-          //  var cm = await _dbcontext.Cars.FindAsync(model.NameOfCompany);
+            //  var cm = await _dbcontext.Cars.FindAsync(model.NameOfCompany);
 
-         //   if (cm == null)
-        //    {
-       //        var cmm = new CarModel()
-       //        {
-                    //    FullName = model.Cadmin.FullName,
-                    //     Email = model.Cadmin.Email,
-                    //   Address = model.Cadmin.Address,
-                    //   Phone = model.Cadmin.Phone,
-                    //   Role = "web_admin",
-                    //   Username = model.Cadmin.Username
-          //      };
+            //   if (cm == null)
+            //    {
+            //        var cmm = new CarModel()
+            //        {
+            //    FullName = model.Cadmin.FullName,
+            //     Email = model.Cadmin.Email,
+            //   Address = model.Cadmin.Address,
+            //   Phone = model.Cadmin.Phone,
+            //   Role = "web_admin",
+            //   Username = model.Cadmin.Username
+            //      };
 
-                //     model.Cadmin = adminModel;
-         //   }
+            //     model.Cadmin = adminModel;
+            //   }
+
+            var id = Convert.ToInt32(model.NameOfCompany);
+            var company = await _dbcontext.CarCompanies.FindAsync(id);
 
             Car cmodel = new Car()
             {
@@ -60,7 +63,7 @@ namespace WebApplication1.Controllers
                 Price = Convert.ToDouble(model.Price),
                 Rating = Convert.ToDouble(model.Rating),
                 ImagePic = model.ImagePic,
-                NameOfCompany = model.NameOfCompany,
+                MyCompany = company,
                 IsReserved = Convert.ToBoolean(model.IsReserved)
             };
 
@@ -69,11 +72,15 @@ namespace WebApplication1.Controllers
             {
                 _dbcontext.Cars.Add(cmodel);
                 _dbcontext.SaveChanges();
+
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error with creating new car company. -> {e.Message}");
             }
+
+           
+
 
             return Ok(cmodel);
         }

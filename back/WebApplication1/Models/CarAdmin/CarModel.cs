@@ -7,7 +7,6 @@ namespace WebApplication1.Models
 {
     public class CarModel
     {
-        public long Id { get; set; }
         public string Description { get; set; }
         public string ModelOfCar { get; set; }
         public string NumberOfSeats { get; set; }
