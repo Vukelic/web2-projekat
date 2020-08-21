@@ -104,8 +104,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-     
-
         [HttpGet]
         [Route("VerifyEmail/{id}")]
         public async Task VerifyEmail(string id)
@@ -118,7 +116,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception e)
             {
-
+                Console.WriteLine($"Error with verify mail. -> {e.Message}");
             }
 
         }
@@ -161,7 +159,6 @@ namespace WebApplication1.Controllers
                 return BadRequest(new { message = "Username or password is incorrect." });
         }
     
-
         [HttpPost]
         [Route("SocialLogIn")]
         public async Task<IActionResult> SocialLogIn([FromBody] SocialLogInModel model)
@@ -216,7 +213,6 @@ namespace WebApplication1.Controllers
             return Ok();
         }
 
-
         public async Task<(bool isVaild, GoogleApiTokenInfo apiTokenInfo)> VerifyTokenAsync(string providerToken)
         {
             var httpClient = new HttpClient();
@@ -264,7 +260,7 @@ namespace WebApplication1.Controllers
                 Address = rm.Address,
                 PhoneNumber = rm.Phone,
            //     EmailConfirmed = true,
-            Activated = false,
+                Activated = false,
 
             };
             try
@@ -297,9 +293,9 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine($"Error with register  new web admin. -> {ex.Message}");
             }
-
+            return Ok();
         }
 
         [HttpPost]
@@ -353,9 +349,9 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine($"Error with register car adminy. -> {ex.Message}");
             }
-
+            return Ok();
         }
 
         [HttpPost]
@@ -364,13 +360,12 @@ namespace WebApplication1.Controllers
         public async Task<Object> AddDiscount(DiscountModel d)
         {
            var currentData = await _dbcontext.Discounts.FindAsync(2);
-          //  var currentData = new Discount();
+
             currentData.RentAirD = Convert.ToDouble(d.RentAirD);
             currentData.SilverD = Convert.ToDouble(d.SilverD);
             currentData.GoldD = Convert.ToDouble(d.GoldD);
 
              _dbcontext.Discounts.Update(currentData);
-           // _dbcontext.Discounts.u(currentData);
             _dbcontext.SaveChanges();
             return Ok();
           
@@ -387,7 +382,6 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
             return currentData;
-
 
         }
 
@@ -462,20 +456,6 @@ namespace WebApplication1.Controllers
         {
             var admin = await _userManager.FindByNameAsync(model.Cadmin);
 
-            if (admin == null)
-            {
-                var adminModel = new RegisterModel()
-                {
-                //    FullName = model.Cadmin.FullName,
-               //     Email = model.Cadmin.Email,
-                 //   Address = model.Cadmin.Address,
-                 //   Phone = model.Cadmin.Phone,
-                 //   Role = "web_admin",
-                 //   Username = model.Cadmin.Username
-                };
-
-           //     model.Cadmin = adminModel;
-            }
 
             CarCompany carCompany = new CarCompany()
             {

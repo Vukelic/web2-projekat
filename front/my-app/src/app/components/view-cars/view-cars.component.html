@@ -11,14 +11,20 @@
             <th>Model</th>
             <th>Seats</th>
             <th>Price</th>
+            <th>Description</th>
             <th class="text-center">Action</th>
         </tr>
     </thead>
             <tr  *ngFor="let c of allCars">
-                <td>{{c.modelOfCar}}</td>
-                <td>{{c.numberOfSeats}}</td>
-                <td>{{c.price}}</td>
-                <td class="text-center"><button class="btn btn-danger btn-xs" (click)="onClick(c)"><span class="glyphicon glyphicon-remove"></span> Del</button></td>
+                <td><input type="text" value="{{c.modelOfCar}}"  id="model"></td>
+                <td><input type="number" value="{{c.numberOfSeats}}"  id="numberOfSeats"></td>
+                <td><input type="number" value="{{c.price}}"  id="price"></td>
+                <td><input type="text" value="{{c.description}}"  id="description"></td>
+                <td class="text-center">
+                <button class='btn btn-info btn-xs' (click)="onEdit(c)"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                <br><br>
+                <button class="btn btn-danger btn-xs" (click)="onClick(c)"><span class="glyphicon glyphicon-remove"></span> Del</button>
+            </td>
             </tr>
             
     </table>

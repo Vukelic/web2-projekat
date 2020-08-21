@@ -28,30 +28,13 @@ namespace WebApplication1.Controllers
         [Route("GetAllCompanies")]
         public async Task<List<CarCompany>> GetAllCompanies()
         {
-            return await _dbcontext.CarCompanies.ToListAsync();         
+            return await _dbcontext.CarCompanies.ToListAsync();
         }
 
         [HttpPost]
         [Route("AddCar")]
         public async Task<IActionResult> AddCar([FromBody] CarModel model)
         {
-            //  var cm = await _dbcontext.Cars.FindAsync(model.NameOfCompany);
-
-            //   if (cm == null)
-            //    {
-            //        var cmm = new CarModel()
-            //        {
-            //    FullName = model.Cadmin.FullName,
-            //     Email = model.Cadmin.Email,
-            //   Address = model.Cadmin.Address,
-            //   Phone = model.Cadmin.Phone,
-            //   Role = "web_admin",
-            //   Username = model.Cadmin.Username
-            //      };
-
-            //     model.Cadmin = adminModel;
-            //   }
-
             var id = Convert.ToInt32(model.NameOfCompany);
             var company = await _dbcontext.CarCompanies.FindAsync(id);
 
@@ -79,9 +62,6 @@ namespace WebApplication1.Controllers
                 Console.WriteLine($"Error with creating new car company. -> {e.Message}");
             }
 
-           
-
-
             return Ok(cmodel);
         }
 
@@ -89,15 +69,15 @@ namespace WebApplication1.Controllers
         [Route("GetAllCompaniesCarAdmin/{username}")]
         public async Task<List<CarCompany>> GetAllCompaniesCarAdmin(string username)
         {
-            var companies =  new List<CarCompany>();
-            var user = new User(); 
+            var companies = new List<CarCompany>();
+            var user = new User();
             try
             {
-                 user = await _userManager.FindByIdAsync(username);
+                user = await _userManager.FindByIdAsync(username);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR with getting user. -> {ex.Message}");             
+                Console.WriteLine($"ERROR with getting user. -> {ex.Message}");
             }
 
             try
@@ -108,19 +88,18 @@ namespace WebApplication1.Controllers
             {
                 Console.WriteLine($"ERROR with getting companies. -> {ex.Message}");
             }
-                     
+
             var mylist = new List<CarCompany>();
-           
-                foreach (var item in companies)
+
+            foreach (var item in companies)
+            {
+                if (item.Cadmin == user.UserName)
                 {
-                    if (item.Cadmin == user.UserName)
-                    {
-                        mylist.Add(item);
-                    }
+                    mylist.Add(item);
                 }
+            }
 
-                  return mylist;
-
+            return mylist;
         }
 
         [HttpGet]
@@ -131,11 +110,9 @@ namespace WebApplication1.Controllers
 
             try
             {
-                //  return await _repository.GetCarsOfCompany(companyId);
                 var num = Convert.ToInt32(id);
                 cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
                .FirstOrDefaultAsync(company => company.Id == num)).Cars.ToList();
-
 
             }
             catch (Exception e)
@@ -157,9 +134,25 @@ namespace WebApplication1.Controllers
             _dbcontext.Cars.Remove(c);
 
             await _dbcontext.SaveChangesAsync();
-         
+
         }
 
+        // PUT api/CarAdmin/Update/5
+        [HttpPut("{id}")]
+        [Route("Update")]
+        public async Task Put([FromBody] Car model)
+        {
+            try
+            {
+                _dbcontext.Cars.Update(model);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error while updating a car. [{e.Message}]");
+            }
 
+
+        }
     }
 }

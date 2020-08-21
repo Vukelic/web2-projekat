@@ -35,4 +35,8 @@ export class CarAdminService {
           this.BaseURI + "/CarAdmin/DeleteCarr/" + id
         );
       }
+
+      UpdateCar(car: Car) {
+        return this.http.put(this.BaseURI + "/CarAdmin/CarUpdate", car);
+      }
 }

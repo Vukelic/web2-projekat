@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CarCompany } from "src/app/entities/CarCompany";
 import { Car } from "src/app/entities/Car";
 import { CarAdminService } from "src/app/service/car-admin-service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-view-cars',
@@ -13,7 +14,8 @@ export class ViewCarsComponent implements OnInit {
   id: number;
   allCars: Car[];
   constructor(private route: ActivatedRoute,
-    private carAdminService: CarAdminService,) {
+    private carAdminService: CarAdminService,
+    private toastrService: ToastrService,) {
     route.params.subscribe(params => { this.id = params['id']; });
    
    }
@@ -42,7 +44,37 @@ export class ViewCarsComponent implements OnInit {
     err => {
 
       });
+ 
+  }
 
-   
+  onEdit(c){
+
+      c.description = (<HTMLInputElement>(
+        document.getElementById("description")
+      )).value;
+      c.price = +(<HTMLInputElement>(
+        document.getElementById("price")
+      )).value;
+       c.numberOfSeats = +(<HTMLInputElement>document.getElementById("numberOfSeats"))
+        .value;
+      c.modelOfCar = (<HTMLInputElement>document.getElementById("model"))
+        .value;
+     
+  console.log(c);
+      this.carAdminService.UpdateCar(c).subscribe(
+        res => {
+          this.toastrService.success(
+            "You updated a car.",
+            "Car succesfully updated"
+          );
+        },
+        err => {
+          this.toastrService.error(
+            "Error while updating a car",
+            "Car not updated"
+          );
+        }
+      );
+    
   }
 }
