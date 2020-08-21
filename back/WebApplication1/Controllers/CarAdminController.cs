@@ -123,6 +123,43 @@ namespace WebApplication1.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetCarsOfCompany/{id}")]
+        public async Task<IEnumerable<Car>> GetCarsOfCompany(string id)
+        {
+            var cars = new List<Car>();
+
+            try
+            {
+                //  return await _repository.GetCarsOfCompany(companyId);
+                var num = Convert.ToInt32(id);
+                cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
+               .FirstOrDefaultAsync(company => company.Id == num)).Cars.ToList();
+
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error while geting cars... [{e.Message}]");
+                return null;
+            }
+            return cars;
+
+        }
+
+        //DELETE api/CarAdmin/DeleteCarr/5
+        [HttpDelete("{id}")]
+        [Route("DeleteCarr/{id}")]
+        public async Task DeleteCarr(int id)
+        {
+            var c = await _dbcontext.Cars.FindAsync(id);
+
+            _dbcontext.Cars.Remove(c);
+
+            await _dbcontext.SaveChangesAsync();
+         
+        }
+
 
     }
 }

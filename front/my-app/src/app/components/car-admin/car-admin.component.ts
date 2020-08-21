@@ -6,6 +6,9 @@ import { Car } from "src/app/entities/Car";
 import { CarAdminService } from "src/app/service/car-admin-service";
 import { ToastrService } from "ngx-toastr";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ViewCarsComponent } from '../view-cars/view-cars.component';
 
 @Component({
   selector: 'app-car-admin',
@@ -15,9 +18,16 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 export class CarAdminComponent implements OnInit {
   namecopmany: CarCompany[];
   username: string;
+  availableCars: Car[] = new Array<Car>();
+  id: number;
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: NgbModal) {
+      
+     }
 
   ngOnInit(): void {
     let token =localStorage.getItem('token');
@@ -37,7 +47,29 @@ export class CarAdminComponent implements OnInit {
       }
       );
 
+      
+
   }
+
+  onClick( c){
+   // this.route.params.subscribe((params: Params) => {
+   //   this.id = +params["id"];
+      //load available cars
+
+    //  routerLink="/caradmin/{{c.id}}/details" 
+  // const modalRef = this.modalService.open(ViewCarsComponent);
+          this.router.navigate(['/caradmin/' + c.id + '/details']);
+   
+
+    /*  this.carAdminService.GetCarsOfCompany(c.id).subscribe((res: any) => {
+        console.log(res);
+      });*/
+    
+      console.log(c.id);
+   //   console.log(this.availableCars);
+  }
+
+ 
 
 
 }

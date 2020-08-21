@@ -5,6 +5,7 @@ import { CarCompany } from "src/app/entities/CarCompany";
 import { Car } from "src/app/entities/Car";
 import { CarAdminService } from "src/app/service/car-admin-service";
 import { ToastrService } from "ngx-toastr";
+import { ActivatedRoute, Params } from "@angular/router";
 
 @Component({
   selector: 'app-cars',
@@ -16,9 +17,11 @@ export class CarsComponent implements OnInit {
   namecopmany: CarCompany[];
   createCarForm: FormGroup;
   selectedValue: any;
+
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
-    private toastrService: ToastrService) { 
+    private toastrService: ToastrService,
+    private route: ActivatedRoute) { 
     
   }
 
@@ -32,9 +35,9 @@ export class CarsComponent implements OnInit {
       }
       );
 
-      this.load();
+    this.load();
   }
-
+  
   onFileChanged(event) {
     const file = event.target.files[0];
   }

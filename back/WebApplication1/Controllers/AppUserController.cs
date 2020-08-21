@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
             if (user != null)
                 return BadRequest(new { message = "Username already exists!." });
 
-            rm.Role = "web_admin";
+            rm.Role = "regular_user";
 
             var applicationUser = new User()
             {

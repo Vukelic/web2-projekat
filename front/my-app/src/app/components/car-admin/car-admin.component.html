@@ -25,8 +25,8 @@
                         
                     </div>
                 </div>
-                <form>
-                <div class="row mb-3" *ngFor="let c of namecopmany">
+                <form >
+                <div class="row mb-3" *ngFor="let c of namecopmany" >
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
@@ -57,7 +57,7 @@
                                           <li><h3>Very Good</h3></li>
                                           <li class="text-secondary"><small>8067 Reviews  </small></li>
                                       </ul>
-                                      <button type="button" class="btn btn-outline-primary">View cars</button>
+                                      <button type="button" [ngValue]="c"   (click)="onClick(c)" class="btn btn-outline-primary">View cars</button>
                                   </div>
                               </div>
                             </div>

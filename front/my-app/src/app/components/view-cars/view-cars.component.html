@@ -1,1 +1,26 @@
-<p>view-cars works!</p>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+    <table class="table table-striped custab">
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Seats</th>
+            <th>Price</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+            <tr  *ngFor="let c of allCars">
+                <td>{{c.modelOfCar}}</td>
+                <td>{{c.numberOfSeats}}</td>
+                <td>{{c.price}}</td>
+                <td class="text-center"><button class="btn btn-danger btn-xs" (click)="onClick(c)"><span class="glyphicon glyphicon-remove"></span> Del</button></td>
+            </tr>
+            
+    </table>
+    </div>
+</div>
