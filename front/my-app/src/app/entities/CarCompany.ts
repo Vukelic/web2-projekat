@@ -3,7 +3,7 @@ import { User } from "./User";
 
 export class CarCompany {
   constructor(
-    public id: string,
+    public Id: string,
     public name: string,
     public rating: string, 
     public description: string,

@@ -46,27 +46,14 @@ export class CarAdminComponent implements OnInit {
         console.log(this.username);
       }
       );
-
-      
-
   }
 
   onClick( c){
-   // this.route.params.subscribe((params: Params) => {
-   //   this.id = +params["id"];
-      //load available cars
-
-    //  routerLink="/caradmin/{{c.id}}/details" 
-  // const modalRef = this.modalService.open(ViewCarsComponent);
           this.router.navigate(['/caradmin/' + c.id + '/details']);
-   
+  }
 
-    /*  this.carAdminService.GetCarsOfCompany(c.id).subscribe((res: any) => {
-        console.log(res);
-      });*/
-    
-      console.log(c.id);
-   //   console.log(this.availableCars);
+  onEdit(c){
+    this.router.navigate(['/caradmin/' + c.id + '/edit']);
   }
 
  

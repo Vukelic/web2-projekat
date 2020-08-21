@@ -29,6 +29,7 @@ import { CarAdminComponent } from './components/car-admin/car-admin.component';
 import { CarCopmanyComponent } from './components/car-copmany/car-copmany.component';
 import { CarsComponent } from './components/cars/cars.component';
 import { ViewCarsComponent } from './components/view-cars/view-cars.component';
+import { EditCarCompanyComponent } from './components/edit-car-company/edit-car-company.component';
 
 
 
@@ -57,7 +58,8 @@ export function provideConfig() {
     CarAdminComponent,
     CarCopmanyComponent,
     CarsComponent,
-    ViewCarsComponent
+    ViewCarsComponent,
+    EditCarCompanyComponent
   ],
   imports: [
     BrowserModule,

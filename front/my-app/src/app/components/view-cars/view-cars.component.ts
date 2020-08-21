@@ -15,7 +15,7 @@ export class ViewCarsComponent implements OnInit {
   allCars: Car[];
   constructor(private route: ActivatedRoute,
     private carAdminService: CarAdminService,
-    private toastrService: ToastrService,) {
+    private toastrService: ToastrService) {
     route.params.subscribe(params => { this.id = params['id']; });
    
    }

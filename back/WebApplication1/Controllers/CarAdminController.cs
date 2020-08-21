@@ -139,8 +139,8 @@ namespace WebApplication1.Controllers
 
         // PUT api/CarAdmin/Update/5
         [HttpPut("{id}")]
-        [Route("Update")]
-        public async Task Put([FromBody] Car model)
+        [Route("CarUpdate")]
+        public async Task CarUpdate([FromBody] Car model)
         {
             try
             {
@@ -153,6 +153,49 @@ namespace WebApplication1.Controllers
             }
 
 
+        }
+
+        [HttpGet]
+        [Route("GetCompany/{id}")]
+        public async Task<Object> GetCompany(string id)
+        {
+            var newId = Convert.ToInt32(id);
+            var company = await _dbcontext.CarCompanies.FindAsync(newId);
+
+            if (company is null)
+            {
+                return BadRequest(new { message = "Not found user" });
+            }
+
+            return company;
+        }
+
+
+        [HttpPut("{id}")]
+        [Route("UpdateCarCompany")]
+        public async Task<object> UpdateCarCompany([FromBody] CarCompanyModel model)
+        {
+            var id = Convert.ToInt32(model.Id);
+
+            var mymodel = _dbcontext.CarCompanies.Find(id);
+
+            mymodel.Address = model.Address;
+            mymodel.Cadmin = model.Cadmin;
+            mymodel.Description = model.Description;
+            mymodel.ImagePic = model.ImagePic;
+            mymodel.Name = model.Name;
+            mymodel.Rating = Convert.ToDouble(model.Rating);
+            try
+            {
+                _dbcontext.CarCompanies.Update(mymodel);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error while updating a car. [{e.Message}]");
+            }
+
+            return model;
         }
     }
 }

@@ -439,10 +439,10 @@ namespace WebApplication1.Controllers
                 await _userManager.ResetPasswordAsync(user, code, u.Password);
                 await _userManager.UpdateAsync(user);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                Console.WriteLine($"Error with update user. -> {ex.Message}");
             }
            
             return user;

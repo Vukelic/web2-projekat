@@ -1,0 +1,43 @@
+<body>
+    <app-header></app-header>
+    
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    
+    <br><br><br>
+    <section style="margin-left: 550px;">
+      <form [formGroup]="createCompanyForm" (ngSubmit)="onSubmit()">
+        <div class="project-request">
+          <div class="container">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="RequestForm">
+                <h2>Create rent-car service</h2>
+                <div class="Forms">         
+                    <div class="form-group">
+                      <input class="form-control"  value="{{name}}" type="text" formControlName="companyName" required>
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control"   value="{{add}}"  formControlName="address" type="text" required>
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control"  value="{{desc}}"  formControlName="description" type="text" required>
+                    </div>
+                    <div class="form-group">
+                      <input type="file" (change)="onFileChanged($event)" formControlName="imagepic">
+                    </div>
+                    <div class="form-group">
+                      <select id="cadmin"  [(ngModel)]="selectedValue"  name="cadmin" formControlName="cadmin" class="form-control">
+                      <option ng-selected="{{adm}}"  *ngFor="let a of cadmin" [ngValue]="a">{{ a.userName}}</option>
+                    </select>
+                    </div>               
+                    <button type="submit" class="button" [disabled]="!createCompanyForm.valid">Edit</button>
+                   </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      </section>
+    </body>

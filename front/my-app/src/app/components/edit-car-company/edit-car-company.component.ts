@@ -1,26 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { UserService } from "src/app/service/user.service";
-import { User } from "src/app/entities/User";
+import { ActivatedRoute } from '@angular/router';
 import { CarCompany } from "src/app/entities/CarCompany";
 import { Car } from "src/app/entities/Car";
-import { AdminService } from "src/app/service/admin-service";
+import { CarAdminService } from "src/app/service/car-admin-service";
 import { ToastrService } from "ngx-toastr";
-var $;
-@Component({
-  selector: 'app-car-copmany',
-  templateUrl: './car-copmany.component.html',
-  styleUrls: ['./car-copmany.component.css']
-})
+import { User } from "src/app/entities/User";
+import { UserService } from "src/app/service/user.service";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
-export class CarCopmanyComponent implements OnInit {
+@Component({
+  selector: 'app-edit-car-company',
+  templateUrl: './edit-car-company.component.html',
+  styleUrls: ['./edit-car-company.component.css']
+})
+export class EditCarCompanyComponent implements OnInit {
+  id: number;
+  name: string;
+  add: string;
+  desc: string;
+  adm: string;
+  cadmin: User[];
+  IdComp: string;
+  company: CarCompany;
   createCompanyForm: FormGroup;
   selectedValue: any;
-  cadmin: User[];
-  cars: Car[] = [];
-  constructor(private userService: UserService,
-    private adminService: AdminService,
-    private toastrService: ToastrService) { }
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private carAdminService: CarAdminService,
+    private toastrService: ToastrService) {
+      route.params.subscribe(params => { this.id = params['id']; });
+      console.log(this.id);
+      this.initData();
+     }
 
   ngOnInit(): void {
     this.userService
@@ -28,18 +40,37 @@ export class CarCopmanyComponent implements OnInit {
     .subscribe(
       (res: any) => {
         this.cadmin = res;
-        console.log(this.cadmin);
+
       }
       );
-      
-      
-     
-    this.load();
-  }
   
-  onSubmit() {
+  }
+
+  initData(){
+    this.carAdminService.GetCompany(this.id).subscribe((res: any) => {
+      this.company = res;
+      this.name = res.name;
+      this.add = res.address;
+      this.desc = res.description;
+      this.adm = res.cadmin;
+      this.IdComp = res.id;
+       console.log(res);
+       console.log(this.adm);
+       console.log(res.id);
+       console.log(this.IdComp);
+
+     },
+     err => {
+
+    }
+     );
+
+     this.load();
+  }
+
+  onSubmit(){
     const carCompany = new CarCompany(
-     "0",
+      this.IdComp + "",
       this.createCompanyForm.value["companyName"],
       "1",
       this.createCompanyForm.value["description"],
@@ -52,8 +83,8 @@ export class CarCopmanyComponent implements OnInit {
     console.log(carCompany);
     console.log("pre vr");
     console.log(this.selectedValue);
-
-    this.adminService.createCarCompany(carCompany).subscribe(
+    console.log(this.IdComp);
+    this.carAdminService.updateCarCompany(carCompany).subscribe(
       (res: any) => {
         this.createCompanyForm.reset();
         this.toastrService.success(
@@ -68,9 +99,8 @@ export class CarCopmanyComponent implements OnInit {
     );
   }
   onFileChanged(event) {
-    const file = event.target.files[0].name;
+    const file = event.target.files[0];
   }
-
 
   private load() {
     let companyName = "";
@@ -87,6 +117,5 @@ export class CarCopmanyComponent implements OnInit {
       imagepic: new FormControl(imagepic, Validators.required),
     });
   }
-  
 
 }
