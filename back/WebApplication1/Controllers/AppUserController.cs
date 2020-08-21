@@ -459,6 +459,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> AddCarCompany([FromBody] CarCompanyModel model)
         {
             var admin = await _userManager.FindByNameAsync(model.Cadmin);
+            string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
 
 
             CarCompany carCompany = new CarCompany()
@@ -470,8 +471,8 @@ namespace WebApplication1.Controllers
                 Description = model.Description,
                 Name = model.Name,
                 Rating = 0,
-                ImagePic = model.ImagePic
-            };
+                ImagePic = img
+        };
 
 
             try

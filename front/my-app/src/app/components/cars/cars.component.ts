@@ -6,6 +6,7 @@ import { Car } from "src/app/entities/Car";
 import { CarAdminService } from "src/app/service/car-admin-service";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute, Params } from "@angular/router";
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-cars',
@@ -17,6 +18,7 @@ export class CarsComponent implements OnInit {
   namecopmany: CarCompany[];
   createCarForm: FormGroup;
   selectedValue: any;
+  username: string;
 
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
@@ -26,14 +28,19 @@ export class CarsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let token =localStorage.getItem('token');
+
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+    console.log(decodedToken.UserID);
+    this.username = decodedToken.UserID;
     this.carAdminService
-    .GetAllCompanies()
+    .GetAllCompaniesCarAdmin(this.username)
     .subscribe(
       (res: any) => {
         this.namecopmany = res;
         console.log(this.namecopmany);
-      }
-      );
+      });
 
     this.load();
   }

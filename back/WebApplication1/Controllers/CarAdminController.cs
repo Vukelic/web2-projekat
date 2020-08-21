@@ -37,7 +37,7 @@ namespace WebApplication1.Controllers
         {
             var id = Convert.ToInt32(model.NameOfCompany);
             var company = await _dbcontext.CarCompanies.FindAsync(id);
-
+            string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
             Car cmodel = new Car()
             {
                 Description = model.Description,
@@ -45,7 +45,7 @@ namespace WebApplication1.Controllers
                 NumberOfSeats = Convert.ToInt32(model.NumberOfSeats),
                 Price = Convert.ToDouble(model.Price),
                 Rating = Convert.ToDouble(model.Rating),
-                ImagePic = model.ImagePic,
+                ImagePic = img,
                 MyCompany = company,
                 IsReserved = Convert.ToBoolean(model.IsReserved)
             };

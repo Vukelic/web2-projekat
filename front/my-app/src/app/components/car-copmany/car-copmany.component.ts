@@ -68,7 +68,8 @@ export class CarCopmanyComponent implements OnInit {
     );
   }
   onFileChanged(event) {
-    const file = event.target.files[0].name;
+    const file = event.target.files.fullName;
+ 
   }
 
 
