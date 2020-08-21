@@ -35,12 +35,31 @@ export class LoginComponent implements OnInit {
         const helper = new JwtHelperService();
         const decodedToken = helper.decodeToken(res.token);
         console.log(decodedToken.role);
+        console.log(decodedToken);
         if(decodedToken.role === "register_user"){
           this.router.navigateByUrl('/mainc');
         }else if(decodedToken.role === "web_admin"){
           this.router.navigateByUrl('/webadmin');
         }
         else if(decodedToken.role === "car_admin"){
+          if(decodedToken.FirstLogin === "False"){
+          var tenure = prompt("First login, Please enter new password:","");
+          var body= {
+            IdToken: decodedToken.UserID,
+            Password: tenure
+          }
+        
+            this.service.changePasswordFirstLogin(body).subscribe((res: any)=>{
+              if(res.succeded){
+                alert('Changing password sucesffully');
+                console.log(body);
+                this.router.navigateByUrl('/caradmin');
+              }
+            },
+            err =>{
+              alert('username or password is incorrect');
+            })
+          }
           this.router.navigateByUrl('/caradmin');
         }
       },

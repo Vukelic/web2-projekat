@@ -132,6 +132,10 @@ namespace WebApplication1.Controllers
                 if (user.EmailConfirmed)
                 {
                     var role = await _userManager.GetRolesAsync(user);
+                    if(role[0].ToString() == "car_admin")
+                    {
+
+                    }
                     IdentityOptions options = new IdentityOptions();
                     var tokenDescriptor = new SecurityTokenDescriptor
                         {
@@ -139,6 +143,7 @@ namespace WebApplication1.Controllers
                         {
                         new Claim("UserID",user.Id.ToString()),
                         new Claim(options.ClaimsIdentity.RoleClaimType, role.FirstOrDefault()),
+                        new Claim("FirstLogin", user.Activated.ToString())
                         }),
                             Expires = DateTime.UtcNow.AddMinutes(60),
                             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
@@ -149,8 +154,7 @@ namespace WebApplication1.Controllers
                     
 
                         return Ok(new { token });
-                    
-                  
+                                     
                 }
                 else
                     return BadRequest(new { message = "Please verify your e-mail first." });
@@ -512,6 +516,34 @@ namespace WebApplication1.Controllers
             return allUsers;
         }
 
+        [HttpPost]
+        [Route("ChangePasswordFirstLogin")]
+        public async Task<Object> ChangePasswordFirstLogin(LogInModel model)
+        {
+            var result = await _userManager.FindByIdAsync(model.IdToken);
+            if(result != null)
+            {
+                result.Activated = true;
+           
+                var code = await _userManager.GeneratePasswordResetTokenAsync(result);
+
+                try
+                {
+                    var res = await _userManager.ResetPasswordAsync(result, code, model.Password);
+                    await _userManager.UpdateAsync(result);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error with change pass with  car admin. -> {ex.Message}");
+                }
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 
 }

@@ -82,6 +82,10 @@ getAllCarAdmins():Observable<User[]> {
   return this.http.get<User[]>(this.BaseURI + "/AppUser/Getallcaradmins");
 }
 
+changePasswordFirstLogin(body){
+  return this.http.post(this.BaseURI + "/AppUser/ChangePasswordFirstLogin", body);
+}
+
 
  
 
