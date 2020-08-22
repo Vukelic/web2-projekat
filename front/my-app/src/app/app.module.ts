@@ -30,6 +30,7 @@ import { CarCopmanyComponent } from './components/car-copmany/car-copmany.compon
 import { CarsComponent } from './components/cars/cars.component';
 import { ViewCarsComponent } from './components/view-cars/view-cars.component';
 import { EditCarCompanyComponent } from './components/edit-car-company/edit-car-company.component';
+import { MaincCarsComponent } from './components/mainc-cars/mainc-cars.component';
 
 
 
@@ -59,7 +60,8 @@ export function provideConfig() {
     CarCopmanyComponent,
     CarsComponent,
     ViewCarsComponent,
-    EditCarCompanyComponent
+    EditCarCompanyComponent,
+    MaincCarsComponent
   ],
   imports: [
     BrowserModule,

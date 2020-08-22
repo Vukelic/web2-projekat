@@ -13,11 +13,14 @@ import { CarCompany } from "src/app/entities/CarCompany";
 })
 export class MaincComponent implements OnInit {
   namecopmany: CarCompany[];
+
   constructor(private carAdminService: CarAdminService,
      private toastrService: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal) { 
+
+    }
 
   ngOnInit(): void {
     this.carAdminService
@@ -31,7 +34,7 @@ export class MaincComponent implements OnInit {
   }
 
   onClick( c){
-  //  this.router.navigate(['/caradmin/' + c.id + '/details']);
+    this.router.navigate(['/mainc/' + c.id + '/cars']);
 }
 
 }
