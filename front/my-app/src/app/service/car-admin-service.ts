@@ -49,4 +49,6 @@ export class CarAdminService {
       updateCarCompany(company: CarCompany) {
         return this.http.put(this.BaseURI + "/CarAdmin/UpdateCarCompany", company);
       }
+
+      
 }

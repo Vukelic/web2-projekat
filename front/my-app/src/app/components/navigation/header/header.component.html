@@ -11,6 +11,8 @@
                     <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/cars">Cars</a> </li>   
                     <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/caradmin">Home</a> </li>          
                     <li class="nav-item" *ngIf="LogedUser.Role==3"  (click)="klik()"> <a class="nav-link">Log In</a></li>
+                    <li class="nav-item" *ngIf="LogedUser.Role==2"> <a class="nav-link" routerLink="/mainc">Home</a> </li>  
+                    <li class="nav-item" *ngIf="LogedUser.Role==2"> <a class="nav-link" routerLink="/myres">My Reservations</a> </li>  
                     <li class="nav-item" *ngIf="LogedUser.Role==2 || LogedUser.Role==1"  (click)="myprofile()"><a class="nav-link">My Account</a></li>
                     <li class="nav-item" *ngIf="LogedUser.Role==2 || LogedUser.Role==0 || LogedUser.Role==1"  (click)="unklik()"  ><a class="nav-link">Log Out</a></li>
                     </ul>

@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
             if (user != null)
                 return BadRequest(new { message = "Username already exists!." });
 
-            rm.Role = "regular_user";
+            rm.Role = "register_user";
 
             var applicationUser = new User()
             {
@@ -132,10 +132,7 @@ namespace WebApplication1.Controllers
                 if (user.EmailConfirmed)
                 {
                     var role = await _userManager.GetRolesAsync(user);
-                    if(role[0].ToString() == "car_admin")
-                    {
-
-                    }
+                    
                     IdentityOptions options = new IdentityOptions();
                     var tokenDescriptor = new SecurityTokenDescriptor
                         {

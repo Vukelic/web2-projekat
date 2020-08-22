@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { User } from "src/app/entities/User";
+import { CarCompany } from "src/app/entities/CarCompany";
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +86,7 @@ getAllCarAdmins():Observable<User[]> {
 changePasswordFirstLogin(body){
   return this.http.post(this.BaseURI + "/AppUser/ChangePasswordFirstLogin", body);
 }
+
 
 
  

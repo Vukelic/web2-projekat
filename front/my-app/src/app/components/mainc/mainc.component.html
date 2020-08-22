@@ -1,5 +1,132 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <body>
-    <app-header></app-header>
-    <p>mainc works!</p>
+    <app-header> </app-header>
+<br>
+<div class="mt-5"></div>
+
+<section class="listings">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="card bg-warning">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Search Service</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form>
+                                    <div class="form-group">
+                                        <select class="form-control" id="conditionsselect1">
+                                          <option>Conditions</option>
+                                        </select>
+                                     </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="conditionsselect2">
+                                          <option>Body</option>                                        
+                                        </select>
+                                     </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="make1">
+                                          <option>Make</option>
+                                        </select>
+                                     </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="make1">
+                                          <option>Model</option>
+                                        </select>
+                                     </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="mileage1">
+                                          <option>Max Mileage</option>
+                                        </select>
+                                     </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="year1">
+                                          <option>Year</option>
+                                        </select>
+                                     </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="make1">
+                                          <option>Transmission</option>
+                                        </select>
+                                     </div>
+                                    <hr>
+                                    <button type="btn" class="btn btn-primary">Find Now</button>&nbsp;
+                                    <button type="btn" class="btn btn-primary">Reset All</button>
+                                    <div class="pb-3"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
+              
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2> BEST RATES & SERVICES</h2>
+                        <p> Choose the best for you . . . </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                          <ul class="nav nav-justified nav-pills">  
+                            </ul>
+                    </div>
+                </div>
+                <div class="row mb-3" *ngFor="let c of namecopmany" >
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                  <div class="col-md-3">
+                                      <img src="./{{c.imagePic}}">
+                                  </div>
+                                  <div class="col-md-6  card-body">
+                                      <div class="list-title">
+                                          <ul class="list-inline list-unstyled">
+                                          <li class="list-inline-item"><h4>{{c.name}}</h4></li>
+                                          <li class="list-inline-item text-warning"> <i class="fa fa-star"></i></li>
+                                          <li class="list-inline-item text-success"><i class="fa fa-thumbs-up"></i></li>
+                                      </ul>
+                                      </div>
+                                      <div class="list-location">
+                                          <a href="#"><i class="fa fa-map-marker"></i><small> {{c.address}}</small> </a>
+                                      </div>
+                                      <div class="list-descrip">
+                                        <small>{{c.description}}</small>  
+                                      </div>
+                                      
+                                                           
+                                  </div>
+                                  <div class="col-md-3 border-left card-body">
+                                      <ul class="list-unstyled">
+                                          <li><h3>Very Good</h3></li>
+                                          <li class="text-secondary"><small>8067 Reviews  </small></li>
+                                      </ul>
+                                      <button type="button" [ngValue]="c"   (click)="onClick(c)" class="btn btn-outline-primary">View cars</button>
+                                     
+                                    </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>             
+            </div>       
+        </div>
+    </div>
+</section>
+
 </body>

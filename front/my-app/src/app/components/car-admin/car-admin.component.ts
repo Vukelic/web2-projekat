@@ -18,7 +18,6 @@ import { ViewCarsComponent } from '../view-cars/view-cars.component';
 export class CarAdminComponent implements OnInit {
   namecopmany: CarCompany[];
   username: string;
-  availableCars: Car[] = new Array<Car>();
   id: number;
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
