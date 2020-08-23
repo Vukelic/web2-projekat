@@ -16,29 +16,32 @@
                 <h2>Edit rent-car service</h2>
                 <div class="Forms">         
                     <div class="form-group">
-                      <input class="form-control"  value="{{name}}" type="text" formControlName="companyName" >
-                      
+                      <input class="form-control"  value="{{name}}" type="text" id = "name"formControlName="companyName" >
+                      <label class="text-danger" *ngIf="createCompanyForm.get('companyName').touched && createCompanyForm.get('companyName').errors?.required">This
+                        field is mandatory.</label>
                     </div>
                     <div class="form-group">
-                      <input class="form-control"   value="{{add}}"  formControlName="address" type="text" >
-                      
+                      <input class="form-control"   value="{{add}}" id = "add" formControlName="address" type="text" >
+                      <label class="text-danger" *ngIf="createCompanyForm.get('address').touched && createCompanyForm.get('address').errors?.required">This
+                        field is mandatory.</label>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" value="{{cityExp}}"    formControlName="cityExpositure" type="text" >
-                      
+                      <input class="form-control" value="{{cityExp}}"  id = "city"  formControlName="cityExpositure" type="text" >
+                      <label class="text-danger" *ngIf="createCompanyForm.get('cityExpositure').touched && createCompanyForm.get('cityExpositure').errors?.required">This
+                        field is mandatory.</label>
                     </div>
                     <div class="form-group">
-                      <input class="form-control"  value="{{desc}}"  formControlName="description" type="text" >
-                      
+                      <input class="form-control"  value="{{desc}}" id = "desc"  formControlName="description" type="text" >
+                      <label class="text-danger" *ngIf="createCompanyForm.get('description').touched && createCompanyForm.get('description').errors?.required">This
+                        field is mandatory.</label>
                     </div>
                     <div class="form-group">
-                      <input type="file" (change)="onFileChanged($event)" formControlName="imagepic" required>
+                      <img src="./{{img}}"  width="100" height="100">
+                      <input type="file" (change)="onFileChanged($event)" id="img" formControlName="imagepic" required>
+                      <label class="text-danger" *ngIf="createCompanyForm.get('imagepic').touched && createCompanyForm.get('imagepic').errors?.required">This
+                        field is mandatory.</label>
                     </div>
-                    <div class="form-group">
-                      <select   id="cadmin"  [(ngModel)]="selectedValue"  name="cadmin" formControlName="cadmin" class="form-control" required >
-                      <option  *ngFor="let a of cadmin" [ngValue]="a">{{ a.userName}}</option>
-                    </select>
-                    </div>               
+                                 
                     <button type="submit" class="button" [disabled]="!createCompanyForm.valid">Edit</button>
                    </div>
               </div>

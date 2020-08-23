@@ -23,6 +23,7 @@ export class EditCarCompanyComponent implements OnInit {
   IdComp: string;
   cityExp: string;
   company: CarCompany;
+  img: string;
   createCompanyForm: FormGroup;
 
   selectedValue: any;
@@ -57,11 +58,7 @@ export class EditCarCompanyComponent implements OnInit {
       this.adm = res.cadmin;
       this.IdComp = res.id;
       this.cityExp = res.cityExpositure;
-       console.log(res);
-       console.log(this.adm);
-       console.log(res.id);
-       console.log(this.IdComp);
-
+      this.img = res.imagePic;
      },
      err => {
 
@@ -74,19 +71,16 @@ export class EditCarCompanyComponent implements OnInit {
   onSubmit(){
     const carCompany = new CarCompany(
       this.IdComp + "",
-      this.createCompanyForm.value["companyName"],
+      (<HTMLInputElement>(document.getElementById("name"))).value,
       "1",
-      this.createCompanyForm.value["description"],
-      this.createCompanyForm.value["address"],
-      this.createCompanyForm.value["cityExpositure"],
-     this.createCompanyForm.value["imagepic"],
+      (<HTMLInputElement>(document.getElementById("desc"))).value,
+      (<HTMLInputElement>(document.getElementById("add"))).value,
+      (<HTMLInputElement>(document.getElementById("city"))).value,
+      (<HTMLInputElement>(document.getElementById("img"))).value,
       "",
-    this.selectedValue.userName
+    this.adm
     );
-    console.log(carCompany);
-    console.log("pre vr");
-    console.log(this.selectedValue);
-    console.log(this.IdComp);
+console.log(carCompany);
     this.carAdminService.updateCarCompany(carCompany).subscribe(
       (res: any) => {
         this.toastrService.success(
@@ -105,21 +99,16 @@ export class EditCarCompanyComponent implements OnInit {
   }
 
   private load() {
-    let companyName = "";
-    let description = "";
-    let address = "";
-    let cadmin = "";
-    let imagepic = "";
-    let cityExpositure = "";
+   
 
     this.createCompanyForm = new FormGroup({
-      companyName: new FormControl(companyName, Validators.required),
-     description: new FormControl(description, Validators.required),
-      address: new FormControl(address, Validators.required),
-      cadmin: new FormControl(cadmin, Validators.required),
-      imagepic: new FormControl(imagepic, Validators.required),
-     cityExpositure: new FormControl(cityExpositure, Validators.required)
+      companyName: new FormControl(this.name),
+     description: new FormControl(this.desc),
+      address: new FormControl(this.add),
+      imagepic: new FormControl(this.img),
+     cityExpositure: new FormControl(this.cityExp)
     });
+    console.log(this.name);
   }
 
 }
