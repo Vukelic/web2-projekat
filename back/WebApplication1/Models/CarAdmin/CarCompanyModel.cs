@@ -14,7 +14,6 @@ namespace WebApplication1.Models
         public string Address { get; set; }
         public string CityExpositure { get; set; }
         public string ImagePic { get; set; }
-     //   public List<Car> Cars { get; set; }
         public string Cadmin { get; set; }
 
     }

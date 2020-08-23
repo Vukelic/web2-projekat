@@ -71,13 +71,6 @@ export class UserService {
     return this.http.post(this.BaseURI + '/AppUser/SocialLogIn', model);
 }
 
-UserAccount(){
-  return this.http.get(this.BaseURI + '/AppUser/UserAccount');
-}
-
-UpdateUser(formData){
-  return this.http.put(this.BaseURI + '/AppUser/PutUser', formData);
-}
 
 getAllCarAdmins():Observable<User[]> {
   return this.http.get<User[]>(this.BaseURI + "/AppUser/Getallcaradmins");

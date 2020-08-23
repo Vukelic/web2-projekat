@@ -4,49 +4,69 @@
   <app-header></app-header>
     <div class="container">
         <div class="row">
-			<div class="col-md-5 mx-auto">
-			<div>
-				<div class="myform form ">
-					 <div class="logo mb-3">
+		   	<div class="col-md-5 mx-auto">
+               <form [formGroup]="createReservationForm" (ngSubmit)="onSubmit()" class="mb-4" autocomplete="off">
+               <div>             
+		         		<div class="myform form ">
+					          <div class="logo mb-3">
 						 <div class="col-md-12 text-center">
 							<h1>Reservation</h1>
 						 </div>
-					</div>
-                   <form  class="mb-4" autocomplete="off"  >
+				         	</div>
+                   
                      <div class="form-group">
                         <label>Start date</label>
-                        <input class="form-control" type="datetime-local"  required >
-                        
+                        <input class="form-control" type="date" formControlName="startDate" >
+                        <label class="text-danger" *ngIf="createReservationForm.get('startDate').touched && createReservationForm.get('startDate').errors?.required">This
+                           field is mandatory.</label>
                      </div>
                      <div class="form-group">
                         <label>End date</label>
-                       <input type="datetime-local" class="form-control"  required>                   
+                       <input type="date" class="form-control"  formControlName="endDate" >  
+                       <label class="text-danger" *ngIf="createReservationForm.get('endDate').touched && createReservationForm.get('endDate').errors?.required">This
+                        field is mandatory.</label>                 
+                     </div>     
+                     <div class="form-group">
+                        <label>Pick-up time </label>
+                        <input class="form-control" type="time"  formControlName="pickUpTime" >
+                        <label class="text-danger" *ngIf="createReservationForm.get('pickUpTime').touched && createReservationForm.get('pickUpTime').errors?.required">This
+                           field is mandatory.</label>                 
+                        </div>  
+                    
+                     <div class="form-group">
+                        <label>Return time</label>
+                       <input type="time" class="form-control"  formControlName="returnTime">   
+                       <label class="text-danger" *ngIf="createReservationForm.get('returnTime').touched && createReservationForm.get('returnTime').errors?.required">This
+                        field is mandatory.</label>                   
                      </div>     
                      <div class="form-group">
                         <label>Pick-up location</label>
-                       <input type="text" class="form-control"  required>                   
+                       <input type="text" class="form-control"   formControlName="pickupLocation">   
+                       <label class="text-danger" *ngIf="createReservationForm.get('pickupLocation').touched && createReservationForm.get('pickupLocation').errors?.required">This
+                        field is mandatory.</label>                    
                      </div>   
                      <div class="form-group">
                         <label>Drop-off location</label>
-                       <input type="text" class="form-control"  required>                   
+                       <input type="text" class="form-control"  formControlName="dropoffLocation" >         
+                       <label class="text-danger" *ngIf="createReservationForm.get('dropoffLocation').touched && createReservationForm.get('dropoffLocation').errors?.required">This
+                        field is mandatory.</label>          
                      </div>    
                      <div class="form-group">
-                        <input type="checkbox" id="vehicle1" name="vehicle1">
-                        <label for="vehicle1"> Navigation<small> - 3$ per day</small></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        
-                        <input type="checkbox" id="vehicle2" name="vehicle2"> 
-                        <label for="vehicle2"> Baby seat<small> - 3$ per day</small> </label>                
+                        <input id="is3dCheckBox" type="checkbox" (change)="toggleEditable($event)" formControlName="navigation">
+                        <label for="is3dCheckBox"> Navigation<small> - 3$ per day</small></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        
+                        <input id="is3dCheckBox" type="checkbox"(change)="toggleEditable2($event)" formControlName="babyseat"> 
+                        <label for="is3dCheckBox"> Baby seat<small> - 3$ per day</small> </label>                
                      </div>  
                      <div class="form-group">
                         <label>Total price is  $</label>                                     
                      </div>               
-                           <div class="col-md-12 text-center ">
-                              <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Reservation</button>
-                           </div>
-                        </form>                                                                                     
-				</div>
+                     <div class="col-md-12 text-center ">
+                        <button type="submit" [disabled]="!createReservationForm.valid" class=" btn btn-block mybtn btn-primary tx-tfm">Reservation</button>
+                      </div>     
+                     </div>
+              </div>    
+            </form>   
+           </div>
 			</div>
-			  
-		</div>
       </div>   
-     </div>    
 </body>

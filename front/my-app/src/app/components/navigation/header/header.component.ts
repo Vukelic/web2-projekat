@@ -54,25 +54,6 @@ export class HeaderComponent implements OnInit {
   }
 
   
-
-  myprofile(): void
-  {
-    // preuzimamo token iz localstorage
-    var token = localStorage.getItem('token');
-    const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
-
-    if(decodedToken.role === "register_user"){
-      this.route.navigate(['/myacc']);
-    }else if(decodedToken.role === "web_admin"){
-      this.route.navigate(['/myacc']);
-    }
-    else if(decodedToken.role === "car_admin"){
-      this.route.navigate(['/myacc']);
-    }
-    
-  }
-
   klik(): void {
     this.route.navigate(['/login']);
   // const modalRef = this.modalService.open(LoginComponent);

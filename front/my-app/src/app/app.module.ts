@@ -24,7 +24,6 @@ import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider,AuthService } from "angularx-social-login";
 import { MaincComponent } from './components/mainc/mainc.component';
 import { WebAdminComponent } from './components/web-admin/web-admin.component';
-import { MyAccountComponent } from './components/my-account/my-account.component';
 import { CarAdminComponent } from './components/car-admin/car-admin.component';
 import { CarCopmanyComponent } from './components/car-copmany/car-copmany.component';
 import { CarsComponent } from './components/cars/cars.component';
@@ -56,7 +55,6 @@ export function provideConfig() {
     HeaderComponent,
     MaincComponent,
     WebAdminComponent,
-    MyAccountComponent,
     CarAdminComponent,
     CarCopmanyComponent,
     CarsComponent,

@@ -34,7 +34,7 @@ namespace WebApplication1.Controllers
         private readonly ApplicationSettings _appSettings;
         private readonly MyContextBase2020 _dbcontext;
         public IConfiguration Configuration { get; }
-        private static string loggedinID = "";
+ 
         private static string socloggedinID = "";
 
         public AppUserController(UserManager<User> userManager, SignInManager<User> signInManager, 
@@ -128,7 +128,7 @@ namespace WebApplication1.Controllers
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                loggedinID = user.Id;
+
                 if (user.EmailConfirmed)
                 {
                     var role = await _userManager.GetRolesAsync(user);
@@ -186,7 +186,6 @@ namespace WebApplication1.Controllers
                     };
                     await _dbcontext.Users.AddAsync(newUser);
                     await _dbcontext.SaveChangesAsync();
-                    loggedinID = newUser.Id;
                     await _userManager.AddToRoleAsync(newUser, "register_user");
                     await _userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "register_user"));
 
@@ -386,26 +385,13 @@ namespace WebApplication1.Controllers
 
         }
 
-        [HttpGet]
-        
-        [Route("UserAccount")]
-        //get : /api/AppUser/GetDiscount
-        public async Task<Object> UserAccount()
+       /* [HttpGet]      
+        [Route("UserAccount/{id}")]
+        //get : /api/AppUser/UserAccount{id}
+        public async Task<Profile> UserAccount(string id)
         {
-        
-            var user = await _userManager.FindByIdAsync(loggedinID);
-            if(user == null)
-            {
-                var validation = await VerifyTokenAsync(socloggedinID);
-                Profile profile2 = new Profile();
-              //  profile2.Phone = user.PhoneNumber;
-                profile2.Fullname = validation.apiTokenInfo.family_name + validation.apiTokenInfo.given_name;
-                profile2.Username = validation.apiTokenInfo.family_name;
-                profile2.Email = validation.apiTokenInfo.email;
-                //profile2.Address = user.Address;
-                profile2.Status = "register_user";
-                return profile2;
-            }
+            var user = await _userManager.FindByIdAsync(id);
+                  
             var role = await _userManager.GetRolesAsync(user);
             Profile profile = new Profile();
             profile.Phone = user.PhoneNumber;
@@ -415,9 +401,9 @@ namespace WebApplication1.Controllers
             profile.Address = user.Address;
             profile.Status = role.FirstOrDefault().ToString();
             return profile;
-        }
+        }*/
 
-        [HttpPut]
+       /* [HttpPut]
         [AllowAnonymous]
         [Route("PutUser")]
         public async Task<object> PutUser(ProfileModel u)
@@ -447,7 +433,7 @@ namespace WebApplication1.Controllers
             }
            
             return user;
-        }
+        }*/
 
 
 

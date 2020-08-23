@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Models;
+using WebApplication1.Models.CarAdmin;
 
 namespace WebApplication1.Data
 {
@@ -17,6 +18,8 @@ namespace WebApplication1.Data
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<CarCompany> CarCompanies { get; set; }
         public DbSet<Car> Cars { get; set; }
+
+        public DbSet<ReservationCar> Reservations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

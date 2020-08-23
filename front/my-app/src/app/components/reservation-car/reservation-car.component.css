@@ -14,7 +14,7 @@ body{
         font-family: 'Kaushan Script', cursive;
         font-size: 18px;
      }
-      .myform{
+.myform{
     position: relative;
     display: -ms-flexbox;
     display: flex;
@@ -22,6 +22,7 @@ body{
     -ms-flex-direction: column;
     flex-direction: column;
     width: 100%;
+    height: 100%;
     pointer-events: auto;
     background-color: #fff;
     background-clip: padding-box;
@@ -61,14 +62,7 @@ body{
      margin-top: 0px !important;
      margin-bottom: 0px !important;
      }
-     .google {
-     color:#666;
-     width:100%;
-     height:40px;
-     text-align:center;
-     outline:none;
-     border: 1px solid lightgrey;
-     }
+     
       form .error {
      color: #ff0000;
      }

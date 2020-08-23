@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Models;
+using WebApplication1.Models.CarAdmin;
 
 namespace WebApplication1.Controllers
 {
@@ -127,14 +129,22 @@ namespace WebApplication1.Controllers
         //DELETE api/CarAdmin/DeleteCarr/5
         [HttpDelete("{id}")]
         [Route("DeleteCarr/{id}")]
-        public async Task DeleteCarr(int id)
+        public async Task<IActionResult> DeleteCarr(int id)
         {
             var c = await _dbcontext.Cars.FindAsync(id);
+            if(c.IsReserved == false)
+            {
+                _dbcontext.Cars.Remove(c);
+                await _dbcontext.SaveChangesAsync();
+            }
+            else
+            {
+                Console.WriteLine($"ERROR You don't have to delete reserved car.");
+                return BadRequest();
+            }
 
-            _dbcontext.Cars.Remove(c);
 
-            await _dbcontext.SaveChangesAsync();
-
+            return Ok();
         }
 
         // PUT api/CarAdmin/Update/5
@@ -201,5 +211,130 @@ namespace WebApplication1.Controllers
 
             return model;
         }
+
+        [HttpGet]
+        [Route("GetCar/{id}")]
+        public async Task<Object> GetCar(string id)
+        {
+            var newId = Convert.ToInt32(id);
+            var company = await _dbcontext.Cars.FindAsync(newId);
+
+            if (company is null)
+            {
+                return BadRequest(new { message = "Not found user" });
+            }
+
+            return company;
+        }
+
+        [HttpPost]
+        [Route("CreateReservationCar")]
+        public async Task<IActionResult> CreateReservationCar([FromBody] ReservationCarModel model)
+        {
+            var idCar = Convert.ToInt32(model.Car);
+            var car = await _dbcontext.Cars.FindAsync(idCar);
+            var user = await _userManager.FindByIdAsync(model.User);
+
+            var price = GetTotalPrice(car, model.StartDate, model.EndDate, model.BabySeat, model.Navigation);
+
+            ReservationCar rcmodel = new ReservationCar()
+            {
+                StartDate = Convert.ToDateTime(model.StartDate),
+                EndDate = Convert.ToDateTime(model.EndDate),
+                PickUpTime = model.PickUpTime,
+                ReturnTime = model.ReturnTime,
+                PickUpLocation = model.PickUpLocation,
+                ReturnLocation = model.ReturnLocation,
+                BabySeat = model.BabySeat,
+                Navigation = model.Navigation,
+                User = user,
+                Car = car,
+                TotalPrice = price
+            };
+            
+            try
+            {
+                _dbcontext.Reservations.Add(rcmodel);
+                _dbcontext.SaveChanges();
+                car.IsReserved = true;
+                _dbcontext.Cars.Update(car);
+                _dbcontext.SaveChanges();
+
+                string toMail = "Model of car: " + rcmodel.Car.ModelOfCar + Environment.NewLine +
+                                    "Price for car per day: " + rcmodel.Car.Price + Environment.NewLine +
+                                    "Number Of Seats: " + rcmodel.Car.NumberOfSeats + Environment.NewLine +
+                                    "Start date: " + rcmodel.StartDate + Environment.NewLine +
+                                    "End date: " + rcmodel.EndDate + Environment.NewLine + 
+                                    "Totaly price:" + rcmodel.TotalPrice + Environment.NewLine + 
+                                    "Navigation is " + rcmodel.Navigation + "in total price!" + Environment.NewLine +
+                                    "BabySeat is " + rcmodel.BabySeat + "in total price!" + Environment.NewLine;
+
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add(rcmodel.User.Email);
+                    mail.From = new MailAddress("lnslagalica2@gmail.com");
+                    mail.Subject = "Projekat";
+                    mail.Body = "Reservation is succesfully created!" + Environment.NewLine;
+                    mail.Body += toMail;
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new System.Net.NetworkCredential("lnslagalica2@gmail.com", "lazniprofil");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error with creating new car reservation. -> {e.Message}");
+            }
+
+            return Ok(rcmodel);
+        }
+
+        private double GetTotalPrice(Car car, string from, string to, string babyseat, string navigation)
+        {
+            DateTime dtfrom = DateTime.Parse(from);
+            DateTime dtTo = DateTime.Parse(to);
+            double days = (dtTo - dtfrom).TotalDays;
+            var total = car.Price * days;
+
+            if (babyseat == "included")
+            {
+                total += days * 3;
+            }
+            if (navigation == "included")
+            {
+                total += days * 3;
+            }
+
+            return total;
+        }
+
+      /*  private bool CheckAvailability(Car rc, string from, string to)
+        {
+            bool available = true;
+            DateTime fromDate = DateTime.Parse(from);
+            DateTime toDate = DateTime.Parse(to);
+
+            List<Car> cars = _dbcontext.Reservations.Find(rc.Id);
+
+            foreach (var date in )
+            {
+                DateTime dt = DateTime.Parse(date.DateStr);
+                if (dt >= fromDate && dt <= toDate)
+                {
+                    available = false;
+                    break;
+                }
+            }
+
+            return available;
+        }*/
+
+
+
+
     }
 }

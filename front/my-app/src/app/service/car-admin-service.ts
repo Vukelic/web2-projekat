@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { CarCompany } from "src/app/entities/CarCompany";
 import { Observable } from "rxjs";
 import { Car } from "src/app/entities/Car";
+import { ReservationCar } from "src/app/entities/ReservationCar";
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,16 @@ export class CarAdminService {
 
       updateCarCompany(company: CarCompany) {
         return this.http.put(this.BaseURI + "/CarAdmin/UpdateCarCompany", company);
+      }
+
+      getCar(id: number){
+        return this.http.get(
+          this.BaseURI + "/CarAdmin/GetCar/" + id
+        );
+      }
+
+      createReservationCar(reservationCar: ReservationCar){
+        return this.http.post(this.BaseURI + "/CarAdmin/CreateReservationCar", reservationCar);
       }
 
       

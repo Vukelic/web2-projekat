@@ -1,5 +1,3 @@
-import { Car } from "./Car";
-import { User } from "./User";
 
 export class CarCompany {
   constructor(

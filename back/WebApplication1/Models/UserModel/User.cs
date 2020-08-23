@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
-
+using WebApplication1.Models.CarAdmin;
 
 namespace WebApplication1.Models
 {
@@ -19,6 +19,8 @@ namespace WebApplication1.Models
         public string Lastname { get; set; }
         public string Address { get; set; }
         public bool Activated { get; set; }
+
+        public ICollection<ReservationCar> ReservationCars { get; set; }
 
         public User()
         {
