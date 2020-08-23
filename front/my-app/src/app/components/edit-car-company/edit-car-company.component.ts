@@ -24,6 +24,7 @@ export class EditCarCompanyComponent implements OnInit {
   cityExp: string;
   company: CarCompany;
   createCompanyForm: FormGroup;
+
   selectedValue: any;
   constructor(
     private userService: UserService,
@@ -88,7 +89,6 @@ export class EditCarCompanyComponent implements OnInit {
     console.log(this.IdComp);
     this.carAdminService.updateCarCompany(carCompany).subscribe(
       (res: any) => {
-        this.createCompanyForm.reset();
         this.toastrService.success(
           "Car service is edited!",
           "Succesfull"
@@ -113,12 +113,12 @@ export class EditCarCompanyComponent implements OnInit {
     let cityExpositure = "";
 
     this.createCompanyForm = new FormGroup({
-      companyName: new FormControl(companyName),
-      description: new FormControl(description),
-      address: new FormControl(address),
-      cadmin: new FormControl(cadmin),
-      imagepic: new FormControl(imagepic),
-      cityExpositure: new FormControl(cityExpositure)
+      companyName: new FormControl(companyName, Validators.required),
+     description: new FormControl(description, Validators.required),
+      address: new FormControl(address, Validators.required),
+      cadmin: new FormControl(cadmin, Validators.required),
+      imagepic: new FormControl(imagepic, Validators.required),
+     cityExpositure: new FormControl(cityExpositure, Validators.required)
     });
   }
 

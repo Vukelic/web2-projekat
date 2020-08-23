@@ -16,16 +16,24 @@
             <h2>Create rent-car service</h2>
             <div class="Forms">         
                 <div class="form-group">
-                  <input class="form-control" placeholder="Name service" type="text" formControlName="companyName" required>
+                  <input class="form-control" placeholder="Name service" type="text" formControlName="companyName" >
+                  <label class="text-danger" *ngIf="createCompanyForm.get('companyName').touched && createCompanyForm.get('companyName').errors?.required">This
+                    field is mandatory.</label>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" placeholder="Address"  formControlName="address" type="text" required>
+                  <input class="form-control" placeholder="Address"  formControlName="address" type="text" >
+                  <label class="text-danger" *ngIf="createCompanyForm.get('address').touched && createCompanyForm.get('address').errors?.required">This
+                    field is mandatory.</label>
                 </div>
                 <div class="form-group">
                   <input class="form-control" placeholder="City expositure"  formControlName="cityExpositure" type="text" required>
+                  <label class="text-danger" *ngIf="createCompanyForm.get('cityExpositure').touched && createCompanyForm.get('cityExpositure').errors?.required">This
+                    field is mandatory.</label>
                 </div>
                 <div class="form-group">
-                  <input class="form-control" placeholder="Promotion description" formControlName="description" type="text" required>
+                  <input class="form-control" placeholder="Promotion description" formControlName="description" type="text" >
+                  <label class="text-danger" *ngIf="createCompanyForm.get('description').touched && createCompanyForm.get('description').errors?.required">This
+                    field is mandatory.</label>
                 </div>
                 <div class="form-group">
                   <input type="file" (change)="onFileChanged($event)" id="fileInput" formControlName="imagepic">
