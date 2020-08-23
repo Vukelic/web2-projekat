@@ -44,7 +44,7 @@ export class CarCopmanyComponent implements OnInit {
       "1",
       this.createCompanyForm.value["description"],
       this.createCompanyForm.value["address"],
-     "",
+     this.createCompanyForm.value["cityExpositure"],
      this.createCompanyForm.value["imagepic"],
       "",
     this.selectedValue.userName
@@ -79,6 +79,7 @@ export class CarCopmanyComponent implements OnInit {
     let address = "";
     let cadmin = "";
     let imagepic = "";
+    let cityExpositure = "";
 
     this.createCompanyForm = new FormGroup({
       companyName: new FormControl(companyName, Validators.required),
@@ -86,6 +87,7 @@ export class CarCopmanyComponent implements OnInit {
       address: new FormControl(address, Validators.required),
       cadmin: new FormControl(cadmin, Validators.required),
       imagepic: new FormControl(imagepic, Validators.required),
+      cityExpositure: new FormControl(cityExpositure, Validators.required)
     });
   }
   

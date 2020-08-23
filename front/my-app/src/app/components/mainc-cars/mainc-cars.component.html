@@ -2,8 +2,9 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 <body>
     <app-header> </app-header>
 <br>
@@ -92,47 +93,38 @@
                         <div class="card-body">
                             <div class="row">
                               <div class="col-md-3">
-                                <img src="./{{c.imagePic}}">
+                                <img src="./{{c.imagePic}}" width="200" height="200">
                               </div>
                               <div class="col-md-6  card-body">
                                   <div class="list-title">
-                                      <ul class="list-inline list-unstyled">{{c.numberOfSeats}}
-                                      <li class="list-inline-item"><h4>{{c.modelOfCar}}</h4></li>
-                                      <li class="list-inline-item"><h4>{{c.price}}</h4></li>
-                                      <li class="list-inline-item"><h4>{{c.numberOfSeats}}</h4></li>
-                                      <li class="list-inline-item text-warning"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></li>
-                                      <li class="list-inline-item text-success"><i class="fa fa-thumbs-up"></i></li>
-                                  </ul>
-                                  </div>
-                                  <div class="list-location">
-                                      <i class="fa fa-map-marker"></i><small>{{c.price}}</small> 
-                                  </div>
-                                  <div class="list-descrip">
-                                    <small>{{c.description}} </small>  
-                                  </div>
-                                  
-                                  
-                                  
+                                    <ul class="list-inline list-unstyled">
+                                        <li class="list-inline-item"><h3>{{c.modelOfCar}}</h3></li>
+                                    </ul>
+                                    </div>
+                                    <div class="list-location">
+                                        <h1>Price per day: {{c.price}}<i class="fa fa-dollar"></i></h1>
+                                    </div>
+                                    <div>
+                                    <h1>Number of seats: {{c.numberOfSeats}}</h1>
+                                </div>   
+                                    <div class="list-descrip">
+                                      <h6>{{c.description}} </h6>  
+                                    </div>                                
                               </div>
                               <div class="col-md-3 border-left card-body">
                                   <ul class="list-unstyled">
+                                    <div class="list-inline-item text-warning"><i class="fa fa-star"></i></div>
+                                    <li class="list-inline-item text-success"><i class="fa fa-thumbs-up"></i></li>
                                       <li><h3>Very Good</h3></li>
                                       <li class="text-secondary"><small>8067 Reviews  </small></li>
                                   </ul>
-                                  <button type="button" class="btn btn-outline-primary">Book Now</button>
+                                  <button (click)="onBook(c)" class="btn btn-outline-primary">Book Now</button>
                               </div>
                           </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            
-            
-        
-
-      
-                        
+            </div>                     
         </div>
         </div>
     </div>

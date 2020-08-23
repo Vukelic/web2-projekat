@@ -21,6 +21,7 @@ export class EditCarCompanyComponent implements OnInit {
   adm: string;
   cadmin: User[];
   IdComp: string;
+  cityExp: string;
   company: CarCompany;
   createCompanyForm: FormGroup;
   selectedValue: any;
@@ -54,6 +55,7 @@ export class EditCarCompanyComponent implements OnInit {
       this.desc = res.description;
       this.adm = res.cadmin;
       this.IdComp = res.id;
+      this.cityExp = res.cityExpositure;
        console.log(res);
        console.log(this.adm);
        console.log(res.id);
@@ -75,7 +77,7 @@ export class EditCarCompanyComponent implements OnInit {
       "1",
       this.createCompanyForm.value["description"],
       this.createCompanyForm.value["address"],
-     "",
+      this.createCompanyForm.value["cityExpositure"],
      this.createCompanyForm.value["imagepic"],
       "",
     this.selectedValue.userName
@@ -88,7 +90,7 @@ export class EditCarCompanyComponent implements OnInit {
       (res: any) => {
         this.createCompanyForm.reset();
         this.toastrService.success(
-          "Car service is created!",
+          "Car service is edited!",
           "Succesfull"
         );
       },
@@ -108,13 +110,15 @@ export class EditCarCompanyComponent implements OnInit {
     let address = "";
     let cadmin = "";
     let imagepic = "";
+    let cityExpositure = "";
 
     this.createCompanyForm = new FormGroup({
-      companyName: new FormControl(companyName, Validators.required),
-      description: new FormControl(description, Validators.required),
-      address: new FormControl(address, Validators.required),
-      cadmin: new FormControl(cadmin, Validators.required),
-      imagepic: new FormControl(imagepic, Validators.required),
+      companyName: new FormControl(companyName),
+      description: new FormControl(description),
+      address: new FormControl(address),
+      cadmin: new FormControl(cadmin),
+      imagepic: new FormControl(imagepic),
+      cityExpositure: new FormControl(cityExpositure)
     });
   }
 

@@ -142,6 +142,8 @@ namespace WebApplication1.Controllers
         [Route("CarUpdate")]
         public async Task CarUpdate([FromBody] Car model)
         {
+            string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
+            model.ImagePic = img;
             try
             {
                 _dbcontext.Cars.Update(model);
@@ -176,14 +178,16 @@ namespace WebApplication1.Controllers
         public async Task<object> UpdateCarCompany([FromBody] CarCompanyModel model)
         {
             var id = Convert.ToInt32(model.Id);
-
+            string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
+          
             var mymodel = _dbcontext.CarCompanies.Find(id);
 
             mymodel.Address = model.Address;
             mymodel.Cadmin = model.Cadmin;
             mymodel.Description = model.Description;
-            mymodel.ImagePic = model.ImagePic;
+            mymodel.ImagePic = img;
             mymodel.Name = model.Name;
+            mymodel.CityExpositure = model.CityExpositure;
             mymodel.Rating = Convert.ToDouble(model.Rating);
             try
             {

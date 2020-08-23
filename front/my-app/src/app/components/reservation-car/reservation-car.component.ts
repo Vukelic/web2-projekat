@@ -6,13 +6,12 @@ import { CarAdminService } from "src/app/service/car-admin-service";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-mainc-cars',
-  templateUrl: './mainc-cars.component.html',
-  styleUrls: ['./mainc-cars.component.css']
+  selector: 'app-reservation-car',
+  templateUrl: './reservation-car.component.html',
+  styleUrls: ['./reservation-car.component.css']
 })
-export class MaincCarsComponent implements OnInit {
+export class ReservationCarComponent implements OnInit {
   id: number;
-  allCars: Car[];
   constructor(private route: ActivatedRoute,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -21,24 +20,6 @@ export class MaincCarsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initData();
   }
-
-  initData(){
-    this.carAdminService.GetCarsOfCompany(this.id).subscribe((res: any) => {
-      this.allCars = res;
-       console.log(res);
-     },
-     err => {
-
-    }
-     );
-  }
-
-  onBook(c){
-    console.log(c);
-    this.router.navigate(['/mainc/' + c.id + '/reservation']);
-  }
-
 
 }
