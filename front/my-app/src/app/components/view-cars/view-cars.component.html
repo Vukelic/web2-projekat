@@ -19,16 +19,16 @@
             <th class="text-center">Action</th>
         </tr>
     </thead>
-            <tr  *ngFor="let c of allCars">
-                <td><img src="./{{c.imagePic}}" width="100" height="100"></td>
-                <td><input type="text" value="{{c.modelOfCar}}"  id="model"></td>
-                <td><input type="number" value="{{c.numberOfSeats}}"  id="numberOfSeats"></td>
-                <td><input type="number" value="{{c.price}}"  id="price"></td>
-                <td><input type="text" value="{{c.description}}"  id="description"></td>
+            <tr>
+                <td><img src="./{{img}}" width="100" height="100"></td>
+                <td><input type="text" value="{{model}}"  id="model"></td>
+                <td><input type="number" value="{{seats}}"  id="numberOfSeats"></td>
+                <td><input type="number" value="{{price}}"  id="price"></td>
+                <td><input type="text" value="{{desc}}"  id="description"></td>
                 <td class="text-center">
-                <button class='btn btn-info btn-xs' (click)="onEdit(c)"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                <button class='btn btn-info btn-xs' (click)="onEdit(myCar)"><span class="glyphicon glyphicon-edit"></span> Edit</button>
                 <br><br>
-                <button class="btn btn-danger btn-xs" (click)="onClick(c)"><span class="glyphicon glyphicon-remove"></span> Del</button>
+                <button class="btn btn-danger btn-xs" (click)="onClick(myCar)"><span class="glyphicon glyphicon-remove"></span> Del</button>
             </td>
             </tr>
             

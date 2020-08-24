@@ -25,7 +25,7 @@ export class MaincCarsComponent implements OnInit {
   }
 
   initData(){
-    this.carAdminService.GetCarsOfCompany(this.id).subscribe((res: any) => {
+    this.carAdminService.GetCarsOfCompanyAllUsers(this.id).subscribe((res: any) => {
       this.allCars = res;
        console.log(res);
      },

@@ -25,11 +25,9 @@ export class CarAdminService {
         return this.http.get<CarCompany>(this.BaseURI + '/CarAdmin/GetAllCompaniesCarAdmin/' + username);
       }
 
-      GetCarsOfCompany(companyId: number) {
-        return this.http.get<Car[]>(
-          this.BaseURI + "/CarAdmin/GetCarsOfCompany/" + companyId
-        );
-      }
+      GetCarsOfCompany(companyId: string):Observable<Car[]>{
+        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/GetCarsOfCompany/" + companyId);
+      } //oov nije companyId nego id usera
 
       DeleteCar(id: number){
         return this.http.delete(
@@ -61,5 +59,8 @@ export class CarAdminService {
         return this.http.post(this.BaseURI + "/CarAdmin/CreateReservationCar", reservationCar);
       }
 
+      GetCarsOfCompanyAllUsers(companyId: number):Observable<Car[]>{
+        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/GetCarsOfCompanyAllUsers/" + companyId);
+      } 
       
 }

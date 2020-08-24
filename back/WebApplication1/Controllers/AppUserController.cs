@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
         private readonly MyContextBase2020 _dbcontext;
         public IConfiguration Configuration { get; }
  
-        private static string socloggedinID = "";
+
 
         public AppUserController(UserManager<User> userManager, SignInManager<User> signInManager, 
             IOptions<ApplicationSettings> appSettings, IConfiguration configuration, MyContextBase2020 dbcontext)
@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
             if (user != null)
                 return BadRequest(new { message = "Username already exists!." });
 
-            rm.Role = "web_admin";
+            rm.Role = "register_user";
 
             var applicationUser = new User()
             {
@@ -132,7 +132,14 @@ namespace WebApplication1.Controllers
                 if (user.EmailConfirmed)
                 {
                     var role = await _userManager.GetRolesAsync(user);
-                    
+                          
+                    if (role[0] == "car_admin")
+                    {
+                        if(user.CarCompanyId == 0)
+                        {
+                            return BadRequest(new { message = "You don't have company" });
+                        }
+                    }
                     IdentityOptions options = new IdentityOptions();
                     var tokenDescriptor = new SecurityTokenDescriptor
                         {
@@ -168,7 +175,7 @@ namespace WebApplication1.Controllers
 
             if (validation.isVaild)
             {
-                socloggedinID = model.IdToken;
+             
                 var socialUser = await _userManager.FindByNameAsync(validation.apiTokenInfo.email);
 
                 if (socialUser == null)
@@ -192,7 +199,7 @@ namespace WebApplication1.Controllers
                 }
 
             
-                socloggedinID = model.IdToken;
+             
               var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
@@ -359,7 +366,8 @@ namespace WebApplication1.Controllers
         //POST : /api/AppUser/AddDiscount
         public async Task<Object> AddDiscount(DiscountModel d)
         {
-           var currentData = await _dbcontext.Discounts.FindAsync(2);
+            
+           var currentData = await _dbcontext.Discounts.FindAsync(1);
 
             currentData.RentAirD = Convert.ToDouble(d.RentAirD);
             currentData.SilverD = Convert.ToDouble(d.SilverD);
@@ -376,7 +384,7 @@ namespace WebApplication1.Controllers
         //get : /api/AppUser/GetDiscount
         public async Task<Object> GetDiscount()
         {
-            var currentData = await _dbcontext.Discounts.FindAsync(2);
+            var currentData = await _dbcontext.Discounts.FindAsync(1);
             if (currentData == null) 
             {
                 return NotFound();
@@ -385,25 +393,22 @@ namespace WebApplication1.Controllers
 
         }
 
-       /* [HttpGet]      
+        [HttpGet]      
         [Route("UserAccount/{id}")]
         //get : /api/AppUser/UserAccount{id}
         public async Task<Profile> UserAccount(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-                  
-            var role = await _userManager.GetRolesAsync(user);
             Profile profile = new Profile();
             profile.Phone = user.PhoneNumber;
             profile.Fullname = user.Fullname;
             profile.Username = user.UserName;
             profile.Email = user.Email;
             profile.Address = user.Address;
-            profile.Status = role.FirstOrDefault().ToString();
             return profile;
-        }*/
+        }
 
-       /* [HttpPut]
+        [HttpPut]
         [AllowAnonymous]
         [Route("PutUser")]
         public async Task<object> PutUser(ProfileModel u)
@@ -417,7 +422,7 @@ namespace WebApplication1.Controllers
             user.Fullname = u.FullName;
           
             if (u.PhoneNumber != null)
-                user.PhoneNumber = u.PhoneNumber;
+            user.PhoneNumber = u.PhoneNumber;
             user.Email = u.Email;
             user.Address = u.Address;
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -433,7 +438,7 @@ namespace WebApplication1.Controllers
             }
            
             return user;
-        }*/
+        }
 
 
 

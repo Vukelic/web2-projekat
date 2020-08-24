@@ -113,7 +113,9 @@ namespace WebApplication1.Controllers
 
             try
             {
-                var num = Convert.ToInt32(id);
+                var user = await _userManager.FindByIdAsync(id);
+                var num = user.CarCompanyId;
+               
                 cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
                .FirstOrDefaultAsync(company => company.Id == num)).Cars.ToList();
 
@@ -215,14 +217,14 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         [Route("GetCar/{id}")]
-        public async Task<Object> GetCar(string id)
+        public async Task<Object> GetCar(int id)
         {
-            var newId = Convert.ToInt32(id);
-            var company = await _dbcontext.Cars.FindAsync(newId);
+          //  var newId = Convert.ToInt32(id);
+            var company = await _dbcontext.Cars.FindAsync(id);
 
             if (company is null)
             {
-                return BadRequest(new { message = "Not found user" });
+                return BadRequest(new { message = "Not found car" });
             }
 
             return company;
@@ -313,28 +315,49 @@ namespace WebApplication1.Controllers
             return total;
         }
 
-      /*  private bool CheckAvailability(Car rc, string from, string to)
+        /*  private bool CheckAvailability(Car rc, string from, string to)
+          {
+              bool available = true;
+              DateTime fromDate = DateTime.Parse(from);
+              DateTime toDate = DateTime.Parse(to);
+
+              List<Car> cars = _dbcontext.Reservations.Find(rc.Id);
+
+              foreach (var date in )
+              {
+                  DateTime dt = DateTime.Parse(date.DateStr);
+                  if (dt >= fromDate && dt <= toDate)
+                  {
+                      available = false;
+                      break;
+                  }
+              }
+
+              return available;
+          }*/
+
+        [HttpGet]
+        [Route("GetCarsOfCompanyAllUsers/{id}")]
+        public async Task<IEnumerable<Car>> GetCarsOfCompanyAllUsers(int id)
         {
-            bool available = true;
-            DateTime fromDate = DateTime.Parse(from);
-            DateTime toDate = DateTime.Parse(to);
+            var cars = new List<Car>();
 
-            List<Car> cars = _dbcontext.Reservations.Find(rc.Id);
-
-            foreach (var date in )
+            try
             {
-                DateTime dt = DateTime.Parse(date.DateStr);
-                if (dt >= fromDate && dt <= toDate)
-                {
-                    available = false;
-                    break;
-                }
+               // var company = await _dbcontext.CarCompanies.FindAsync(id);
+                //var num = user.CarCompanyId;
+                cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
+               .FirstOrDefaultAsync(company => company.Id == id)).Cars.ToList();
+
             }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error while geting cars... [{e.Message}]");
+                return null;
+            }
+            return cars;
 
-            return available;
-        }*/
-
-
+        }
 
 
     }

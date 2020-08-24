@@ -80,6 +80,14 @@ changePasswordFirstLogin(body){
   return this.http.post(this.BaseURI + "/AppUser/ChangePasswordFirstLogin", body);
 }
 
+UserAccount(id: string){
+  return this.http.get(this.BaseURI + '/AppUser/UserAccount/' + id);
+}
+
+UpdateUser(formData){
+  return this.http.put(this.BaseURI + '/AppUser/PutUser', formData);
+}
+
 
 
  

@@ -25,6 +25,7 @@ export class CarAdminComponent implements OnInit {
   imagePic: string;
   id: number;
   copanyID: string;
+  allCars: Car[];
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -55,12 +56,23 @@ export class CarAdminComponent implements OnInit {
         this.imagePic = res.imagePic;
         this.name = res.name;
         this.copanyID = res.id;
+        console.log(decodedToken.UserID);
       }
       );
+
+      this.carAdminService.GetCarsOfCompany(decodedToken.UserID).subscribe((res: any) => {
+        this.allCars = res;
+         console.log(res);
+       },
+       err => {
+  
+      }
+       );
   }
 
-  onClick( c){
-          this.router.navigate(['/caradmin/' + c + '/details']);
+  onClick(c){
+    console.log(c);
+    this.router.navigate(['/caradmin/' + c + '/details']);
   }
 
   onEdit(c){

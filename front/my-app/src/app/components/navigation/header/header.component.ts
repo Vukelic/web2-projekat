@@ -4,7 +4,7 @@ import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
-
+import * as jwt_decode from "jwt-decode";
 import { AuthService } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { RoleTypes } from 'src/app/entities/enumeration.enum';
@@ -23,11 +23,11 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService, private modalService: NgbModal, private route: Router, private router: ActivatedRoute, private logService: UserService) {
     try {
       let token =localStorage.getItem('token');
-      if(token!=null){
+      const helper = new JwtHelperService();
+      const decodedToken = helper.decodeToken(token);
+      if(token!=null  /*(decodedToken.exp * 1000) > now*/){
        
-        const helper = new JwtHelperService();
-        const decodedToken = helper.decodeToken(token);
-     
+         
         if(decodedToken.role === "register_user"){
         this.LogedUser.Role=RoleTypes.register_user;
       }  
