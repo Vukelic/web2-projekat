@@ -10,7 +10,7 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(MyContextBase2020))]
-    [Migration("20200820162001_initial")]
+    [Migration("20200824031126_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -265,6 +265,55 @@ namespace WebApplication1.Migrations
                     b.ToTable("Cars");
                 });
 
+            modelBuilder.Entity("WebApplication1.Models.CarAdmin.ReservationCar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BabySeat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Navigation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PickUpLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PickUpTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReturnLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReturnTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("WebApplication1.Models.CarCompany", b =>
                 {
                     b.Property<int>("Id")
@@ -329,14 +378,23 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CarCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Firstname")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fullname")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Lastname")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("User");
                 });
@@ -397,6 +455,17 @@ namespace WebApplication1.Migrations
                     b.HasOne("WebApplication1.Models.CarCompany", "MyCompany")
                         .WithMany("Cars")
                         .HasForeignKey("MyCompanyId");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.CarAdmin.ReservationCar", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("WebApplication1.Models.User", "User")
+                        .WithMany("ReservationCars")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

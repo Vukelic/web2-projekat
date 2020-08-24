@@ -37,7 +37,8 @@ namespace WebApplication1.Controllers
         [Route("AddCar")]
         public async Task<IActionResult> AddCar([FromBody] CarModel model)
         {
-            var id = Convert.ToInt32(model.NameOfCompany);
+            var user = await _userManager.FindByNameAsync(model.NameOfCompany);
+            var id = user.CarCompanyId;
             var company = await _dbcontext.CarCompanies.FindAsync(id);
             string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
             Car cmodel = new Car()
@@ -69,7 +70,7 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         [Route("GetAllCompaniesCarAdmin/{username}")]
-        public async Task<List<CarCompany>> GetAllCompaniesCarAdmin(string username)
+        public async Task<CarCompany> GetAllCompaniesCarAdmin(string username)
         {
             var companies = new List<CarCompany>();
             var user = new User();
@@ -91,17 +92,17 @@ namespace WebApplication1.Controllers
                 Console.WriteLine($"ERROR with getting companies. -> {ex.Message}");
             }
 
-            var mylist = new List<CarCompany>();
+            var myComp = new CarCompany();
 
             foreach (var item in companies)
             {
                 if (item.Cadmin == user.UserName)
                 {
-                    mylist.Add(item);
+                    myComp = item;
                 }
             }
 
-            return mylist;
+            return myComp;
         }
 
         [HttpGet]

@@ -8,6 +8,7 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse1">
                     <ul class="navbar-nav ml-auto">
                     <li class="nav-item" *ngIf="LogedUser.Role==0"> <a class="nav-link" routerLink="/carcompany">Car-Service</a> </li> 
+                    <li class="nav-item" *ngIf="LogedUser.Role==0"> <a class="nav-link" routerLink="/webadmin">Home</a> </li>
                     <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/cars">Cars</a> </li>   
                     <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/caradmin">Home</a> </li>          
                     <li class="nav-item" *ngIf="LogedUser.Role==3"  (click)="klik()"> <a class="nav-link">Log In</a></li>

@@ -45,7 +45,10 @@ namespace WebApplication1.Migrations
                     Firstname = table.Column<string>(nullable: true),
                     Lastname = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
-                    Activated = table.Column<bool>(nullable: true)
+                    Activated = table.Column<bool>(nullable: true),
+                    Points = table.Column<int>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: true),
+                    CarCompanyId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,6 +221,41 @@ namespace WebApplication1.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(nullable: true),
+                    CarId = table.Column<int>(nullable: true),
+                    PickUpLocation = table.Column<string>(nullable: true),
+                    ReturnLocation = table.Column<string>(nullable: true),
+                    PickUpTime = table.Column<string>(nullable: true),
+                    ReturnTime = table.Column<string>(nullable: true),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    BabySeat = table.Column<string>(nullable: true),
+                    Navigation = table.Column<string>(nullable: true),
+                    TotalPrice = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reservations_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -261,6 +299,16 @@ namespace WebApplication1.Migrations
                 name: "IX_Cars_MyCompanyId",
                 table: "Cars",
                 column: "MyCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_CarId",
+                table: "Reservations",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_UserId",
+                table: "Reservations",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -281,13 +329,16 @@ namespace WebApplication1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Cars");
-
-            migrationBuilder.DropTable(
                 name: "Discounts");
 
             migrationBuilder.DropTable(
+                name: "Reservations");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

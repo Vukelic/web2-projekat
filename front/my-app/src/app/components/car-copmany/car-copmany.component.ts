@@ -23,14 +23,7 @@ export class CarCopmanyComponent implements OnInit {
     private toastrService: ToastrService) { }
 
   ngOnInit(): void {
-    this.userService
-    .getAllCarAdmins()
-    .subscribe(
-      (res: any) => {
-        this.cadmin = res;
-        console.log(this.cadmin);
-      }
-      );
+    this.loadAdmins();
       
       
      
@@ -60,6 +53,7 @@ export class CarCopmanyComponent implements OnInit {
           "Car service is created!",
           "Succesfull"
         );
+        this.loadAdmins();
       },
       err => {
         this.toastrService.error("Error", "Error");
@@ -71,7 +65,6 @@ export class CarCopmanyComponent implements OnInit {
     const file = event.target.files.fullName;
  
   }
-
 
   private load() {
     let companyName = "";
@@ -89,6 +82,17 @@ export class CarCopmanyComponent implements OnInit {
       imagepic: new FormControl(imagepic, Validators.required),
       cityExpositure: new FormControl(cityExpositure, Validators.required)
     });
+  }
+
+  loadAdmins(){
+    this.userService
+    .getAllCarAdmins()
+    .subscribe(
+      (res: any) => {
+        this.cadmin = res;
+        console.log(this.cadmin);
+      }
+      );
   }
   
 

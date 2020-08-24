@@ -15,10 +15,11 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 })
 
 export class CarsComponent implements OnInit {
-  namecopmany: CarCompany[];
+  namecopmany: CarCompany;
   createCarForm: FormGroup;
   selectedValue: any;
   username: string;
+  cadmin: string;
 
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
@@ -39,7 +40,9 @@ export class CarsComponent implements OnInit {
     .subscribe(
       (res: any) => {
         this.namecopmany = res;
+        this.cadmin = res.cadmin;
         console.log(this.namecopmany);
+        console.log(this.cadmin);
       });
 
     this.load();
@@ -56,15 +59,13 @@ export class CarsComponent implements OnInit {
       this.createCarForm.value["price"] + "",
        "0",
      this.createCarForm.value["imagepic"],
-     this.selectedValue.id + " ",
+     this.cadmin,
     "false"
     );
 
     
     console.log("pre vr");
-    console.log(this.selectedValue);
-    console.log(this.selectedValue.id);
-    console.log(this.selectedValue.Id);
+
 
     this.carAdminService.CreateCar(car).subscribe(
       (res: any) => {
@@ -80,7 +81,6 @@ export class CarsComponent implements OnInit {
  
   private load() {
     let description = "";
-    let namecopmany = "";
     let modelofcar = "";
     let seats = "";
     let price = "";
@@ -92,10 +92,7 @@ export class CarsComponent implements OnInit {
       modelofcar: new FormControl(modelofcar, Validators.required),
       seats: new FormControl(seats, Validators.required),
       price: new FormControl(price, Validators.required),
-      imagepic: new FormControl(imagepic, Validators.required),
-      namecopmany: new FormControl(namecopmany, Validators.required),
-      
-    
+      imagepic: new FormControl(imagepic, Validators.required)       
     });
   }
 

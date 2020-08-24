@@ -19,6 +19,9 @@ namespace WebApplication1.Models
         public string Lastname { get; set; }
         public string Address { get; set; }
         public bool Activated { get; set; }
+        public int Points { get; set; }
+        public bool IsAdmin { get; set; }
+        public int CarCompanyId { get; set; }
 
         public ICollection<ReservationCar> ReservationCars { get; set; }
 

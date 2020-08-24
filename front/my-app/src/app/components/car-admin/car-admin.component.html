@@ -21,35 +21,35 @@
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2> All services </h2>
+                        <h2> My service </h2>
                         
                     </div>
                 </div>
                 <form >
-                <div class="row mb-3" *ngFor="let c of namecopmany" >
+                <div class="row mb-3" >
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
                                   <div class="col-md-3">
-                                      <img src="./{{c.imagePic}}">
+                                      <img src="./{{imagePic}}">
                                   </div>
                                   <div class="col-md-6  card-body">
                                       <div class="list-title">
                                           <ul class="list-inline list-unstyled">
-                                          <li class="list-inline-item"><h4>{{c.name}}</h4></li>
+                                          <li class="list-inline-item"><h4>{{name}}</h4></li>
                                           <li class="list-inline-item text-warning"> <i class="fa fa-star"></i></li>
                                           <li class="list-inline-item text-success"><i class="fa fa-thumbs-up"></i></li>
                                       </ul>
                                       </div>
                                       <div class="list-location">
-                                          <i class="fa fa-map-pin"></i><small> {{c.cityExpositure}}</small>
+                                          <i class="fa fa-map-pin"></i><small> {{cityExpositure}}</small>
                                       </div>
                                       <div class="list-location">
-                                        <i class="fa fa-map-marker"></i><small> {{c.address}}</small>
+                                        <i class="fa fa-map-marker"></i><small> {{address}}</small>
                                     </div>
                                       <div class="list-descrip">
-                                        <small>{{c.description}}</small>  
+                                        <small>{{description}}</small>  
                                       </div>
                                       
                                       
@@ -60,8 +60,8 @@
                                           <li><h3>Very Good</h3></li>
                                           <li class="text-secondary"><small>8067 Reviews  </small></li>
                                       </ul>
-                                      <button type="button" [ngValue]="c"   (click)="onClick(c)" class="btn btn-outline-primary">View cars</button>
-                                      <button type="button" [ngValue]="c"   (click)="onEdit(c)" class="btn btn-outline-primary">Edit company</button>
+                                      <button type="button"   (click)="onClick(copanyID)" class="btn btn-outline-primary">View cars</button>
+                                      <button type="button"  (click)="onEdit(copanyID)" class="btn btn-outline-primary">Edit company</button>
                                     </div>
                               </div>
                             </div>

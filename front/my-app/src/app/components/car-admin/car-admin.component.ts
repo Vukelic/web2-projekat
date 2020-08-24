@@ -16,9 +16,15 @@ import { ViewCarsComponent } from '../view-cars/view-cars.component';
   styleUrls: ['./car-admin.component.css']
 })
 export class CarAdminComponent implements OnInit {
-  namecopmany: CarCompany[];
+  namecopmany: CarCompany;
   username: string;
+  description: string;
+  address: string;
+  cityExpositure: string;
+  name: string; 
+  imagePic: string;
   id: number;
+  copanyID: string;
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -43,16 +49,22 @@ export class CarAdminComponent implements OnInit {
         this.namecopmany = res;
         console.log(this.namecopmany);
         console.log(this.username);
+        this.description = res.description;
+        this.cityExpositure = res.cityExpositure;
+        this.address = res.address;
+        this.imagePic = res.imagePic;
+        this.name = res.name;
+        this.copanyID = res.id;
       }
       );
   }
 
   onClick( c){
-          this.router.navigate(['/caradmin/' + c.id + '/details']);
+          this.router.navigate(['/caradmin/' + c + '/details']);
   }
 
   onEdit(c){
-    this.router.navigate(['/caradmin/' + c.id + '/edit']);
+    this.router.navigate(['/caradmin/' + c + '/edit']);
   }
 
  

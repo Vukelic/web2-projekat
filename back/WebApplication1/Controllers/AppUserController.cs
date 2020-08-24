@@ -56,7 +56,7 @@ namespace WebApplication1.Controllers
             if (user != null)
                 return BadRequest(new { message = "Username already exists!." });
 
-            rm.Role = "register_user";
+            rm.Role = "web_admin";
 
             var applicationUser = new User()
             {
@@ -442,6 +442,8 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> AddCarCompany([FromBody] CarCompanyModel model)
         {
             var admin = await _userManager.FindByNameAsync(model.Cadmin);
+            admin.IsAdmin = true;
+            await _userManager.UpdateAsync(admin);
             string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
 
 
@@ -462,6 +464,8 @@ namespace WebApplication1.Controllers
             {
                 _dbcontext.CarCompanies.Add(carCompany);
                 _dbcontext.SaveChanges();
+                admin.CarCompanyId = carCompany.Id;
+                await _userManager.UpdateAsync(admin);
             }
             catch (Exception e)
             {
@@ -485,15 +489,18 @@ namespace WebApplication1.Controllers
                 var status = role.FirstOrDefault().ToString();
                 if (status == "car_admin")
                 {
-                    u = new User()
+                    if (user.IsAdmin != true)
                     {
-                        Fullname = user.Fullname,
-                        UserName = user.UserName,
-                        Email = user.Email,
-                        PhoneNumber = user.PhoneNumber,                      
-                        Address = user.Address,
-                    };
-                    allUsers.Add(u);
+                        u = new User()
+                        {
+                            Fullname = user.Fullname,
+                            UserName = user.UserName,
+                            Email = user.Email,
+                            PhoneNumber = user.PhoneNumber,
+                            Address = user.Address,
+                        };
+                        allUsers.Add(u);
+                    }
                 }
             }
 
