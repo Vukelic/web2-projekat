@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { User } from 'src/app/entities/User';
 import { RoleTypes } from 'src/app/entities/enumeration.enum';
+import { CarAdminService } from "src/app/service/car-admin-service";
+import { CarCompany } from "src/app/entities/CarCompany";
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -9,9 +12,19 @@ import { RoleTypes } from 'src/app/entities/enumeration.enum';
 })
 export class HomeComponent implements OnInit {
   LogedUser:User=new User("1","1","1","1","1","1");
-  constructor() { }
+  allCompanies: CarCompany[];
+  constructor(private carAdminService: CarAdminService) { }
 
   ngOnInit(): void {
+    this.carAdminService
+    .GetAllCompanies()
+    .subscribe(
+      (res: any) => {
+        this.allCompanies = res;
+        console.log(this.allCompanies);
+      }
+      );
+
     try{
     let token =localStorage.getItem('token');
     if(token!=null){

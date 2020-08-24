@@ -33,9 +33,8 @@ import { MaincCarsComponent } from './components/mainc-cars/mainc-cars.component
 import { ReservationCarComponent } from './components/reservation-car/reservation-car.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { MyReservationsComponent } from './components/my-reservations/my-reservations.component';
-
-
-
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { TokenInterceptor } from './auth/token.interceptor';
 
 let config = new AuthServiceConfig([
   { 
@@ -84,7 +83,16 @@ export function provideConfig() {
   ],
   providers: [
     CookieService,
-    UserService,
+    UserService,{
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+      },
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: TokenInterceptor,
+        multi: true,
+        },
     AdminService,
     CarAdminService,
     AuthService,  

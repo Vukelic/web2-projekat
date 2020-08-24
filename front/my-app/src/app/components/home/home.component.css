@@ -1,10 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
-@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
-
-@import url(http://fonts.googleapis.com/css?family=Oswald:300);
-@import url(http://fonts.googleapis.com/css?family=Karla);
 @import url(http://fonts.googleapis.com/css?family=Cabin);
 /* GLOBAL STYLES
 -------------------------------------------------- */
@@ -440,3 +434,38 @@ section .section-title {
 
 }
 }
+
+/**/
+.pt-100 {
+	padding-top: 100px;
+}
+.pb-100 {
+	padding-bottom: 100px;
+}
+.services-area {
+  background-color: white;
+}
+.section-title {
+  margin-bottom: 60px;
+}
+.section-title p {
+	color: #777;
+	font-size: 16px;
+}
+
+.single-service {
+	border: 1px solid #eee;
+	padding: 30px 10px;
+	position: relative;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+
+.single-service h4 {
+	text-transform: capitalize;
+	font-size: 22px;
+	margin-bottom: 10px;
+	font-weight: 500;
+}
+
