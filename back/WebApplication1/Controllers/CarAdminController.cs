@@ -139,38 +139,73 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> DeleteCarr(int id)
         {
             var c = await _dbcontext.Cars.FindAsync(id);
-            if (c.IsReserved == false)
+            var listReservation = _dbcontext.Reservations.ToList();
+            IActionResult ia;
+            bool isReserved = false;
+            foreach (var item in listReservation)
             {
-                _dbcontext.Cars.Remove(c);
-                await _dbcontext.SaveChangesAsync();
+                if(item.Car == c)
+                {
+                    isReserved = true;
+                    break;
+                }
+                else
+                {
+                    isReserved = false;
+                }
+            }
+
+            if (isReserved)
+            {
+                return BadRequest(new { message = "You can't delete reserved car" });
             }
             else
             {
-                Console.WriteLine($"ERROR You don't have to delete reserved car.");
-                return BadRequest();
+                _dbcontext.Cars.Remove(c);
+                await _dbcontext.SaveChangesAsync();
+                return Ok();
             }
 
-
-            return Ok();
         }
 
         // PUT api/CarAdmin/Update/5
         [HttpPut("{id}")]
         [Route("CarUpdate")]
-        public async Task CarUpdate([FromBody] Car model)
+        public async Task<IActionResult> CarUpdate([FromBody] Car model)
         {
             string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
             model.ImagePic = img;
-            try
+            var listReservation = _dbcontext.Reservations.ToList();
+            var myCar = _dbcontext.Cars.Find(model.Id);
+            myCar.ModelOfCar = model.ModelOfCar;
+            myCar.Description = model.Description;
+            myCar.NumberOfSeats = model.NumberOfSeats;
+            myCar.Price = model.Price;
+            bool isReserved = false;
+            foreach (var item in listReservation)
             {
-                _dbcontext.Cars.Update(model);
-                await _dbcontext.SaveChangesAsync();
+                if (item.Car == myCar)
+                {
+                    isReserved = true;
+                    break;
+                }
+                else
+                {
+                    isReserved = false;        
+                }
             }
-            catch (Exception e)
+            if(isReserved)
             {
-                Console.WriteLine($"Error while updating a car. [{e.Message}]");
+                Console.WriteLine($"ERROR You can't update reserved car.");
+                return BadRequest();
             }
-
+            else
+            {
+                _dbcontext.Cars.Update(myCar);
+                _dbcontext.SaveChanges();
+                return Ok();
+            }
+            
 
         }
 

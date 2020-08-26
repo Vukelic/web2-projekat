@@ -51,7 +51,10 @@ export class ViewCarsComponent implements OnInit {
       this.router.navigate(['/caradmin/']);
     },
     err => {
-
+      this.toastrService.error(
+        "Error while delete a car",
+        "Car not deleted because you can't delete reserved car"
+      );
       });
  
   }
@@ -68,6 +71,7 @@ export class ViewCarsComponent implements OnInit {
         .value;
       c.modelOfCar = (<HTMLInputElement>document.getElementById("model"))
         .value;
+        
      
   console.log(c);
       this.carAdminService.UpdateCar(c).subscribe(
