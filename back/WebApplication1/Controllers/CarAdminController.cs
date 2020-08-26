@@ -119,7 +119,7 @@ namespace WebApplication1.Controllers
             {
                 var user = await _userManager.FindByIdAsync(id);
                 var num = user.CarCompanyId;
-               
+
                 cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
                .FirstOrDefaultAsync(company => company.Id == num)).Cars.ToList();
 
@@ -139,7 +139,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> DeleteCarr(int id)
         {
             var c = await _dbcontext.Cars.FindAsync(id);
-            if(c.IsReserved == false)
+            if (c.IsReserved == false)
             {
                 _dbcontext.Cars.Remove(c);
                 await _dbcontext.SaveChangesAsync();
@@ -196,7 +196,7 @@ namespace WebApplication1.Controllers
         {
             var id = Convert.ToInt32(model.Id);
             string img = model.ImagePic.Replace("C:\\fakepath\\", "assets/");
-          
+
             var mymodel = _dbcontext.CarCompanies.Find(id);
 
             mymodel.Address = model.Address;
@@ -223,7 +223,7 @@ namespace WebApplication1.Controllers
         [Route("GetCar/{id}")]
         public async Task<Object> GetCar(int id)
         {
-          //  var newId = Convert.ToInt32(id);
+            //  var newId = Convert.ToInt32(id);
             var company = await _dbcontext.Cars.FindAsync(id);
 
             if (company is null)
@@ -238,10 +238,10 @@ namespace WebApplication1.Controllers
         [Route("CreateReservationCar")]
         public async Task<IActionResult> CreateReservationCar([FromBody] ReservationCarModel model)
         {
-           
+
             var idCar = Convert.ToInt32(model.Car);
             var car = await _dbcontext.Cars.FindAsync(idCar);
-            
+
             var user = await _userManager.FindByIdAsync(model.User);
 
             var price = GetTotalPrice(car, model.StartDate, model.EndDate, model.BabySeat, model.Navigation);
@@ -266,18 +266,21 @@ namespace WebApplication1.Controllers
             d.IdOfCar = car.Id;
             d.ReservedFrom = model.StartDate;
             d.ReservedTo = model.EndDate;
-            
-           
+
+
 
             if (CheckAvailability(d))
             {
                 try
                 {
+                    _dbcontext.Dates.Add(d);
+                    _dbcontext.SaveChanges();
+                    rcmodel.Data = d;
+                    rcmodel.DateId = Convert.ToString(d.Id);
                     _dbcontext.Reservations.Add(rcmodel);
                     _dbcontext.SaveChanges();
 
-                    _dbcontext.Dates.Add(d);
-                    _dbcontext.SaveChanges();
+
 
                     string toMail = "Model of car: " + rcmodel.Car.ModelOfCar + Environment.NewLine +
                                         "Price for car per day: " + rcmodel.Car.Price + Environment.NewLine +
@@ -301,8 +304,8 @@ namespace WebApplication1.Controllers
                         smtp.EnableSsl = true;
                         smtp.Send(mail);
                     }
-                   
-                   
+
+
                 }
 
 
@@ -316,8 +319,8 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest();
             }
-            
-            
+
+
 
             return Ok(rcmodel);
         }
@@ -341,7 +344,7 @@ namespace WebApplication1.Controllers
             return total;
         }
 
-         private bool CheckAvailability(Date d)
+        private bool CheckAvailability(Date d)
         {
             bool available = true;
             List<Date> alldates = null;
@@ -349,7 +352,7 @@ namespace WebApplication1.Controllers
             DateTime toDate = DateTime.Parse(d.ReservedTo);
             try
             {
-                alldates =  _dbcontext.Dates.ToList();
+                alldates = _dbcontext.Dates.ToList();
             }
             catch (Exception e)
             {
@@ -369,7 +372,7 @@ namespace WebApplication1.Controllers
                     DateTime dt1 = DateTime.Parse(date.ReservedFrom);
                     DateTime dt2 = DateTime.Parse(date.ReservedTo);
                     if ((dt1 <= fromDate && dt2 >= toDate) || (dt1 >= fromDate && dt2 <= toDate))
-                    {     
+                    {
                         available = false;
                         break;
                     }
@@ -387,7 +390,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-               // var company = await _dbcontext.CarCompanies.FindAsync(id);
+                // var company = await _dbcontext.CarCompanies.FindAsync(id);
                 //var num = user.CarCompanyId;
                 cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
                .FirstOrDefaultAsync(company => company.Id == id)).Cars.ToList();
@@ -414,7 +417,7 @@ namespace WebApplication1.Controllers
 
                 foreach (var item in allreservations)
                 {
-                    if(item.User == user)
+                    if (item.User == user)
                     {
                         reservations.Add(item);
                     }
@@ -432,7 +435,7 @@ namespace WebApplication1.Controllers
         [Route("CreateQuickReservationCar")]
         public async Task<IActionResult> CreateQuickReservationCar([FromBody] QuickReservationModel model)
         {
-            var idcar = Convert.ToInt32(model.Car);
+            var idcar = Convert.ToInt32(model.CarId);
             var car = await _dbcontext.Cars.FindAsync(idcar);
             string img = car.ImagePic.Replace("C:\\fakepath\\", "assets/");
             QuickReservation qrmodel = new QuickReservation()
@@ -440,7 +443,7 @@ namespace WebApplication1.Controllers
                 StartDate = Convert.ToDateTime(model.StartDate),
                 EndDate = Convert.ToDateTime(model.EndDate),
                 Car = car,
-                CarPic = img             
+                CarPic = img
             };
 
             Date d = new Date();
@@ -448,14 +451,15 @@ namespace WebApplication1.Controllers
             d.ReservedTo = model.EndDate;
             d.IdOfCar = car.Id;
             d.MyCarId = car;
-            if (CheckAvailability(d)) { 
+            if (CheckAvailability(d))
+            {
                 try
                 {
                     _dbcontext.QuickReservations.Add(qrmodel);
                     _dbcontext.SaveChanges();
 
-                    _dbcontext.Dates.Add(d);
-                    _dbcontext.SaveChanges();
+                   // _dbcontext.Dates.Add(d);
+                    //_dbcontext.SaveChanges();
 
                 }
                 catch (Exception e)
@@ -473,35 +477,149 @@ namespace WebApplication1.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("SearchQuickReservationCar/{from}/{to}")]
-        public async Task<IEnumerable<Car>> SearchQuickReservationCar(string from, string to)
+        [Route("SearchQuickReservationCar/{from}/{to}/{id}")]
+        public async Task<IEnumerable<QuickReservationModel>> SearchQuickReservationCar(string from, string to, string id)
         {
-            var cars = new List<Car>();
+            var reservations = new List<QuickReservationModel>();
             try
             {
                 var quickList = await _dbcontext.QuickReservations.ToListAsync();
                 DateTime dt1 = Convert.ToDateTime(from);
                 DateTime dt2 = Convert.ToDateTime(to);
+               
+              
                 foreach (var item in quickList)
                 {
-                    if(item.StartDate == dt1 && item.EndDate == dt2)
+                    if (item.StartDate == dt1 && item.EndDate == dt2)
                     {
-                        var car = await _dbcontext.Cars.FindAsync(item.CarId);
-                        cars.Add(car);
+                        
+                            QuickReservationModel qm = new QuickReservationModel();
+                            qm.StartDate = Convert.ToString(item.StartDate);
+                            qm.EndDate = Convert.ToString(item.EndDate);
+                            var car = await _dbcontext.Cars.FindAsync(item.CarId);
+                            qm.TotalPrice = Convert.ToString(GetTotalPrice(car, from, to, "", ""));
+                            qm.PriceWithDiscount = Convert.ToString(GetDiscount(qm.TotalPrice));
+                            qm.Id = Convert.ToString(item.Id);
+                            qm.CarId = car.Id;
+                            qm.UserId = id;
+
+                            string img = car.ImagePic.Replace("C:\\fakepath\\", "assets/");
+                            qm.CarPic = img;
+                        Date d = new Date();
+                        d.ReservedFrom = from;
+                        d.ReservedTo = to;
+                        d.IdOfCar = car.Id;
+                        d.MyCarId = car;
+                        
+                        if (CheckAvailability(d)){
+                            reservations.Add(qm);
+                        }
+                        
                     }
-                }             
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error with geting quich cars... [{e.Message}]");
             }
 
-            return cars;
+            return reservations;
+
+        }
+        [AllowAnonymous]
+        [HttpDelete]
+        [Route("DeleteReservation/{id}")]
+        public async Task<IActionResult> DeleteReservation(int id)
+        {
+            var myreservation = await _dbcontext.Reservations.FindAsync(id);
+            var dateId = myreservation.DateId;
+            var idd = Convert.ToInt32(dateId);
+            var myDate = await _dbcontext.Dates.FindAsync(idd);
+            var today = DateTime.Today;
+            var twoDaysAgo = myreservation.StartDate.AddDays(-2);
+
+            if (today <= twoDaysAgo)
+            {
+                try
+                {
+
+                    _dbcontext.Reservations.Remove(myreservation);
+                    await _dbcontext.SaveChangesAsync();
+                    _dbcontext.Dates.Remove(myDate);
+                    await _dbcontext.SaveChangesAsync();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error with date reservation.. [{e.Message}]");
+                    return null;
+                }
+
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            return Ok();
 
         }
 
+        private double GetDiscount(string price)
+        {
+            double myPrice;
+            double prc = Convert.ToDouble(price);
+            var currentData = _dbcontext.Discounts.Find(1);
+
+            return myPrice = prc - (prc * currentData.RentAirD) / 100;
+
+        }
+
+        [HttpPost]
+        [Route("CreateQucikReservation")]
+        public async Task<IActionResult> CreateQucikReservation(QuickReservationModel model)
+        {
+            var car = await _dbcontext.Cars.FindAsync(model.CarId);
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            string img = car.ImagePic.Replace("C:\\fakepath\\", "assets/");
+            ReservationCar rc = new ReservationCar()
+            {
+                StartDate = Convert.ToDateTime(model.StartDate),
+                EndDate = Convert.ToDateTime(model.EndDate),
+                TotalPrice = Convert.ToDouble(model.PriceWithDiscount),
+                Car = car,
+                User = user,
+                CarPic = img               
+            };
+
+            Date d = new Date();
+            d.MyCarId = car;
+            d.IdOfCar = car.Id;
+            d.ReservedFrom = model.StartDate;
+            d.ReservedTo = model.EndDate;
+
+            if (CheckAvailability(d))
+            {
+
+                _dbcontext.Dates.Add(d);
+                _dbcontext.SaveChanges();
+                try
+                {
+                    rc.DateId = Convert.ToString(d.Id);
+                    rc.Data = d;
+                    _dbcontext.Reservations.Add(rc);
+                    _dbcontext.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine($"Error with create user quick reservation.. [{ex.Message}]");
+                    return null;
+                }
 
 
-
+            }
+            return Ok();
+        }
     }
 }

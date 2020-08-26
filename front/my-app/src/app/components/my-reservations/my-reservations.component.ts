@@ -21,18 +21,45 @@ myReservations: ReservationCar[];
    private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    let token =localStorage.getItem('token');
-     
-      const helper = new JwtHelperService();
-      const decodedToken = helper.decodeToken(token);
-      this.carAdminService.GetMyReservation(decodedToken.UserID).subscribe(
-      (res: any) => {
-        this.myReservations = res;
-        console.log(res);
-      }
-      );
+this.initData();
 
 
   }
+
+  initData(){
+    let token =localStorage.getItem('token');
+     
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+    this.carAdminService.GetMyReservation(decodedToken.UserID).subscribe(
+    (res: any) => {
+      this.myReservations = res;
+      console.log(res);
+    },
+    err =>{
+     // if (err.status == 400)
+      //this.toastrService.error('The booking can be cancelled two days before the beginning.', 'Delete reservation failed.');
+   // else
+      console.log(err);
+    }
+    );
+  }
+
+  cancel(r){
+   console.log(r);
+   this.carAdminService.DeleteReservation(r).subscribe(
+    (res: any) => {
+      this.myReservations = res;
+      console.log(res);
+      this.initData();
+    },
+      err =>{
+        if (err.status == 400)
+        this.toastrService.error('The booking can be cancelled two days before the beginning.', 'Delete reservation failed.');
+      else
+        console.log(err);
+      }
+      );
+    }
 
 }

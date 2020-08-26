@@ -6,6 +6,7 @@ import { CarAdminService } from "src/app/service/car-admin-service";
 import { ToastrService } from "ngx-toastr";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { QuickReservation } from 'src/app/entities/QuickReservation';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-mainc-cars',
@@ -15,20 +16,28 @@ import { QuickReservation } from 'src/app/entities/QuickReservation';
 export class MaincCarsComponent implements OnInit {
   id: number;
   allCars: Car[];
-  quickCars: Car[];
+  quickCars: QuickReservation[];
   to: string;
   from: string;
   searchQuickReservation:FormGroup;
+  idUser: string;
   constructor(private route: ActivatedRoute,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
     private router: Router,) { 
     route.params.subscribe(params => { this.id = params['id']; });
+    
   }
 
   ngOnInit(): void {
+    let token =localStorage.getItem('token');  
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+    this.idUser = decodedToken.UserID;
+    console.log(this.idUser);
     this.initData();
     this.load();
+   
   }
 
   initData(){
@@ -46,6 +55,16 @@ export class MaincCarsComponent implements OnInit {
     console.log(c);
     this.router.navigate(['/mainc/' + c.id + '/reservation']);
   }
+  onRent(c){
+    console.log(c);
+    this.carAdminService.CreateQucikReservation(c).subscribe((res: any) => {
+       console.log(res);
+     },
+     err => {
+      
+    }
+     );
+  }
 
   onSubmit(){
 
@@ -53,15 +72,17 @@ export class MaincCarsComponent implements OnInit {
       this.from =  this.searchQuickReservation.value["endDate"];
       console.log(this.to);
       console.log(this.from);
-    this.carAdminService.searchQuickReservationCar(this.to, this.from).subscribe((res: any) => {
+    this.carAdminService.searchQuickReservationCar(this.to, this.from, this.idUser).subscribe((res: any) => {
       this.quickCars = res;
        console.log(res);
        this.searchQuickReservation.reset();
      },
      err => {
-
-    }
-     );
+      if (err.status == 400)
+      this.toastrService.error('Error with quick reservation.', 'Create failed.');
+    else
+      console.log(err);
+  });
   }
 
   private load(){

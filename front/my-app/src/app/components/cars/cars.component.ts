@@ -63,6 +63,9 @@ export class CarsComponent implements OnInit {
       this.createQuickReservationForm.value["startDate"],
       this.createQuickReservationForm.value["endDate"],
       this.selectedValue.id + "",
+      "0",
+      "0",
+      "0",
       "0"
     );
 console.log(this.selectedValue.id);

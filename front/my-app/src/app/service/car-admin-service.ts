@@ -72,7 +72,14 @@ export class CarAdminService {
         return this.http.post(this.BaseURI + "/CarAdmin/CreateQuickReservationCar", quickCar);
       }
 
-      searchQuickReservationCar(from: string,to: string):Observable<Car[]>{
-        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/SearchQuickReservationCar/" + from + "/"+ to);
+      searchQuickReservationCar(from: string,to: string, id: string):Observable<QuickReservation[]>{
+        return this.http.get<QuickReservation[]>(this.BaseURI + "/CarAdmin/SearchQuickReservationCar/" + from + "/"+ to + "/" + id);
+      }
+
+      DeleteReservation(id: string){
+        return this.http.delete(this.BaseURI + "/CarAdmin/DeleteReservation/" + id );
+      }
+      CreateQucikReservation(quickCar: QuickReservation){
+        return this.http.post(this.BaseURI + "/CarAdmin/CreateQucikReservation", quickCar);
       }
 }

@@ -138,32 +138,27 @@
                         <div class="card-body">
                             <div class="row">
                               <div class="col-md-3">
-                                <img src="./{{c.imagePic}}" width="200" height="200">
+                                <img src="./{{c.carPic}}" width="200" height="200">
                               </div>
                               <div class="col-md-6  card-body">
                                   <div class="list-title">
                                     <ul class="list-inline list-unstyled">
-                                        <li class="list-inline-item"><h3>{{c.modelOfCar}}</h3></li>
+                                        <li class="list-inline-item"><h3>{{c.startDate}}</h3></li>
+                                        <li class="list-inline-item"><h3>{{c.endDate}}</h3></li>
                                     </ul>
                                     </div>
-                                    <div class="list-location">
-                                        <h1>Price per day: {{c.price}}<i class="fa fa-dollar"></i></h1>
-                                    </div>
-                                    <div>
-                                    <h1>Number of seats: {{c.numberOfSeats}}</h1>
-                                </div>   
+                                   
+                                    
                                     <div class="list-descrip">
-                                      <h6>{{c.description}} </h6>  
+                                    -- <h6>Regular price: {{c.totalPrice}} </h6>  
                                     </div>                                
                               </div>
                               <div class="col-md-3 border-left card-body">
                                   <ul class="list-unstyled">
-                                    <div class="list-inline-item text-warning"><i class="fa fa-star"></i></div>
-                                    <li class="list-inline-item text-success"><i class="fa fa-thumbs-up"></i></li>
-                                      <li><h3>Very Good</h3></li>
-                                      <li class="text-secondary"><small>8067 Reviews  </small></li>
+                                    
+                                      <li><h3>Price with discount:{{c.priceWithDiscount}} </h3></li>
                                   </ul>
-                                  <button (click)="onBook(c)" class="btn btn-outline-primary">Rent Now</button>
+                                  <button (click)="onRent(c)" class="btn btn-outline-primary">Rent Now</button>
                               </div>
                           </div>
                         </div>

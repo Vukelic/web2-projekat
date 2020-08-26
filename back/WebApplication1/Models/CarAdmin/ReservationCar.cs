@@ -24,6 +24,10 @@ namespace WebApplication1.Models.CarAdmin
         public string Navigation { get; set; }
         public double TotalPrice { get; set; }
         public string CarPic { get; set; }
+        public string PriceWithDiscount { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public Date Data { get; set; }
+        public string DateId { get; set; }
         public ReservationCar()
         {
 

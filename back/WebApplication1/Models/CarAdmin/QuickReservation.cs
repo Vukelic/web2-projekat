@@ -20,10 +20,15 @@ namespace WebApplication1.Models.CarAdmin
 
     public class QuickReservationModel
     {
-
+        public string Id { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public string Car { get; set; }
         public string CarPic { get; set; }
+
+        public string PriceWithDiscount { get; set; }
+        public string TotalPrice { get; set; }
+        public int CarId { get; set; }
+        public string UserId { get; set; }
     }
 }
