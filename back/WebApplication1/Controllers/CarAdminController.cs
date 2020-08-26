@@ -426,6 +426,48 @@ namespace WebApplication1.Controllers
             return reservations;
         }
 
+        [HttpPost]
+        [Route("CreateQuickReservationCar")]
+        public async Task<IActionResult> CreateQuickReservationCar([FromBody] QuickReservationModel model)
+        {
+            var idcar = Convert.ToInt32(model.Car);
+            var car = await _dbcontext.Cars.FindAsync(idcar);
+            string img = car.ImagePic.Replace("C:\\fakepath\\", "assets/");
+            QuickReservation qrmodel = new QuickReservation()
+            {
+                StartDate = Convert.ToDateTime(model.StartDate),
+                EndDate = Convert.ToDateTime(model.EndDate),
+                Car = car,
+                CarPic = img             
+            };
+
+            Date d = new Date();
+            d.ReservedFrom = model.StartDate;
+            d.ReservedTo = model.EndDate;
+            d.IdOfCar = car.Id;
+            d.MyCarId = car;
+            if (CheckAvailability(d)) { 
+                try
+                {
+                    _dbcontext.QuickReservations.Add(qrmodel);
+                    _dbcontext.SaveChanges();
+
+                    _dbcontext.Dates.Add(d);
+                    _dbcontext.SaveChanges();
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error with creating new quick reservation. -> {e.Message}");
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            return Ok(qrmodel);
+        }
 
 
     }

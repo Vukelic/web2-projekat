@@ -83,7 +83,7 @@ export class ReservationCarComponent implements OnInit {
         this.createReservationForm.reset();
       },
       err => {
-        this.toastrService.error("Car is rented in this ", "Reservation is unsuccesfull!");
+        this.toastrService.error("Car is rented in that period!", "Reservation is unsuccesfull!");
         console.log(err);
       }
     );

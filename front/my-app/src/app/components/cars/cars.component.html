@@ -14,8 +14,7 @@
             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
               <div class="RequestForm">
                 <h2>Create car </h2>
-                <div class="Forms">  
-                         
+                <div class="Forms">                   
                     <div class="form-group">
                       <input class="form-control" placeholder="Description" formControlName="description" type="text">
                     </div>
@@ -35,6 +34,41 @@
                       
                     </div>               
                     <button type="submit" class="button" [disabled]="!createCarForm.valid" >Create</button>
+                   </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      </section>
+
+      <br><br><br>
+    <section style="margin-left: 550px;">
+      <form  [formGroup]="createQuickReservationForm" (ngSubmit)="CreateQuick()">
+        <div class="project-request">
+          <div class="container">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="RequestForm">
+                <h2>Create quick reservation </h2>
+                <div class="Forms">                   
+                  <div class="form-group">
+                    <label>Start date</label>
+                    <input class="form-control" type="date" formControlName="startDate" >
+                    <label class="text-danger" *ngIf="createQuickReservationForm.get('startDate').touched && createQuickReservationForm.get('startDate').errors?.required">This
+                       field is mandatory.</label>
+                 </div>
+                 <div class="form-group">
+                    <label>End date</label>
+                   <input type="date" class="form-control"  formControlName="endDate" >  
+                   <label class="text-danger" *ngIf="createQuickReservationForm.get('endDate').touched && createQuickReservationForm.get('endDate').errors?.required">This
+                    field is mandatory.</label>                 
+                 </div>    
+                 <div class="form-group">
+                  <select id="cars"  [(ngModel)]="selectedValue" name="cars" formControlName="cars" class="form-control">
+                  <option *ngFor="let a of cars" [ngValue]="a">{{a.modelOfCar}}</option>
+                </select>
+                </div>                
+                    <button type="submit" class="button" [disabled]="!createQuickReservationForm.valid" >Create</button>
                    </div>
               </div>
             </div>

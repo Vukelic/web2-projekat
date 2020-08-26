@@ -35,6 +35,7 @@ import { MyAccountComponent } from './components/my-account/my-account.component
 import { MyReservationsComponent } from './components/my-reservations/my-reservations.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { TokenInterceptor } from './auth/token.interceptor';
+import { QuickReservationComponent } from './components/quick-reservation/quick-reservation.component';
 
 let config = new AuthServiceConfig([
   { 
@@ -64,7 +65,8 @@ export function provideConfig() {
     MaincCarsComponent,
     ReservationCarComponent,
     MyAccountComponent,
-    MyReservationsComponent
+    MyReservationsComponent,
+    QuickReservationComponent
   ],
   imports: [
     BrowserModule,

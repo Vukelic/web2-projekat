@@ -5,6 +5,8 @@ import { CarCompany } from "src/app/entities/CarCompany";
 import { Observable } from "rxjs";
 import { Car } from "src/app/entities/Car";
 import { ReservationCar } from "src/app/entities/ReservationCar";
+import { QuickReservation } from "src/app/entities/QuickReservation";
+import { QuickReservationComponent } from '../components/quick-reservation/quick-reservation.component';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +25,10 @@ export class CarAdminService {
 
       GetAllCompaniesCarAdmin(username: string):Observable<CarCompany>{
         return this.http.get<CarCompany>(this.BaseURI + '/CarAdmin/GetAllCompaniesCarAdmin/' + username);
-      }
+      }//ovo je jedna kompanija
 
-      GetCarsOfCompany(companyId: string):Observable<Car[]>{
-        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/GetCarsOfCompany/" + companyId);
+      GetCarsOfCompany(userid: string):Observable<Car[]>{
+        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/GetCarsOfCompany/" + userid);
       } //oov nije companyId nego id usera
 
       DeleteCar(id: number){
@@ -65,4 +67,8 @@ export class CarAdminService {
       GetMyReservation(userid: string):Observable<ReservationCar[]>{
         return this.http.get<ReservationCar[]>(this.BaseURI + "/CarAdmin/GetMyReservations/" + userid);
       } 
+
+      createQuickReservationCar(quickCar: QuickReservation){
+        return this.http.post(this.BaseURI + "/CarAdmin/CreateQuickReservationCar", quickCar);
+      }
 }
