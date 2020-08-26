@@ -5,11 +5,13 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using WebApplication1.Migrations;
 using WebApplication1.Models;
 using WebApplication1.Models.CarAdmin;
 
@@ -468,6 +470,37 @@ namespace WebApplication1.Controllers
 
             return Ok(qrmodel);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("SearchQuickReservationCar/{from}/{to}")]
+        public async Task<IEnumerable<Car>> SearchQuickReservationCar(string from, string to)
+        {
+            var cars = new List<Car>();
+            try
+            {
+                var quickList = await _dbcontext.QuickReservations.ToListAsync();
+                DateTime dt1 = Convert.ToDateTime(from);
+                DateTime dt2 = Convert.ToDateTime(to);
+                foreach (var item in quickList)
+                {
+                    if(item.StartDate == dt1 && item.EndDate == dt2)
+                    {
+                        var car = await _dbcontext.Cars.FindAsync(item.CarId);
+                        cars.Add(car);
+                    }
+                }             
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error with geting quich cars... [{e.Message}]");
+            }
+
+            return cars;
+
+        }
+
+
 
 
     }

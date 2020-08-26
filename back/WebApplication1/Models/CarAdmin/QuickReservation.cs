@@ -14,6 +14,7 @@ namespace WebApplication1.Models.CarAdmin
         public DateTime EndDate { get; set; }
         [System.Text.Json.Serialization.JsonIgnore]
         public Car Car { get; set; }
+        public int CarId { get; set; }
         public string CarPic { get; set; }
     }
 

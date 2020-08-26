@@ -71,4 +71,8 @@ export class CarAdminService {
       createQuickReservationCar(quickCar: QuickReservation){
         return this.http.post(this.BaseURI + "/CarAdmin/CreateQuickReservationCar", quickCar);
       }
+
+      searchQuickReservationCar(from: string,to: string):Observable<Car[]>{
+        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/SearchQuickReservationCar/" + from + "/"+ to);
+      }
 }
