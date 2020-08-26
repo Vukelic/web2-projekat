@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -234,8 +236,10 @@ namespace WebApplication1.Controllers
         [Route("CreateReservationCar")]
         public async Task<IActionResult> CreateReservationCar([FromBody] ReservationCarModel model)
         {
+           
             var idCar = Convert.ToInt32(model.Car);
             var car = await _dbcontext.Cars.FindAsync(idCar);
+            
             var user = await _userManager.FindByIdAsync(model.User);
 
             var price = GetTotalPrice(car, model.StartDate, model.EndDate, model.BabySeat, model.Navigation);
@@ -252,28 +256,38 @@ namespace WebApplication1.Controllers
                 Navigation = model.Navigation,
                 User = user,
                 Car = car,
-                TotalPrice = price
+                TotalPrice = price,
+                CarPic = car.ImagePic
             };
+            Date d = new Date();
+            d.MyCarId = car;
+            d.IdOfCar = car.Id;
+            d.ReservedFrom = model.StartDate;
+            d.ReservedTo = model.EndDate;
             
-            try
-            {
-                _dbcontext.Reservations.Add(rcmodel);
-                _dbcontext.SaveChanges();
-                car.IsReserved = true;
-                _dbcontext.Cars.Update(car);
-                _dbcontext.SaveChanges();
+           
 
-                string toMail = "Model of car: " + rcmodel.Car.ModelOfCar + Environment.NewLine +
-                                    "Price for car per day: " + rcmodel.Car.Price + Environment.NewLine +
-                                    "Number Of Seats: " + rcmodel.Car.NumberOfSeats + Environment.NewLine +
-                                    "Start date: " + rcmodel.StartDate + Environment.NewLine +
-                                    "End date: " + rcmodel.EndDate + Environment.NewLine + 
-                                    "Totaly price:" + rcmodel.TotalPrice + Environment.NewLine + 
-                                    "Navigation is " + rcmodel.Navigation + "in total price!" + Environment.NewLine +
-                                    "BabySeat is " + rcmodel.BabySeat + "in total price!" + Environment.NewLine;
+            if (CheckAvailability(d))
+            {
+                try
+                {
+                    _dbcontext.Reservations.Add(rcmodel);
+                    _dbcontext.SaveChanges();
+
+                    _dbcontext.Dates.Add(d);
+                    _dbcontext.SaveChanges();
+
+                    string toMail = "Model of car: " + rcmodel.Car.ModelOfCar + Environment.NewLine +
+                                        "Price for car per day: " + rcmodel.Car.Price + Environment.NewLine +
+                                        "Number Of Seats: " + rcmodel.Car.NumberOfSeats + Environment.NewLine +
+                                        "Start date: " + rcmodel.StartDate + Environment.NewLine +
+                                        "End date: " + rcmodel.EndDate + Environment.NewLine +
+                                        "Totaly price:" + rcmodel.TotalPrice + Environment.NewLine +
+                                        "Navigation is " + rcmodel.Navigation + "in total price!" + Environment.NewLine +
+                                        "BabySeat is " + rcmodel.BabySeat + "in total price!" + Environment.NewLine;
 
                     MailMessage mail = new MailMessage();
-                    mail.To.Add(rcmodel.User.Email);
+                    mail.To.Add(user.Email);
                     mail.From = new MailAddress("lnslagalica2@gmail.com");
                     mail.Subject = "Projekat";
                     mail.Body = "Reservation is succesfully created!" + Environment.NewLine;
@@ -285,13 +299,23 @@ namespace WebApplication1.Controllers
                         smtp.EnableSsl = true;
                         smtp.Send(mail);
                     }
+                   
+                   
+                }
 
 
+
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error with creating new car reservation. -> {e.Message}");
+                }
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine($"Error with creating new car reservation. -> {e.Message}");
+                return BadRequest();
             }
+            
+            
 
             return Ok(rcmodel);
         }
@@ -300,7 +324,7 @@ namespace WebApplication1.Controllers
         {
             DateTime dtfrom = DateTime.Parse(from);
             DateTime dtTo = DateTime.Parse(to);
-            double days = (dtTo - dtfrom).TotalDays;
+            double days = (dtTo - dtfrom).TotalDays + 1;
             var total = car.Price * days;
 
             if (babyseat == "included")
@@ -315,26 +339,43 @@ namespace WebApplication1.Controllers
             return total;
         }
 
-        /*  private bool CheckAvailability(Car rc, string from, string to)
-          {
-              bool available = true;
-              DateTime fromDate = DateTime.Parse(from);
-              DateTime toDate = DateTime.Parse(to);
+         private bool CheckAvailability(Date d)
+        {
+            bool available = true;
+            List<Date> alldates = null;
+            DateTime fromDate = DateTime.Parse(d.ReservedFrom);
+            DateTime toDate = DateTime.Parse(d.ReservedTo);
+            try
+            {
+                alldates =  _dbcontext.Dates.ToList();
+            }
+            catch (Exception e)
+            {
 
-              List<Car> cars = _dbcontext.Reservations.Find(rc.Id);
+                Console.WriteLine($"Error with {e.Message}");
+            }
 
-              foreach (var date in )
-              {
-                  DateTime dt = DateTime.Parse(date.DateStr);
-                  if (dt >= fromDate && dt <= toDate)
-                  {
-                      available = false;
-                      break;
-                  }
-              }
+            if (alldates.Count == 0)
+            {
+                return true;
+            }
 
-              return available;
-          }*/
+            foreach (var date in alldates)
+            {
+                if (date.IdOfCar == d.IdOfCar)
+                {
+                    DateTime dt1 = DateTime.Parse(date.ReservedFrom);
+                    DateTime dt2 = DateTime.Parse(date.ReservedTo);
+                    if ((dt1 <= fromDate && dt2 >= toDate) || (dt1 >= fromDate && dt2 <= toDate))
+                    {     
+                        available = false;
+                        break;
+                    }
+                }
+            }
+
+            return available;
+        }
 
         [HttpGet]
         [Route("GetCarsOfCompanyAllUsers/{id}")]
@@ -358,6 +399,33 @@ namespace WebApplication1.Controllers
             return cars;
 
         }
+
+        [HttpGet]
+        [Route("GetMyReservations/{id}")]
+        public async Task<IEnumerable<ReservationCar>> GetMyReservations(string id)
+        {
+            var reservations = new List<ReservationCar>();
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                var allreservations = await _dbcontext.Reservations.ToListAsync();
+
+                foreach (var item in allreservations)
+                {
+                    if(item.User == user)
+                    {
+                        reservations.Add(item);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error while geting reservations... [{e.Message}]");
+                return null;
+            }
+            return reservations;
+        }
+
 
 
     }

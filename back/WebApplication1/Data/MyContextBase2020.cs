@@ -20,6 +20,7 @@ namespace WebApplication1.Data
         public DbSet<Car> Cars { get; set; }
 
         public DbSet<ReservationCar> Reservations { get; set; }
+        public DbSet<Date> Dates { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

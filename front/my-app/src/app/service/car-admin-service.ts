@@ -62,5 +62,7 @@ export class CarAdminService {
       GetCarsOfCompanyAllUsers(companyId: number):Observable<Car[]>{
         return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/GetCarsOfCompanyAllUsers/" + companyId);
       } 
-      
+      GetMyReservation(userid: string):Observable<ReservationCar[]>{
+        return this.http.get<ReservationCar[]>(this.BaseURI + "/CarAdmin/GetMyReservations/" + userid);
+      } 
 }

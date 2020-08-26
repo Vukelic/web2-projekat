@@ -14,8 +14,6 @@ namespace WebApplication1.Models.CarAdmin
         public User User { get; set; }
         [System.Text.Json.Serialization.JsonIgnore]
         public Car Car { get; set; }
-  //    public List<Date> Dates { get; set; }
-
         public string PickUpLocation { get; set; }
         public string ReturnLocation { get; set; }
         public string PickUpTime { get; set; }
@@ -25,6 +23,7 @@ namespace WebApplication1.Models.CarAdmin
         public string BabySeat { get; set; }
         public string Navigation { get; set; }
         public double TotalPrice { get; set; }
+        public string CarPic { get; set; }
         public ReservationCar()
         {
 

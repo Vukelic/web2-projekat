@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(MyContextBase2020))]
-    partial class MyContextBase2020ModelSnapshot : ModelSnapshot
+    [Migration("20200825163607_checkavaiable")]
+    partial class checkavaiable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,10 +272,7 @@ namespace WebApplication1.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("IdOfCar")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MyCarIdId")
+                    b.Property<int?>("CarId1")
                         .HasColumnType("int");
 
                     b.Property<string>("ReservedFrom")
@@ -284,7 +283,7 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MyCarIdId");
+                    b.HasIndex("CarId1");
 
                     b.ToTable("Dates");
                 });
@@ -301,9 +300,6 @@ namespace WebApplication1.Migrations
 
                     b.Property<int?>("CarId")
                         .HasColumnType("int");
-
-                    b.Property<string>("CarPic")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -486,9 +482,9 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.CarAdmin.Date", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Car", "MyCarId")
+                    b.HasOne("WebApplication1.Models.Car", null)
                         .WithMany("MyRentedDays")
-                        .HasForeignKey("MyCarIdId");
+                        .HasForeignKey("CarId1");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.CarAdmin.ReservationCar", b =>

@@ -12,6 +12,7 @@ export class ReservationCar {
       public navigation: string,
       public totalPrice: string,
       public user: string,
-      public car: string
+      public car: string,
+      public carImg: string
     ) {}
   }

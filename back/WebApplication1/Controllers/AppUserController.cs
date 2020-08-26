@@ -72,7 +72,7 @@ namespace WebApplication1.Controllers
             try
             {
                 var result = await _userManager.CreateAsync(applicationUser, rm.Password);
-               
+        
 
                 if (result.Succeeded)
                 {
@@ -169,20 +169,20 @@ namespace WebApplication1.Controllers
     
         [HttpPost]
         [Route("SocialLogIn")]
-        public async Task<IActionResult> SocialLogIn([FromBody] SocialLogInModel model)
+        public async Task<IActionResult> SocialLogIn(SocialLogInModel model)
         {
             var validation = await VerifyTokenAsync(model.IdToken);
 
             if (validation.isVaild)
             {
              
-                var socialUser = await _userManager.FindByNameAsync(validation.apiTokenInfo.email);
+                var socialUser = await _userManager.FindByNameAsync(model.FirstName);
 
                 if (socialUser == null)
                 {
                     var newUser = new User()
                     {
-                        Email = validation.apiTokenInfo.email,
+                        Email = model.Email,
                         Firstname = model.FirstName,
                         Lastname = model.LastName,
                         Fullname = model.FirstName + " " + model.LastName,
@@ -191,31 +191,40 @@ namespace WebApplication1.Controllers
                         EmailConfirmed = true
 
                     };
-                    await _dbcontext.Users.AddAsync(newUser);
-                    await _dbcontext.SaveChangesAsync();
-                    await _userManager.AddToRoleAsync(newUser, "register_user");
-                    await _userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "register_user"));
+                    IdentityResult result = await _userManager.CreateAsync(newUser);
+                    if (result.Succeeded)
+                    {
+                        //await _dbcontext.Users.AddAsync(newUser);
+                        // await _dbcontext.SaveChangesAsync();
+                        await _userManager.AddToRoleAsync(newUser, "register_user");
+                        await _userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "register_user"));
+                    }
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                   {
+                       new Claim("UserID",newUser.Id),
+                       new Claim(ClaimTypes.Role,"register_user"),
+                   }),
+                        Expires = DateTime.UtcNow.AddMinutes(60),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var token = tokenHandler.WriteToken(securityToken);
+
+
+                    return Ok(new { token });
+
+
+
 
                 }
 
             
              
-              var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                       new Claim("UserID",model.IdToken.ToString()),
-                       new Claim(ClaimTypes.Role,"register_user"),
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(60),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
-
-            
-            return Ok(new { token });
+             
             }
             return Ok();
         }

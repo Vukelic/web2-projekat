@@ -31,6 +31,7 @@
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",
     "ngx-cookie-service": "^10.0.1",
+    "ngx-daterange": "^1.0.28",
     "ngx-toastr": "^13.0.0",
     "rxjs": "~6.5.5",
     "save": "^2.4.0",

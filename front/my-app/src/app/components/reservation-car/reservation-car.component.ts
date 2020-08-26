@@ -20,7 +20,11 @@ export class ReservationCarComponent implements OnInit {
   babyseat: string;
   navigation: string;
   createReservationForm: FormGroup;
+  pom: any;
   i: number = 0;
+
+   to: string;
+   from: string;
   constructor(private route: ActivatedRoute,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -36,6 +40,7 @@ export class ReservationCarComponent implements OnInit {
      (res: any) => {
        this.myCar = res;
        this.carid = res.id;
+       this.pom = this.carid;
        console.log(this.carid);
      }
      );
@@ -44,9 +49,12 @@ export class ReservationCarComponent implements OnInit {
   }
 
   onSubmit(){
+    this.to =this.createReservationForm.value["startDate"];
+    this.from = this.createReservationForm.value["endDate"]; 
     var token = localStorage.getItem('token');
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(token);
+    console.log(this.carid);
 
     const reservationCar = new ReservationCar(
       "0",
@@ -58,21 +66,24 @@ export class ReservationCarComponent implements OnInit {
        this.createReservationForm.value["endDate"],
        this.babyseat,
        this.navigation,
-       "0",        
+       "0",      
         decodedToken.UserID,
-        this.carid + "",
+        this.pom.toString(),
+        ""
      );
-
+     
      this.carAdminService.createReservationCar(reservationCar).subscribe(
       (res: any) => {
         this.toastrService.success(
+          
           "Car is reserved!",
           "Succesfull"
         );
+        console.log(reservationCar);
         this.createReservationForm.reset();
       },
       err => {
-        this.toastrService.error("Error", "Error");
+        this.toastrService.error("Car is rented in this ", "Reservation is unsuccesfull!");
         console.log(err);
       }
     );

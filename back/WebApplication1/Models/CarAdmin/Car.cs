@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WebApplication1.Models.CarAdmin;
 
 namespace WebApplication1.Models
 {
@@ -22,5 +23,12 @@ namespace WebApplication1.Models
         [System.Text.Json.Serialization.JsonIgnore]
         public CarCompany MyCompany { get; set; }
         public bool IsReserved { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public ICollection<Date> MyRentedDays { get; set; }
+
+        public Car()
+        {
+          
+        }
     }
 }
