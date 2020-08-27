@@ -26,6 +26,7 @@
                         </ul>
                 </div>
             </div>
+            
             <div class="row mb-3" *ngFor="let r of myReservations">
                 <div class="col-md-12">
                     <div class="card">
@@ -43,15 +44,24 @@
                                     </div>
                                     <div class="list-location">
                                     <h1>Total price: {{r.totalPrice}}<i class="fa fa-dollar"></i></h1>
-                                    </div>                                   
+                                    </div> 
+                                    <br>                                 
                                     <div class="list-descrip">
-                                    <!---    <h6>{{c.description}} </h6>  -->
+                                    <button (click)="cancel(r.id)" class="btn btn-outline-primary">Cancel Reservation</button>
                                     </div>                                
-                              </div>
+                              </div> 
+                              
                               <div class="col-md-3 border-left card-body">
-                                 
-                                  <button (click)="cancel(r.id)" class="btn btn-outline-primary">Cancel Now</button>
+                               
+                                <ul class="list-unstyled">
+                                    <li class="list-inline-item text-warning"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></li>
+                                    <li class="list-inline-item text-success"></li>
+                                    
+                                  </ul>
+                                  <button (click)="addRating(r.id)" class="btn btn-outline-primary">Add rating</button>
+                                
                               </div>
+                           
                           </div>
                         </div>
                     </div>

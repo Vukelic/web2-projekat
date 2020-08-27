@@ -75,13 +75,13 @@ export class ReservationCarComponent implements OnInit {
        "0",      
         decodedToken.UserID,
         this.pom.toString(),
-        ""
+        "",
+        "0"
      );
      
      this.carAdminService.createReservationCar(reservationCar).subscribe(
       (res: any) => {
-        this.toastrService.success(
-          
+        this.toastrService.success(        
           "Car is reserved!",
           "Succesfull"
         );

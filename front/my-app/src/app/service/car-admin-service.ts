@@ -6,8 +6,8 @@ import { Observable } from "rxjs";
 import { Car } from "src/app/entities/Car";
 import { ReservationCar } from "src/app/entities/ReservationCar";
 import { QuickReservation } from "src/app/entities/QuickReservation";
-import { QuickReservationComponent } from '../components/quick-reservation/quick-reservation.component';
 import { CityExpositure } from 'src/app/entities/CityExpositure';
+import { Rating } from "src/app/entities/Rating";
 
 @Injectable({
   providedIn: 'root'
@@ -85,5 +85,9 @@ export class CarAdminService {
       }
       GetMyExposituresByCar(id: number):Observable<CityExpositure[]>{
         return this.http.get<CityExpositure[]>(this.BaseURI + "/CarAdmin/GetMyExposituresByCar/" + id);
+      }
+
+      AddRating(model: Rating){
+        return this.http.post(this.BaseURI + "/CarAdmin/AddRating",model);
       }
 }

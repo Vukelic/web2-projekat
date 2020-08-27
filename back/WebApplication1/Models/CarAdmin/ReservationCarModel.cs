@@ -20,6 +20,14 @@ namespace WebApplication1.Models.CarAdmin
         public string BabySeat { get; set; }
         public string Navigation { get; set; }
         public string TotalPrice { get; set; }
+        public string Rating { get; set; }
 
+    }
+
+    public class RatingModel
+    {
+        public string Id { get; set; }
+        public string CarRating { get; set; }
+        public string ServiceRating { get; set; }
     }
 }

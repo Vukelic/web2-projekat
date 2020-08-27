@@ -6,6 +6,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CarAdminService } from "src/app/service/car-admin-service";
 import { CarCompany } from "src/app/entities/CarCompany";
 import { ReservationCar } from "src/app/entities/ReservationCar";
+import { Rating } from "src/app/entities/Rating";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+
 
 @Component({
   selector: 'app-my-reservations',
@@ -13,6 +16,8 @@ import { ReservationCar } from "src/app/entities/ReservationCar";
   styleUrls: ['./my-reservations.component.css']
 })
 export class MyReservationsComponent implements OnInit {
+
+
 myReservations: ReservationCar[];
   constructor(private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -21,9 +26,8 @@ myReservations: ReservationCar[];
    private modalService: NgbModal) { }
 
   ngOnInit(): void {
-this.initData();
-
-
+  this.initData();
+ 
   }
 
   initData(){
@@ -58,8 +62,16 @@ this.initData();
         this.toastrService.error('The booking can be cancelled two days before the beginning.', 'Delete reservation failed.');
       else
         console.log(err);
-      }
-      );
+      });
     }
+  
+
+    addRating(m){
+     console.log(m);
+    // const modalRef = this.modalService.open(['/myres/' + m + '/addrating']);
+     this.router.navigate(['/myres/' + m + '/addrating']);
+      }
+
+       
 
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Features;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Migrations;
@@ -147,8 +148,17 @@ namespace WebApplication1.Controllers
             {
                 if(item.Car == c)
                 {
-                    isReserved = true;
-                    break;
+                    
+                    if(item.isEnded != true)
+                    {
+                        isReserved = true;
+                        break;
+                    }
+                    else
+                    {
+                        isReserved = false;
+                    }
+                   
                 }
                 else
                 {
@@ -158,7 +168,7 @@ namespace WebApplication1.Controllers
 
             if (isReserved)
             {
-                return BadRequest(new { message = "You can't delete reserved car" });
+                return BadRequest();
             }
             else
             {
@@ -187,8 +197,16 @@ namespace WebApplication1.Controllers
             {
                 if (item.Car == myCar)
                 {
-                    isReserved = true;
-                    break;
+                    if(item.isEnded != true)
+                    {
+                        isReserved = true;
+                        break;
+                    }
+                    else
+                    {
+                        isReserved = false;
+                    }
+                  
                 }
                 else
                 {
@@ -296,7 +314,9 @@ namespace WebApplication1.Controllers
                 User = user,
                 Car = car,
                 TotalPrice = price,
-                CarPic = car.ImagePic
+                CarPic = car.ImagePic,
+                Rating = 0,
+                MyCarId = car.Id
             };
             Date d = new Date();
             d.MyCarId = car;
@@ -490,6 +510,7 @@ namespace WebApplication1.Controllers
         public async Task<IEnumerable<ReservationCar>> GetMyReservations(string id)
         {
             var reservations = new List<ReservationCar>();
+            var today = DateTime.Today;
             try
             {
                 var user = await _userManager.FindByIdAsync(id);
@@ -499,6 +520,12 @@ namespace WebApplication1.Controllers
                 {
                     if (item.User == user)
                     {
+                        if (item.EndDate < today)
+                        {
+                            item.isEnded = true;
+                            _dbcontext.Reservations.Update(item);
+                            _dbcontext.SaveChanges();
+                        }
                         reservations.Add(item);
                     }
                 }
@@ -668,7 +695,8 @@ namespace WebApplication1.Controllers
                 TotalPrice = Convert.ToDouble(model.PriceWithDiscount),
                 Car = car,
                 User = user,
-                CarPic = img               
+                CarPic = img,
+                MyCarId = car.Id
             };
 
             Date d = new Date();
@@ -720,6 +748,96 @@ namespace WebApplication1.Controllers
             }
 
             return myList;
+        }
+
+        [HttpPost]
+        [Route("AddRating")]
+        public async Task<IActionResult> AddRating([FromBody]RatingModel model)
+        {
+            int idR = Convert.ToInt32(model.Id);
+            var myReservation = await _dbcontext.Reservations.FindAsync(idR);
+            var myCarRating = Convert.ToInt32(model.CarRating);
+            var myServRatin = Convert.ToInt32(model.ServiceRating);
+          
+           
+            if( myReservation.isEnded == true)
+            {
+                if(myReservation.Rating == 0)
+                {
+                    if(myCarRating >= 1 && myCarRating <= 5  && myServRatin >=1 && myServRatin <=5)
+                    {
+                        myReservation.Rating = myCarRating;
+                        _dbcontext.Reservations.Update(myReservation);
+                        _dbcontext.SaveChanges();
+                        var carId = myReservation.MyCarId;
+                        var car = _dbcontext.Cars.Find(carId);
+                        var companyId = car.CompanyId;
+                        var company = _dbcontext.CarCompanies.Find(companyId);
+                        MyRate r = new MyRate();
+                        r.MyCarId = carId;
+                        r.MyServiceId = companyId;
+                        r.CarRating = model.CarRating;
+                        r.ServiceRating = model.ServiceRating;
+                         _dbcontext.MyRates.Add(r);
+                        _dbcontext.SaveChanges();
+                       car.Rating = CalculateAverageRatingCar(carId);
+                        _dbcontext.Cars.Update(car);
+                        _dbcontext.SaveChanges();
+                        company.Rating = CalculateAverageRatingService(companyId);
+                        _dbcontext.CarCompanies.Update(company);
+                        _dbcontext.SaveChanges();
+
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+        private double CalculateAverageRatingCar(int id)
+        {
+            double averageRating = 0;
+            double i = 0;
+            var myRates = _dbcontext.MyRates.ToList();
+
+            foreach (var item in myRates)
+            {
+                if(item.MyCarId == id)
+                {
+                    i++;
+                    averageRating += Convert.ToDouble(item.CarRating);
+                }
+            }
+
+            return (averageRating / i);
+        }
+        private double CalculateAverageRatingService(int id)
+        {
+            double averageRating = 0;
+            double i = 0;
+            var myRates = _dbcontext.MyRates.ToList();
+
+            foreach (var item in myRates)
+            {
+                if (item.MyServiceId == id)
+                {
+                    i++;
+                    averageRating += Convert.ToDouble(item.ServiceRating);
+                }
+            }
+
+            return (averageRating / i);
         }
     }
 }

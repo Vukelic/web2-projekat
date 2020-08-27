@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(MyContextBase2020))]
-    partial class MyContextBase2020ModelSnapshot : ModelSnapshot
+    [Migration("20200827144054_addedRating")]
+    partial class addedRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,30 +294,6 @@ namespace WebApplication1.Migrations
                     b.ToTable("Dates");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.CarAdmin.MyRate", b =>
-                {
-                    b.Property<int>("RateID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CarRating")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MyCarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MyServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ServiceRating")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RateID");
-
-                    b.ToTable("MyRates");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.CarAdmin.QuickReservation", b =>
                 {
                     b.Property<int>("Id")
@@ -366,9 +344,6 @@ namespace WebApplication1.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("MyCarId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Navigation")
                         .HasColumnType("nvarchar(max)");

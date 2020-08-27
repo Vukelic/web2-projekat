@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebApplication1.Models;
 using WebApplication1.Models.CarAdmin;
 
+
 namespace WebApplication1.Data
 {
     public class MyContextBase2020 : IdentityDbContext
@@ -21,6 +22,7 @@ namespace WebApplication1.Data
 
         public DbSet<ReservationCar> Reservations { get; set; }
         public DbSet<Date> Dates { get; set; }
+        public DbSet<MyRate> MyRates { get; set; }
         public DbSet<QuickReservation> QuickReservations{get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

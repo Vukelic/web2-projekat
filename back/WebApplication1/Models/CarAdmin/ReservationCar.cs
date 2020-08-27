@@ -28,9 +28,14 @@ namespace WebApplication1.Models.CarAdmin
         [System.Text.Json.Serialization.JsonIgnore]
         public Date Data { get; set; }
         public string DateId { get; set; }
+        public bool isEnded { get; set; }
+        public int Rating { get; set; }
+        public int MyCarId { get; set; }
         public ReservationCar()
         {
 
         }
+
+      
     }
 }

@@ -15,6 +15,7 @@ import { MaincCarsComponent } from './components/mainc-cars/mainc-cars.component
 import { ReservationCarComponent } from './components/reservation-car/reservation-car.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { MyReservationsComponent} from './components/my-reservations/my-reservations.component';
+import { AddRatingComponent } from './components/add-rating/add-rating.component';
 
 const routes: Routes = [
   {
@@ -59,7 +60,10 @@ const routes: Routes = [
   },
   {
     path: 'myres',
-    component: MyReservationsComponent
+    children: [
+      { path: "", component: MyReservationsComponent },
+      { path:  ":id/addrating", component: AddRatingComponent}
+    ]
   },
   {
     path: '',
