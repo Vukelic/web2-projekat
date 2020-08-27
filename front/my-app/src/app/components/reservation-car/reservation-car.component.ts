@@ -21,8 +21,12 @@ export class ReservationCarComponent implements OnInit {
   navigation: string;
   createReservationForm: FormGroup;
   pom: any;
+  LocationFrom: string;
+  LocationTo:string;
   i: number = 0;
-
+  selectedValue: any;
+  selectedValue2: any;
+  city: Array<string>;
    to: string;
    from: string;
   constructor(private route: ActivatedRoute,
@@ -34,6 +38,7 @@ export class ReservationCarComponent implements OnInit {
 
   ngOnInit(): void {
    this.load();
+   this.loadMyCompany();
    this.carAdminService
    .getCar(this.id)
    .subscribe(
@@ -55,11 +60,12 @@ export class ReservationCarComponent implements OnInit {
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(token);
     console.log(this.carid);
-
+    this.LocationFrom = this.selectedValue.name;
+    this.LocationTo = this.selectedValue2.name;
     const reservationCar = new ReservationCar(
       "0",
-       this.createReservationForm.value["pickupLocation"],
-       this.createReservationForm.value["dropoffLocation"],
+      this.LocationFrom,
+      this.LocationTo,
        this.createReservationForm.value["pickUpTime"],
        this.createReservationForm.value["returnTime"],
        this.createReservationForm.value["startDate"],
@@ -83,8 +89,10 @@ export class ReservationCarComponent implements OnInit {
         this.createReservationForm.reset();
       },
       err => {
-        this.toastrService.error("Car is rented in that period!", "Reservation is unsuccesfull!");
-        console.log(err);
+        if (err.status == 400)
+          this.toastrService.error('Car is rented in that period.', 'Reservation failed.');
+        else
+          console.log(err);
       }
     );
 
@@ -109,6 +117,17 @@ toggleEditable2(event) {
     }
     console.log(this.babyseat);
  }
+
+ loadMyCompany(){
+  this.carAdminService
+  .GetMyExposituresByCar(this.id)
+  .subscribe(
+    (res: any) => {
+      this.city = res;
+      console.log(this.city);
+    }
+    );
+}
 
 
 

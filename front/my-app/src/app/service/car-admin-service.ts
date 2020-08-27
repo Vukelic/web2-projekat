@@ -7,6 +7,7 @@ import { Car } from "src/app/entities/Car";
 import { ReservationCar } from "src/app/entities/ReservationCar";
 import { QuickReservation } from "src/app/entities/QuickReservation";
 import { QuickReservationComponent } from '../components/quick-reservation/quick-reservation.component';
+import { CityExpositure } from 'src/app/entities/CityExpositure';
 
 @Injectable({
   providedIn: 'root'
@@ -81,5 +82,8 @@ export class CarAdminService {
       }
       CreateQucikReservation(quickCar: QuickReservation){
         return this.http.post(this.BaseURI + "/CarAdmin/CreateQucikReservation", quickCar);
+      }
+      GetMyExposituresByCar(id: number):Observable<CityExpositure[]>{
+        return this.http.get<CityExpositure[]>(this.BaseURI + "/CarAdmin/GetMyExposituresByCar/" + id);
       }
 }

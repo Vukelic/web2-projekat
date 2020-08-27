@@ -41,15 +41,15 @@
                      </div>     
                      <div class="form-group">
                         <label>Pick-up location</label>
-                       <input type="text" class="form-control"   formControlName="pickupLocation">   
-                       <label class="text-danger" *ngIf="createReservationForm.get('pickupLocation').touched && createReservationForm.get('pickupLocation').errors?.required">This
-                        field is mandatory.</label>                    
+                        <select id="city"  [(ngModel)]="selectedValue" name="city" formControlName="pickupLocation" class="form-control">
+                           <option *ngFor="let a of city" [ngValue]="a">{{ a.name}}</option>   
+                           </select>                                     
                      </div>   
                      <div class="form-group">
                         <label>Drop-off location</label>
-                       <input type="text" class="form-control"  formControlName="dropoffLocation" >         
-                       <label class="text-danger" *ngIf="createReservationForm.get('dropoffLocation').touched && createReservationForm.get('dropoffLocation').errors?.required">This
-                        field is mandatory.</label>          
+                        <select id="city"  [(ngModel)]="selectedValue2" name="city" formControlName="dropoffLocation" class="form-control">
+                           <option *ngFor="let a of city" [ngValue]="a">{{ a.name}}</option>    
+                           </select>           
                      </div>    
                      <div class="form-group">
                         <input id="is3dCheckBox" type="checkbox" (change)="toggleEditable($event)" formControlName="navigation">

@@ -26,6 +26,7 @@ namespace WebApplication1.Models
         [System.Text.Json.Serialization.JsonIgnore]
         public ICollection<Date> MyRentedDays { get; set; }
 
+        public int CompanyId { get; set; }
         public Car()
         {
           

@@ -54,6 +54,7 @@ namespace WebApplication1.Controllers
                 Rating = Convert.ToDouble(model.Rating),
                 ImagePic = img,
                 MyCompany = company,
+                CompanyId = id,
                 IsReserved = Convert.ToBoolean(model.IsReserved)
             };
 
@@ -241,6 +242,7 @@ namespace WebApplication1.Controllers
             mymodel.Name = model.Name;
             mymodel.CityExpositure = model.CityExpositure;
             mymodel.Rating = Convert.ToDouble(model.Rating);
+            
             try
             {
                 _dbcontext.CarCompanies.Update(mymodel);
@@ -306,57 +308,62 @@ namespace WebApplication1.Controllers
 
             if (CheckAvailability(d))
             {
-                try
+                if (CheckAvailabilityInQuickRes(d))
                 {
-                    _dbcontext.Dates.Add(d);
-                    _dbcontext.SaveChanges();
-                    rcmodel.Data = d;
-                    rcmodel.DateId = Convert.ToString(d.Id);
-                    _dbcontext.Reservations.Add(rcmodel);
-                    _dbcontext.SaveChanges();
-
-
-
-                    string toMail = "Model of car: " + rcmodel.Car.ModelOfCar + Environment.NewLine +
-                                        "Price for car per day: " + rcmodel.Car.Price + Environment.NewLine +
-                                        "Number Of Seats: " + rcmodel.Car.NumberOfSeats + Environment.NewLine +
-                                        "Start date: " + rcmodel.StartDate + Environment.NewLine +
-                                        "End date: " + rcmodel.EndDate + Environment.NewLine +
-                                        "Totaly price:" + rcmodel.TotalPrice + Environment.NewLine +
-                                        "Navigation is " + rcmodel.Navigation + "in total price!" + Environment.NewLine +
-                                        "BabySeat is " + rcmodel.BabySeat + "in total price!" + Environment.NewLine;
-
-                    MailMessage mail = new MailMessage();
-                    mail.To.Add(user.Email);
-                    mail.From = new MailAddress("lnslagalica2@gmail.com");
-                    mail.Subject = "Projekat";
-                    mail.Body = "Reservation is succesfully created!" + Environment.NewLine;
-                    mail.Body += toMail;
-
-                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    try
                     {
-                        smtp.Credentials = new System.Net.NetworkCredential("lnslagalica2@gmail.com", "lazniprofil");
-                        smtp.EnableSsl = true;
-                        smtp.Send(mail);
+
+                        _dbcontext.Dates.Add(d);
+                        _dbcontext.SaveChanges();
+                        rcmodel.Data = d;
+                        rcmodel.DateId = Convert.ToString(d.Id);
+                        _dbcontext.Reservations.Add(rcmodel);
+                        _dbcontext.SaveChanges();
+
+
+
+                        string toMail = "Model of car: " + rcmodel.Car.ModelOfCar + Environment.NewLine +
+                                            "Price for car per day: " + rcmodel.Car.Price + Environment.NewLine +
+                                            "Number Of Seats: " + rcmodel.Car.NumberOfSeats + Environment.NewLine +
+                                            "Start date: " + rcmodel.StartDate + Environment.NewLine +
+                                            "End date: " + rcmodel.EndDate + Environment.NewLine +
+                                            "Totaly price:" + rcmodel.TotalPrice + Environment.NewLine +
+                                            "Navigation is " + rcmodel.Navigation + "in total price!" + Environment.NewLine +
+                                            "BabySeat is " + rcmodel.BabySeat + "in total price!" + Environment.NewLine;
+
+                        MailMessage mail = new MailMessage();
+                        mail.To.Add(user.Email);
+                        mail.From = new MailAddress("lnslagalica2@gmail.com");
+                        mail.Subject = "Projekat";
+                        mail.Body = "Reservation is succesfully created!" + Environment.NewLine;
+                        mail.Body += toMail;
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.Credentials = new System.Net.NetworkCredential("lnslagalica2@gmail.com", "lazniprofil");
+                            smtp.EnableSsl = true;
+                            smtp.Send(mail);
+                        }
+
+                        return Ok(rcmodel);
                     }
 
 
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error with creating new car reservation. -> {e.Message}");
+                    }
                 }
-
-
-
-                catch (Exception e)
+                else
                 {
-                    Console.WriteLine($"Error with creating new car reservation. -> {e.Message}");
+                    return BadRequest();
                 }
             }
             else
             {
                 return BadRequest();
             }
-
-
-
             return Ok(rcmodel);
         }
 
@@ -406,6 +413,44 @@ namespace WebApplication1.Controllers
                 {
                     DateTime dt1 = DateTime.Parse(date.ReservedFrom);
                     DateTime dt2 = DateTime.Parse(date.ReservedTo);
+                    if ((dt1 <= fromDate && dt2 >= toDate) || (dt1 >= fromDate && dt2 <= toDate))
+                    {
+                        available = false;
+                        break;
+                    }
+                }
+            }
+
+            return available;
+        }
+
+        private bool CheckAvailabilityInQuickRes(Date d)
+        {
+            bool available = true;
+            List<QuickReservation> alldates = null;
+            DateTime fromDate = DateTime.Parse(d.ReservedFrom);
+            DateTime toDate = DateTime.Parse(d.ReservedTo);
+            try
+            {
+                alldates = _dbcontext.QuickReservations.ToList();
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine($"Error with {e.Message}");
+            }
+
+            if (alldates.Count == 0)
+            {
+                return true;
+            }
+
+            foreach (var date in alldates)
+            {
+                if (date.CarId == d.IdOfCar)
+                {
+                    DateTime dt1 = date.StartDate;
+                    DateTime dt2 = date.EndDate;
                     if ((dt1 <= fromDate && dt2 >= toDate) || (dt1 >= fromDate && dt2 <= toDate))
                     {
                         available = false;
@@ -470,7 +515,7 @@ namespace WebApplication1.Controllers
         [Route("CreateQuickReservationCar")]
         public async Task<IActionResult> CreateQuickReservationCar([FromBody] QuickReservationModel model)
         {
-            var idcar = Convert.ToInt32(model.CarId);
+            var idcar = Convert.ToInt32(model.Car);
             var car = await _dbcontext.Cars.FindAsync(idcar);
             string img = car.ImagePic.Replace("C:\\fakepath\\", "assets/");
             QuickReservation qrmodel = new QuickReservation()
@@ -655,6 +700,26 @@ namespace WebApplication1.Controllers
 
             }
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetMyExposituresByCar/{id}")]
+        public async Task<List<CityExpositureModel>> GetMyExposituresByCar(int id)
+        {
+            var myList = new List<CityExpositureModel>();
+            var myExpositure = new CityExpositureModel();
+            var car = await _dbcontext.Cars.FindAsync(id);
+            var myCompany = await _dbcontext.CarCompanies.FindAsync(car.CompanyId);
+            var expositure = myCompany.CityExpositure;
+            string[] cities = expositure.Split(',');
+            foreach (var c in cities)
+            {
+                myExpositure = new CityExpositureModel();
+                myExpositure.Name = c;
+                myList.Add(myExpositure);
+            }
+
+            return myList;
         }
     }
 }
