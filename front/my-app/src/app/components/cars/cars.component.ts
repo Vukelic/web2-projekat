@@ -34,7 +34,6 @@ export class CarsComponent implements OnInit {
 
   ngOnInit(): void {
     let token =localStorage.getItem('token');
-
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(token);
     console.log(decodedToken.UserID);
@@ -47,14 +46,17 @@ export class CarsComponent implements OnInit {
         console.log(this.cadmin);
       });
 
-      this.carAdminService.GetCarsOfCompany(this.username).subscribe(
-        (res: any) => {
-          this.cars = res;
-          console.log(res);
-        });
-
+    this.loadCars();
     this.load();
     this.loadQuickReservation();
+  }
+
+  loadCars(){
+    this.carAdminService.GetCarsOfCompany(this.username).subscribe(
+      (res: any) => {
+        this.cars = res;
+        console.log(res);
+      });
   }
 
   CreateQuick(){
@@ -100,7 +102,7 @@ console.log(this.selectedValue.id);
     this.carAdminService.CreateCar(car).subscribe(
       (res: any) => {
         this.createCarForm.reset();
-        
+        this.loadCars();
       },
       err => {
       console.log(err);
