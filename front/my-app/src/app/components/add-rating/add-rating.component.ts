@@ -36,7 +36,7 @@ export class AddRatingComponent implements OnInit {
       (res: any) => {
         this.addRatingForm.reset();
         this.toastrService.success(
-          "Car service is created!",
+          "Rating is added!",
           "Succesfull"
         );
       },

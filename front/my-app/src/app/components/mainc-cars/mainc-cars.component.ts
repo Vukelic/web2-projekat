@@ -58,10 +58,13 @@ export class MaincCarsComponent implements OnInit {
   onRent(c){
     console.log(c);
     this.carAdminService.CreateQucikReservation(c).subscribe((res: any) => {
-       console.log(res);
+      this.initData();
      },
      err => {
-      
+      if (err.status == 400)
+      this.toastrService.error('Can not rent same car 2x.', 'Reservation failed.');
+    else
+      console.log(err);
     }
      );
   }

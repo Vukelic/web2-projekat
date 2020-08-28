@@ -18,21 +18,28 @@ import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 export class GraphicComponent implements OnInit {
   userId: string;
   report: Charts;
-
+  checkIncome: FormGroup;
   one:string;
   two:string;
   three:string;
   num1: number;
   num2: number;
   num3:number;
+  to: string; 
+  from: string;
+  myNum: string;
+  profit: number;
   
   public chartType: string = 'line';
   public chartDatasets: Array<any> = [
     { data: [1,2,3], label: 'Reservations' }
   ];
+  public chartDatasets2: Array<any> = [
+    { data: [1], label: 'Profit' }
+  ];
 
   public chartLabels: Array<any> = ['This day', 'This week', 'This month'];
-
+  public chartLabels2: Array<any> = ['Choose date'];
   public chartColors: Array<any> = [
     {
       backgroundColor: [
@@ -60,6 +67,7 @@ export class GraphicComponent implements OnInit {
   constructor(private carAdminService: CarAdminService,private toastrService: ToastrService) {}
 
   ngOnInit(): void {
+    this.load();
     let token =localStorage.getItem('token');
 
     const helper = new JwtHelperService();
@@ -72,28 +80,43 @@ export class GraphicComponent implements OnInit {
     .subscribe(
       (res: any) => {
         this.report = res;
-        console.log(this.report);
         this.one = res.first;
         this.two= res.second;
         this.three = res.third;
-        console.log(this.one);
         this.num1 = parseInt(this.one);
         this.num2 = parseInt(this.two);
        this.num3 = parseInt(this.three);
-       console.log(this.num1);
        this.chartDatasets[0].data = [this.num1, this.num2, this.num3];
-       console.log(this.chartDatasets[0].data);
+       this.chartLabels = ['15-08', '16.08-22.08', '1.08-31.08'];
       },
       err=>{
         this.toastrService.error("Error with charts!", "Charts error!");
         console.log(err);
       });   
   }
-  klik()
+
+  onSubmit()
   {
-    this.chartDatasets[0].data = [this.num1, this.num2, this.num3];
-    this.chartLabels = ['15-08', '16.08-22.08', '1.08-31.08'];
-    console.log(this.chartDatasets[0].data);
+    this.to =  this.checkIncome.value["startDate"];
+    this.from =  this.checkIncome.value["endDate"];
+  this.carAdminService.GetProfit(this.to, this.from, this.userId).subscribe((res: any) => {
+    this.myNum = res;
+     this.profit =  parseInt(this.myNum);
+     this.chartDatasets2[0].data = [this.profit];
+     this.chartLabels2= [this.to, this.from];
+     this.checkIncome.reset();
+   });
+  }
+
+  private load() {
+    let startDate = "";
+    let endDate = "";
+
+  
+    this.checkIncome = new FormGroup({
+      startDate: new FormControl(startDate, Validators.required),
+      endDate: new FormControl(endDate, Validators.required)
+    });
   }
 
   

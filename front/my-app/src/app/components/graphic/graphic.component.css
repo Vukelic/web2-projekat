@@ -34,14 +34,15 @@
     }
     .button {
         border: none;
-        background-color: #28aae1;
+        background-color: rgba(255,99,132,1);
         color: #fff;
         text-align: center;
-        width: 100;
-        padding: 11px;
+        width: 50 !important;
+        height: 20 !important; 
+        padding: 4px;
         text-transform: uppercase;
-        font-weight: 500;
+        font-weight: 300;
         letter-spacing: 0.5px;
-        border-radius: none;
+        border-radius: 4px;
         outline: 0;
       }

@@ -577,13 +577,10 @@ namespace WebApplication1.Controllers
                     _dbcontext.QuickReservations.Add(qrmodel);
                     _dbcontext.SaveChanges();
 
-                   // _dbcontext.Dates.Add(d);
-                    //_dbcontext.SaveChanges();
-
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Error with creating new quick reservation. -> {e.Message}");
+                    return BadRequest();
                 }
             }
             else
@@ -874,7 +871,7 @@ namespace WebApplication1.Controllers
             {
                 if(item.MyCompanyId == myCompany)
                 {
-                    if (item.StartDate == Convert.ToDateTime("2020-08-20") || item.EndDate == Convert.ToDateTime("2020-08-20"))
+                    if (item.StartDate >= Convert.ToDateTime("2020-08-20") && item.EndDate <= Convert.ToDateTime("2020-08-20"))
                     {
                         i++;
                     }
@@ -888,7 +885,7 @@ namespace WebApplication1.Controllers
             {
                 if (item.MyCompanyId == myCompany)
                 {
-                    if (item.StartDate == Convert.ToDateTime("2020-08-16") || item.EndDate == Convert.ToDateTime("2020-08-22"))
+                    if (item.StartDate >= Convert.ToDateTime("2020-08-16") && item.EndDate <= Convert.ToDateTime("2020-08-22"))
                     {
                         i++;
                     }
@@ -902,7 +899,7 @@ namespace WebApplication1.Controllers
             {
                 if (item.MyCompanyId == myCompany)
                 {
-                    if (item.StartDate == Convert.ToDateTime("2020-08-01") || item.EndDate == Convert.ToDateTime("2020-08-31"))
+                    if (item.StartDate >= Convert.ToDateTime("2020-08-01") && item.EndDate <= Convert.ToDateTime("2020-08-31"))
                     {
                         i++;
                     }
@@ -912,6 +909,33 @@ namespace WebApplication1.Controllers
 
             return cm;
         }
-       
+
+
+        [HttpGet]
+        [Route("GetProfit/{start}/{end}/{id}")]
+        public async Task<string> GetProfit(string start, string end, string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var myCompanyId = user.CarCompanyId;
+            DateTime dt1 = Convert.ToDateTime(start); 
+            DateTime dt2 = Convert.ToDateTime(end); 
+            int profit = 0;
+
+            var listOfAll = _dbcontext.Reservations.ToList();
+            foreach (var item in listOfAll)
+            {
+                if(item.MyCompanyId == myCompanyId)
+                {
+                    if(item.StartDate >= dt1 && item.EndDate <= dt2)
+                    {
+                        profit += Convert.ToInt32(item.TotalPrice);
+                    }               
+                }
+            }
+            
+            return Convert.ToString(profit);
+
+        }
+
     }
 }

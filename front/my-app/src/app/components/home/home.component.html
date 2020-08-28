@@ -13,7 +13,7 @@
 
 
   <div class="container-fluid main-text">
-    <h2>MORE FROM OUR DESTINATIONS</h2>
+    <h2>WE OFFER SPECIAL BENEFITS AND CONDITIONS</h2>
     <p>Quad adventure in desert . . . </p>
   </div>
   
@@ -51,7 +51,7 @@
    
   <section class="services-area pt-100 pb-70" id="services">
     <div class="container-fluid main-text">
-      <h2>BEST RATES & SERVICE</h2>
+      <h2>EXCLUSIVE RATES & SERVICES</h2>
       <p>Choose the best for you . . .</p>
     </div>
 		<div class="container">			
@@ -63,7 +63,16 @@
               <i class="fa fa-map-pin">{{c.cityExpositure}}</i> <br>
              <i class="fa fa-map-marker">{{c.address}}</i>
             <p>{{c.description}} </p>
-            <i class="fa fa-star"></i><i class="fa fa-star"></i>
+            <li class="list-inline-item text-warning" *ngIf="c.averageRating =='1'"> 
+              <i class="fa fa-star"></i></li>
+            <li class="list-inline-item text-warning" *ngIf="c.averageRating =='2'"> 
+              <i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+              <li class="list-inline-item text-warning" *ngIf="c.averageRating =='3'"> 
+              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+              <li class="list-inline-item text-warning" *ngIf="c.averageRating =='4'"> 
+                  <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+               <li class="list-inline-item text-warning" *ngIf="c.averageRating =='5'"> 
+                  <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
 					</div>
 				</div>
 				

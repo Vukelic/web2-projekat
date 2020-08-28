@@ -8,6 +8,7 @@ import { ReservationCar } from "src/app/entities/ReservationCar";
 import { QuickReservation } from "src/app/entities/QuickReservation";
 import { CityExpositure } from 'src/app/entities/CityExpositure';
 import { Rating } from "src/app/entities/Rating";
+import { startWith } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -93,5 +94,9 @@ export class CarAdminService {
 
       GetReport(id: string){
         return this.http.get(this.BaseURI + "/CarAdmin/GetMyReport/" + id);
+      }
+
+      GetProfit(start: string, end: string, id: string){
+        return this.http.get(this.BaseURI + "/CarAdmin/GetProfit/" + start + "/"+ end + "/" + id);
       }
 }

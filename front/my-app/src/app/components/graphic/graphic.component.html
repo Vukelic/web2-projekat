@@ -7,7 +7,22 @@
     <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels"
         [colors]="chartColors" [options]="chartOptions" [legend]="true">
     </canvas>
-    <button class= "button" (click)="klik()">Watch now!</button>
+</div>
+
+<div  class="card card-smallcard" style="padding:1cm; float: left; width: 18cm; margin: 4mm; height: 12cm;">
+    <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets2" [labels]="chartLabels2"
+        [colors]="chartColors" [options]="chartOptions" [legend]="true">
+    </canvas>
+    
+    <form [formGroup]="checkIncome" (ngSubmit)="onSubmit()">
+        <label>Start: </label>
+        <input type="date" formControlName="startDate" >
+        &nbsp;
+        <label>End: </label>
+       <input type="date" formControlName="endDate" >  
+          &nbsp;
+        <button type="submit"  class= "button"  [disabled]="!checkIncome.valid">Watch now!</button>     
+    </form>  
 </div>
 </div>
 </body>
