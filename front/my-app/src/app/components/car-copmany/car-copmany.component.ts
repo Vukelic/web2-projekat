@@ -40,7 +40,8 @@ export class CarCopmanyComponent implements OnInit {
      this.createCompanyForm.value["cityExpositure"],
      this.createCompanyForm.value["imagepic"],
       "",
-    this.selectedValue.userName
+    this.selectedValue.userName,
+    "0"
     );
     console.log(carCompany);
     console.log("pre vr");

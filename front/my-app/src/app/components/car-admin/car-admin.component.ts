@@ -25,7 +25,11 @@ export class CarAdminComponent implements OnInit {
   imagePic: string;
   id: number;
   copanyID: string;
+  rating: string;
   allCars: Car[];
+  intvalue: number;
+  average: [];
+
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -56,13 +60,15 @@ export class CarAdminComponent implements OnInit {
         this.imagePic = res.imagePic;
         this.name = res.name;
         this.copanyID = res.id;
+        this.rating = res.rating;
+         this.intvalue = parseInt(this.rating);
         console.log(decodedToken.UserID);
       }
       );
 
       this.carAdminService.GetCarsOfCompany(decodedToken.UserID).subscribe((res: any) => {
         this.allCars = res;
-         console.log(res);
+        console.log(this.allCars);
        },
        err => {
   

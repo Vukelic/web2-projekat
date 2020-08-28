@@ -470,6 +470,7 @@ namespace WebApplication1.Controllers
                 Description = model.Description,
                 Name = model.Name,
                 Rating = 0,
+                AverageRating = 0,
                 ImagePic = img
         };
 

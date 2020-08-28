@@ -27,6 +27,7 @@ namespace WebApplication1.Models
         public ICollection<Date> MyRentedDays { get; set; }
 
         public int CompanyId { get; set; }
+        public int AverageRating { get; set; }
         public Car()
         {
           

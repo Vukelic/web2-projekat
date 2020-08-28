@@ -72,13 +72,14 @@ export class EditCarCompanyComponent implements OnInit {
     const carCompany = new CarCompany(
       this.IdComp + "",
       (<HTMLInputElement>(document.getElementById("name"))).value,
-      "1",
+      "0",
       (<HTMLInputElement>(document.getElementById("desc"))).value,
       (<HTMLInputElement>(document.getElementById("add"))).value,
       (<HTMLInputElement>(document.getElementById("city"))).value,
       (<HTMLInputElement>(document.getElementById("img"))).value,
       "",
-    this.adm
+    this.adm,
+    "0"
     );
 console.log(carCompany);
     this.carAdminService.updateCarCompany(carCompany).subscribe(

@@ -15,6 +15,7 @@ namespace WebApplication1.Models
         public string CityExpositure { get; set; }
         public string ImagePic { get; set; }
         public string Cadmin { get; set; }
+        public string AverageRating { get; set; }
 
     }
 }

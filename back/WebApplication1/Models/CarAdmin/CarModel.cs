@@ -15,5 +15,6 @@ namespace WebApplication1.Models
         public string ImagePic { get; set; }
         public string NameOfCompany { get; set; }
         public string IsReserved { get; set; }
+        public string AverageRating { get; set; }
     }
 }

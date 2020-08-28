@@ -38,8 +38,16 @@
                                       <div class="list-title">
                                           <ul class="list-inline list-unstyled">
                                           <li class="list-inline-item"><h4>{{name}}</h4></li>
-                                          <li class="list-inline-item text-warning"> <i class="fa fa-star"></i></li>
-                                          <li class="list-inline-item text-success"><i class="fa fa-thumbs-up"></i></li>
+                                          <li class="list-inline-item text-warning" *ngIf="intvalue==1"> 
+                                            <i class="fa fa-star"></i></li>
+                                          <li class="list-inline-item text-warning" *ngIf="intvalue==2"> 
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+                                            <li class="list-inline-item text-warning" *ngIf="intvalue==3"> 
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+                                            <li class="list-inline-item text-warning" *ngIf="intvalue==4"> 
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+                                             <li class="list-inline-item text-warning" *ngIf="intvalue==5"> 
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
                                       </ul>
                                       </div>
                                       <div class="list-location">
@@ -56,9 +64,8 @@
                                       
                                   </div>
                                   <div class="col-md-3 border-left card-body">
-                                      <ul class="list-unstyled">
-                                          <li><h3>Very Good</h3></li>
-                                          <li class="text-secondary"><small>8067 Reviews  </small></li>
+                                      <ul class="list-unstyled">                                       
+                                          <li class="text-secondary"><small>Average rating {{rating}}</small></li>
                                       </ul>
                                       <button type="button"  (click)="onEdit(copanyID)" class="btn btn-outline-primary">Edit company</button>
                                     </div>
@@ -99,15 +106,23 @@
                                       <div class="list-title">
                                           <ul class="list-inline list-unstyled">
                                           <li class="list-inline-item"><h4>{{c.modelOfCar}}</h4></li>
-                                          <li class="list-inline-item text-warning"> <i class="fa fa-star"></i></li>
-                                          <li class="list-inline-item text-success"><i class="fa fa-thumbs-up"></i></li>
+                                          <li class="list-inline-item text-warning" *ngIf="c.averageRating =='1'"> 
+                                            <i class="fa fa-star"></i></li>
+                                          <li class="list-inline-item text-warning" *ngIf="c.averageRating =='2'"> 
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+                                            <li class="list-inline-item text-warning" *ngIf="c.averageRating =='3'"> 
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+                                            <li class="list-inline-item text-warning" *ngIf="c.averageRating =='4'"> 
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
+                                             <li class="list-inline-item text-warning" *ngIf="c.averageRating =='5'"> 
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li>
                                       </ul>
                                       </div>
                                       <div class="list-location">
-                                          <i class="fa fa-map-pin"></i><small>seats: {{c.numberOfSeats}}</small>
+                                          <i ></i><small>seats: {{c.numberOfSeats}}</small>
                                       </div>
                                       <div class="list-location">
-                                        <i class="fa fa-map-marker"></i><small>price: {{c.price}}</small>
+                                        <i ></i><small>price: {{c.price}}</small>
                                     </div>
                                       <div class="list-descrip">
                                         <small>{{c.description}}</small>  
@@ -118,8 +133,7 @@
                                   </div>
                                   <div class="col-md-3 border-left card-body">
                                       <ul class="list-unstyled">
-                                          <li><h3>Very Good</h3></li>
-                                          <li class="text-secondary"><small>8067 Reviews  </small></li>
+                                          <li class="text-secondary"><small>Averge rating {{c.rating}}</small></li>
                                       </ul>
                                       <button type="button" (click)="onClick(c.id)"   class="btn btn-outline-primary">Edit car</button>
                                     </div>

@@ -53,6 +53,7 @@ namespace WebApplication1.Controllers
                 NumberOfSeats = Convert.ToInt32(model.NumberOfSeats),
                 Price = Convert.ToDouble(model.Price),
                 Rating = Convert.ToDouble(model.Rating),
+                AverageRating = Convert.ToInt32(model.AverageRating),
                 ImagePic = img,
                 MyCompany = company,
                 CompanyId = id,
@@ -121,9 +122,18 @@ namespace WebApplication1.Controllers
             {
                 var user = await _userManager.FindByIdAsync(id);
                 var num = user.CarCompanyId;
+                var listOfCars = _dbcontext.Cars.ToList();
 
-                cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
-               .FirstOrDefaultAsync(company => company.Id == num)).Cars.ToList();
+                foreach (var item in listOfCars)
+                {
+                    if(item.CompanyId == num)
+                    {
+                        cars.Add(item);
+                    }
+                }   
+
+            //    cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
+            //   .FirstOrDefaultAsync(company => company.Id == num)).Cars.ToList();
 
             }
             catch (Exception e)
@@ -260,6 +270,7 @@ namespace WebApplication1.Controllers
             mymodel.Name = model.Name;
             mymodel.CityExpositure = model.CityExpositure;
             mymodel.Rating = Convert.ToDouble(model.Rating);
+            mymodel.AverageRating = Convert.ToInt32(model.AverageRating);
             
             try
             {
@@ -781,9 +792,11 @@ namespace WebApplication1.Controllers
                          _dbcontext.MyRates.Add(r);
                         _dbcontext.SaveChanges();
                        car.Rating = CalculateAverageRatingCar(carId);
+                        car.AverageRating = Convert.ToInt32(car.Rating);
                         _dbcontext.Cars.Update(car);
                         _dbcontext.SaveChanges();
                         company.Rating = CalculateAverageRatingService(companyId);
+                        company.AverageRating = Convert.ToInt32(company.Rating);
                         _dbcontext.CarCompanies.Update(company);
                         _dbcontext.SaveChanges();
 

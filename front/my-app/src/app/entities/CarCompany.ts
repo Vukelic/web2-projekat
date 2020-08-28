@@ -9,6 +9,7 @@ export class CarCompany {
     public cityexpositure: string,
     public imagepic: string,
     public cars: string,
-    public cadmin: string = null
+    public cadmin: string = null,
+    public averageRating: string
   ) {}
 }
