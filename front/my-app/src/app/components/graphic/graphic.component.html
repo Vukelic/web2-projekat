@@ -1,0 +1,13 @@
+<body>
+    <app-header></app-header>
+<br><br><br>
+
+<div style="display: block">
+<div  class="card card-smallcard" style="padding:1cm; float: left; width: 18cm; margin: 4mm; height: 12cm;">
+    <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels"
+        [colors]="chartColors" [options]="chartOptions" [legend]="true">
+    </canvas>
+    <button class= "button" (click)="klik()">Watch now!</button>
+</div>
+</div>
+</body>

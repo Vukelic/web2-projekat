@@ -31,6 +31,7 @@ namespace WebApplication1.Models.CarAdmin
         public bool isEnded { get; set; }
         public int Rating { get; set; }
         public int MyCarId { get; set; }
+        public int MyCompanyId { get; set; }
         public ReservationCar()
         {
 

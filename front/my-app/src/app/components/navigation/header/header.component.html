@@ -10,13 +10,21 @@
                     <li class="nav-item" *ngIf="LogedUser.Role==0"> <a class="nav-link" routerLink="/carcompany">Car-Service</a> </li> 
                     <li class="nav-item" *ngIf="LogedUser.Role==0"> <a class="nav-link" routerLink="/webadmin">Home</a> </li>                     
                     <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/caradmin">Home</a> </li>   
-                    <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/cars">Cars</a> </li> 
-                    <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/myacc">My Account</a> </li>        
+                    <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/cars">Cars</a> </li>   
+                    <li class="nav-item" *ngIf="LogedUser.Role==1"> <a class="nav-link" routerLink="/report">Report</a> </li>     
                     <li class="nav-item" *ngIf="LogedUser.Role==3"  (click)="klik()"> <a class="nav-link">Log In</a></li>
                     <li class="nav-item" *ngIf="LogedUser.Role==2"> <a class="nav-link" routerLink="/mainc">Home</a> </li>  
                     <li class="nav-item" *ngIf="LogedUser.Role==2"> <a class="nav-link" routerLink="/myres">My Reservations</a> </li>  
-                    <li class="nav-item" *ngIf="LogedUser.Role==2 || LogedUser.Role==0 || LogedUser.Role==1"  (click)="unklik()"  ><a class="nav-link">Log Out</a></li>
-                    </ul>
+                    <li class="nav-item dropdown" *ngIf="LogedUser.Role==2 || LogedUser.Role==0 || LogedUser.Role==1">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                           Profile </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                          <a class="dropdown-item"  *ngIf="LogedUser.Role==1" routerLink="/myacc">My account</a>
+                          <a class="dropdown-item" *ngIf="LogedUser.Role==2 || LogedUser.Role==0 || LogedUser.Role==1"  (click)="unklik()">Log out</a>
+                        </div>
+                      </li>
+                </ul>
                 </div>
         </div>
     </nav>

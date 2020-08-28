@@ -36,6 +36,8 @@ import { MyReservationsComponent } from './components/my-reservations/my-reserva
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { AddRatingComponent } from './components/add-rating/add-rating.component';
+import { GraphicComponent } from './components/graphic/graphic.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 let config = new AuthServiceConfig([
   { 
@@ -47,7 +49,6 @@ let config = new AuthServiceConfig([
 export function provideConfig() {
   return config;
 }
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +67,8 @@ export function provideConfig() {
     ReservationCarComponent,
     MyAccountComponent,
     MyReservationsComponent,
-    AddRatingComponent
+    AddRatingComponent,
+    GraphicComponent
   ],
   imports: [
     BrowserModule,
@@ -78,6 +80,10 @@ export function provideConfig() {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MDBBootstrapModule.forRoot(),
+    ToastrModule.forRoot({
+      progressBar: true
+    }),
     ToastrModule.forRoot({
       progressBar: true
     }),

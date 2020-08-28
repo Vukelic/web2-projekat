@@ -16,6 +16,7 @@ import { ReservationCarComponent } from './components/reservation-car/reservatio
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { MyReservationsComponent} from './components/my-reservations/my-reservations.component';
 import { AddRatingComponent } from './components/add-rating/add-rating.component';
+import { GraphicComponent } from './components/graphic/graphic.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,10 @@ const routes: Routes = [
   {
     path: 'cars',
     component: CarsComponent
+  },
+  {
+    path: 'report',
+    component: GraphicComponent
   },
   {
     path: 'myres',

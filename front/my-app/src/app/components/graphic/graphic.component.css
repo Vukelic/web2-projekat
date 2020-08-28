@@ -1,0 +1,47 @@
+
+    .navRow:hover {
+        cursor: pointer;
+        background-color: rgb(236, 236, 236) !important;
+        box-shadow: 2px 2px 13px #0000004b;
+    }
+    
+    .card-smallcard {
+        border: none !important;
+        box-shadow: 1px 1px 10px #0000004a;
+        background-color: whitesmoke;
+    }
+    
+    .card-smallcard:hover {
+        box-shadow: 2px 2px 13px #0000004b;
+    }
+    
+    .dropShadow {
+        box-shadow: 1px 1px 10px #0000004a;
+    }
+    
+    .tdFitRow {
+        padding: 2mm;
+        vertical-align: middle;
+    }
+    
+    .noMargin {
+        margin: 0 0 0 0;
+    }
+    
+    .ratingImg {
+        height: 30px;
+        width: 145px;
+    }
+    .button {
+        border: none;
+        background-color: #28aae1;
+        color: #fff;
+        text-align: center;
+        width: 100;
+        padding: 11px;
+        text-transform: uppercase;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        border-radius: none;
+        outline: 0;
+      }

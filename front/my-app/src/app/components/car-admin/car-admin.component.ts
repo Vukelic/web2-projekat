@@ -8,7 +8,6 @@ import { ToastrService } from "ngx-toastr";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ViewCarsComponent } from '../view-cars/view-cars.component';
 
 @Component({
   selector: 'app-car-admin',
@@ -85,6 +84,7 @@ export class CarAdminComponent implements OnInit {
     this.router.navigate(['/caradmin/' + c + '/edit']);
   }
 
+  
  
 
 

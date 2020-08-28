@@ -327,7 +327,8 @@ namespace WebApplication1.Controllers
                 TotalPrice = price,
                 CarPic = car.ImagePic,
                 Rating = 0,
-                MyCarId = car.Id
+                MyCarId = car.Id,
+                MyCompanyId = car.CompanyId
             };
             Date d = new Date();
             d.MyCarId = car;
@@ -707,7 +708,8 @@ namespace WebApplication1.Controllers
                 Car = car,
                 User = user,
                 CarPic = img,
-                MyCarId = car.Id
+                MyCarId = car.Id,
+                MyCompanyId = car.CompanyId
             };
 
             Date d = new Date();
@@ -852,5 +854,64 @@ namespace WebApplication1.Controllers
 
             return (averageRating / i);
         }
+
+        [HttpGet]
+        [Route("GetMyReport/{id}")]
+        public async Task<Object> GetMyReport(string id)
+        {
+        //    var myList = new List<ChartModel>();
+            ChartModel cm = new ChartModel();
+            int i = 0;
+            var user = await _userManager.FindByIdAsync(id);
+
+            var myCompany = user.CarCompanyId;
+
+            var listReservation = _dbcontext.Reservations.ToList();
+
+            var myListDates = _dbcontext.Reservations.ToList();
+
+            foreach (var item in myListDates)
+            {
+                if(item.MyCompanyId == myCompany)
+                {
+                    if (item.StartDate == Convert.ToDateTime("2020-08-20") || item.EndDate == Convert.ToDateTime("2020-08-20"))
+                    {
+                        i++;
+                    }
+                }
+              
+            }
+
+            cm.First = (Convert.ToString(i));
+            i = 0;
+            foreach (var item in myListDates)
+            {
+                if (item.MyCompanyId == myCompany)
+                {
+                    if (item.StartDate == Convert.ToDateTime("2020-08-16") || item.EndDate == Convert.ToDateTime("2020-08-22"))
+                    {
+                        i++;
+                    }
+                }
+            }
+
+            cm.Second = (Convert.ToString(i));
+            i = 0;
+
+            foreach (var item in myListDates)
+            {
+                if (item.MyCompanyId == myCompany)
+                {
+                    if (item.StartDate == Convert.ToDateTime("2020-08-01") || item.EndDate == Convert.ToDateTime("2020-08-31"))
+                    {
+                        i++;
+                    }
+                }
+            }
+            cm.Third = (Convert.ToString(i));
+
+            return cm;
+        }
+       
     }
 }

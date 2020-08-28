@@ -90,4 +90,8 @@ export class CarAdminService {
       AddRating(model: Rating){
         return this.http.post(this.BaseURI + "/CarAdmin/AddRating",model);
       }
+
+      GetReport(id: string){
+        return this.http.get(this.BaseURI + "/CarAdmin/GetMyReport/" + id);
+      }
 }
