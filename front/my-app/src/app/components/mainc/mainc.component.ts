@@ -5,6 +5,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CarAdminService } from "src/app/service/car-admin-service";
 import { CarCompany } from "src/app/entities/CarCompany";
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-mainc',
@@ -13,7 +14,9 @@ import { CarCompany } from "src/app/entities/CarCompany";
 })
 export class MaincComponent implements OnInit {
   namecopmany: CarCompany[];
-
+  name: string;
+  city: string;
+  search: string;
   constructor(private carAdminService: CarAdminService,
      private toastrService: ToastrService,
     private route: ActivatedRoute,
@@ -23,6 +26,15 @@ export class MaincComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.initData();
+   
+  }
+
+  onClick( c){
+    this.router.navigate(['/mainc/' + c.id + '/cars']);
+}
+
+  initData(){
     this.carAdminService
     .GetAllCompanies()
     .subscribe(
@@ -32,9 +44,4 @@ export class MaincComponent implements OnInit {
       }
       );
   }
-
-  onClick( c){
-    this.router.navigate(['/mainc/' + c.id + '/cars']);
-}
-
 }

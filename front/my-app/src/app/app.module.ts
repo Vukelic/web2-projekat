@@ -38,7 +38,7 @@ import { TokenInterceptor } from './auth/token.interceptor';
 import { AddRatingComponent } from './components/add-rating/add-rating.component';
 import { GraphicComponent } from './components/graphic/graphic.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-
+import { filterPipe } from "src/app/entities/filterPipe";
 let config = new AuthServiceConfig([
   { 
      id: GoogleLoginProvider.PROVIDER_ID,
@@ -68,7 +68,8 @@ export function provideConfig() {
     MyAccountComponent,
     MyReservationsComponent,
     AddRatingComponent,
-    GraphicComponent
+    GraphicComponent,
+    filterPipe
   ],
   imports: [
     BrowserModule,

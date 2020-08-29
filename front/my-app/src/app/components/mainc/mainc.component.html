@@ -24,47 +24,12 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <form>
+                                
                                     <div class="form-group">
-                                        <select class="form-control" id="conditionsselect1">
-                                          <option>Conditions</option>
-                                        </select>
+                                        <input type="text" class="form-control"  [(ngModel)]="search"  placeholder="Search">                                
                                      </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="conditionsselect2">
-                                          <option>Body</option>                                        
-                                        </select>
-                                     </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="make1">
-                                          <option>Make</option>
-                                        </select>
-                                     </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="make1">
-                                          <option>Model</option>
-                                        </select>
-                                     </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="mileage1">
-                                          <option>Max Mileage</option>
-                                        </select>
-                                     </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="year1">
-                                          <option>Year</option>
-                                        </select>
-                                     </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="make1">
-                                          <option>Transmission</option>
-                                        </select>
-                                     </div>
-                                    <hr>
-                                    <button type="btn" class="btn btn-primary">Find Now</button>&nbsp;
-                                    <button type="btn" class="btn btn-primary">Reset All</button>
-                                    <div class="pb-3"></div>
-                                </form>
+                                                   
+                                    <hr>                       
                             </div>
                         </div>
                     </div>
@@ -86,7 +51,7 @@
                             </ul>
                     </div>
                 </div>
-                <div class="row mb-3" *ngFor="let c of namecopmany" >
+                <div class="row mb-3" *ngFor="let c of namecopmany | filter: search" >
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">

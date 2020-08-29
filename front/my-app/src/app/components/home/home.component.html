@@ -6,7 +6,8 @@
 <div class="swiper-container main-slider" id="myCarousel">
     <div class="swiper-wrapper">
       <div class="swiper-slide slider-bg-position" style="background-image: url('/assets/pic4.PNG'); top: 70px;">          
-            <h1 class="display-2">Where to next?</h1>    
+            <h1 class="display-2">Where to next?  </h1>
+           
       </div>   
     </div>
   </div>
@@ -53,10 +54,11 @@
     <div class="container-fluid main-text">
       <h2>EXCLUSIVE RATES & SERVICES</h2>
       <p>Choose the best for you . . .</p>
+      <h2><input style="border-radius: 0.5cm;" type="text" width="10cm" height="5cm"  [(ngModel)]="search"  placeholder="Search"></h2>
     </div>
 		<div class="container">			
 			<div class="row">
-				<div class="col-lg-4 col-md-6" *ngFor="let c of allCompanies" >
+				<div class="col-lg-4 col-md-6" *ngFor="let c of namecopmany | filter: search" >
 					<div class="single-service">
 						<i><img src="./{{c.imagePic}}" width="100" height="100"></i>
             <h4>{{c.name}}</h4>

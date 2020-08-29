@@ -12,7 +12,8 @@ import { CarCompany } from "src/app/entities/CarCompany";
 })
 export class HomeComponent implements OnInit {
   LogedUser:User=new User("1","1","1","1","1","1");
-  allCompanies: CarCompany[];
+  namecopmany: CarCompany[];
+  search: string;
   constructor(private carAdminService: CarAdminService) { }
 
   ngOnInit(): void {
@@ -20,8 +21,8 @@ export class HomeComponent implements OnInit {
     .GetAllCompanies()
     .subscribe(
       (res: any) => {
-        this.allCompanies = res;
-        console.log(this.allCompanies);
+        this.namecopmany = res;
+        console.log(this.namecopmany);
       }
       );
 

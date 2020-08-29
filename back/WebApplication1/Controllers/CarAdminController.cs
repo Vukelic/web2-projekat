@@ -937,5 +937,24 @@ namespace WebApplication1.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetCompanySearch/{name}/{city}")]
+        public async Task<List<CarCompany>> GetCompanySearch(string name, string city)
+        {
+            var searchCompanies = new List<CarCompany>();
+
+            var allCompanies = _dbcontext.CarCompanies.ToList();
+
+            foreach (var item in allCompanies)
+            {
+                if (item.Name.ToLower() == name.ToLower() || item.CityExpositure.ToLower().Contains(city.ToLower()))
+                {
+                    searchCompanies.Add(item);
+                }
+            }
+
+            return searchCompanies;
+        }
+
     }
 }

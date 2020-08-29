@@ -99,4 +99,8 @@ export class CarAdminService {
       GetProfit(start: string, end: string, id: string){
         return this.http.get(this.BaseURI + "/CarAdmin/GetProfit/" + start + "/"+ end + "/" + id);
       }
+
+      GetCompanySearch(name: string, city: string):Observable<CarCompany[]>{
+        return this.http.get<CarCompany[]>(this.BaseURI + "/CarAdmin/GetCompanySearch/"+ name + "/"+ city);
+      }
 }
