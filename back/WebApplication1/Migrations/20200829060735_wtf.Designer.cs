@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(MyContextBase2020))]
-    partial class MyContextBase2020ModelSnapshot : ModelSnapshot
+    [Migration("20200829060735_wtf")]
+    partial class wtf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,9 +264,6 @@ namespace WebApplication1.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<byte[]>("RowVersion")
-                        .HasColumnType("varbinary(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MyCompanyId");
@@ -358,9 +357,6 @@ namespace WebApplication1.Migrations
                     b.Property<string>("BabySeat")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CarCompanuIdId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CarId")
                         .HasColumnType("int");
 
@@ -417,8 +413,6 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarCompanuIdId");
-
                     b.HasIndex("CarId");
 
                     b.HasIndex("DataId");
@@ -458,9 +452,6 @@ namespace WebApplication1.Migrations
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
-
-                    b.Property<byte[]>("RowVersion")
-                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 
@@ -595,10 +586,6 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.CarAdmin.ReservationCar", b =>
                 {
-                    b.HasOne("WebApplication1.Models.CarCompany", "CarCompanuId")
-                        .WithMany()
-                        .HasForeignKey("CarCompanuIdId");
-
                     b.HasOne("WebApplication1.Models.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId");

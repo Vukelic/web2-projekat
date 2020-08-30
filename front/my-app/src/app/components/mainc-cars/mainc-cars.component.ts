@@ -21,12 +21,16 @@ export class MaincCarsComponent implements OnInit {
   from: string;
   searchQuickReservation:FormGroup;
   idUser: string;
+  searchAvaiableCars: FormGroup;
+  company: string;
+  model: string;
+  seats: string;
   constructor(private route: ActivatedRoute,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
     private router: Router,) { 
     route.params.subscribe(params => { this.id = params['id']; });
-    
+    this.company = this.id + "";
   }
 
   ngOnInit(): void {
@@ -37,7 +41,7 @@ export class MaincCarsComponent implements OnInit {
     console.log(this.idUser);
     this.initData();
     this.load();
-   
+    this.load2();   
   }
 
   initData(){
@@ -87,7 +91,26 @@ export class MaincCarsComponent implements OnInit {
       console.log(err);
   });
   }
+  onAvaiable(){
+    this.to =  this.searchAvaiableCars.value["fromDate"];
+    this.from =  this.searchAvaiableCars.value["toDate"];
+    this.model =  this.searchAvaiableCars.value["modelName"];
+    this.seats =  this.searchAvaiableCars.value["numberOfseats"] +"";
+    console.log(this.to);
+    console.log(this.from);
+    this.carAdminService.SearchAvaiableCars(this.to, this.from, this.company, this.model, this.seats).subscribe((res: any) => {
+      this.allCars = res;
+       console.log(res);
+       this.searchAvaiableCars.reset();
+     },
+     err => {
+      if (err.status == 400)
+      this.toastrService.error('Error with available cars.', 'Check available failed.');
+    else
+      console.log(err);
+  });
 
+  }
   private load(){
     let startDate = "";
     let endDate = "";
@@ -97,6 +120,20 @@ export class MaincCarsComponent implements OnInit {
       startDate: new FormControl(startDate, Validators.required),
       endDate: new FormControl(endDate, Validators.required),
 
+    });
+  }
+
+  private load2(){
+    let fromDate = "";
+    let toDate = "";
+    let modelName = "";
+    let numberOfseats="";
+
+    this.searchAvaiableCars = new FormGroup({
+      fromDate: new FormControl(fromDate, Validators.required),
+      toDate: new FormControl(toDate, Validators.required),
+      modelName: new FormControl(modelName, Validators.required),
+      numberOfseats: new FormControl(numberOfseats, Validators.required)
     });
   }
 

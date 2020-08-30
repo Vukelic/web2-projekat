@@ -42,10 +42,57 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <h3> Search available cars</h3> <br>
+                               </div>
+                           </div>
+                       <div class="row">
+                           <div class="col-md-12">
+                               <form  [formGroup]="searchAvaiableCars" (ngSubmit)="onAvaiable()">
+                                   <div class="form-group">
+                                       <label>Start date</label>
+                                       <input class="form-control" type="date" id="fromdate"  formControlName="fromDate" >
+                                   </div>
+                                   <div class="form-group">
+                                       <label>End date</label>
+                                       <input class="form-control" type="date" id="todate" formControlName="toDate" >                                  
+                                   </div>
+                                   <div class="form-group">
+                                    <label>Enter a model name</label>
+                                    <input class="form-control" type="text" id="modelName" formControlName="modelName" >    
+                                </div>
+                                <div class="form-group">
+                                    <label>Enter a number of seats</label>
+                                    <input class="form-control" type="number" id="numberOfseats" formControlName="numberOfseats">    
+                                </div>
+                                   <hr>
+                                   &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button type="submit" [disabled]="!searchAvaiableCars.valid" class="btn btn-primary">Check cars</button>
+                           
+                                   <div class="pb-3"></div>
+                               </form>
+                           </div>
+                       </div>
+                   </div>
+
                     </div>
+
+
+
+                    
+                       
+                
                  </div>
             </div>
         </div>
+
+        <!---->
+        
+
+
+
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-12">
@@ -65,7 +112,7 @@
                         <div class="card-body">
                             <div class="row">
                               <div class="col-md-3">
-                                <img src="./{{c.imagePic}}" width="200" height="200">
+                              <img src="./{{c.imagePic}}" width="200" height="200">
                               </div>
                               <div class="col-md-6  card-body">
                                   <div class="list-title">
@@ -105,6 +152,7 @@
             </div>                     
         </div>
 
+       
 
         <div class="col-md-3">           
             <div class="row ">

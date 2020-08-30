@@ -20,5 +20,6 @@ namespace WebApplication1.Models
         public virtual ICollection<Car> Cars { get; set; }
         public string Cadmin { get; set; }
         public int AverageRating { get; set; }
+        public byte[] RowVersion { get; set; }
     }
 }

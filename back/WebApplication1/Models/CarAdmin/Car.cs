@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -23,11 +24,13 @@ namespace WebApplication1.Models
         [System.Text.Json.Serialization.JsonIgnore]
         public CarCompany MyCompany { get; set; }
         public bool IsReserved { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
+        [NotMapped]
         public ICollection<Date> MyRentedDays { get; set; }
-
         public int CompanyId { get; set; }
         public int AverageRating { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public virtual ICollection<Date> ListRents { get; set; }
+        public byte[] RowVersion { get; set; }
         public Car()
         {
           

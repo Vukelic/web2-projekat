@@ -31,6 +31,8 @@ namespace WebApplication1.Models.CarAdmin
         public bool isEnded { get; set; }
         public int Rating { get; set; }
         public int MyCarId { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public CarCompany CarCompanuId { get; set; }
         public int MyCompanyId { get; set; }
         public ReservationCar()
         {

@@ -307,7 +307,8 @@ namespace WebApplication1.Controllers
 
             var idCar = Convert.ToInt32(model.Car);
             var car = await _dbcontext.Cars.FindAsync(idCar);
-
+            var comp = car.CompanyId;
+            var company = await _dbcontext.CarCompanies.FindAsync(comp);
             var user = await _userManager.FindByIdAsync(model.User);
 
             var price = GetTotalPrice(car, model.StartDate, model.EndDate, model.BabySeat, model.Navigation);
@@ -328,7 +329,8 @@ namespace WebApplication1.Controllers
                 CarPic = car.ImagePic,
                 Rating = 0,
                 MyCarId = car.Id,
-                MyCompanyId = car.CompanyId
+                MyCompanyId = car.CompanyId,
+                CarCompanuId = company
             };
             Date d = new Date();
             d.MyCarId = car;
@@ -938,22 +940,38 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        [Route("GetCompanySearch/{name}/{city}")]
-        public async Task<List<CarCompany>> GetCompanySearch(string name, string city)
+        [Route("SearchAvaiableCars/{from}/{to}/{id}/{model}/{seats}")]
+        public async Task<List<Car>> GetCompanySearch(string from, string to, string id,string model, string seats)
         {
-            var searchCompanies = new List<CarCompany>();
-
-            var allCompanies = _dbcontext.CarCompanies.ToList();
-
-            foreach (var item in allCompanies)
+            var cars = new List<Car>();
+            var d1 = Convert.ToDateTime(from);
+            var d2 = Convert.ToDateTime(to);
+            try
             {
-                if (item.Name.ToLower() == name.ToLower() || item.CityExpositure.ToLower().Contains(city.ToLower()))
+               var availabeCars =(await _dbcontext.CarCompanies.Include(c => c.Cars)
+               .FirstOrDefaultAsync(company => company.Id == Convert.ToInt32(id))).Cars.ToList();
+           
+                foreach (var item in availabeCars)
                 {
-                    searchCompanies.Add(item);
+                    if(item.ModelOfCar == model && item.NumberOfSeats <= Convert.ToInt32(seats))
+                    {                              
+                                Date date = new Date() { ReservedFrom = from, ReservedTo = to, IdOfCar = item.Id };
+                                if(CheckAvailability(date))
+                                {
+                                    string img = item.ImagePic.Replace("C:\\fakepath\\", "assets/");
+                                    item.ImagePic = img;
+                                    cars.Add(item);
+                                }                                                                                    
+                    }
+                                  
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error with geting quich cars... [{e.Message}]");
+            }
 
-            return searchCompanies;
+            return cars;
         }
 
     }
