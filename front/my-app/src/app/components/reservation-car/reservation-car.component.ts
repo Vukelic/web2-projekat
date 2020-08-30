@@ -29,6 +29,8 @@ export class ReservationCarComponent implements OnInit {
   city: Array<string>;
    to: string;
    from: string;
+   isValidDate: boolean;
+   error:any={isError:false,errorMessage:''};
   constructor(private route: ActivatedRoute,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -78,7 +80,8 @@ export class ReservationCarComponent implements OnInit {
         "",
         "0"
      );
-     
+     this.isValidDate = this.ValidateDate(this.to, this.from);
+     if(this.isValidDate){
      this.carAdminService.createReservationCar(reservationCar).subscribe(
       (res: any) => {
         this.toastrService.success(        
@@ -95,10 +98,12 @@ export class ReservationCarComponent implements OnInit {
           console.log(err);
       }
     );
-
-    console.log(reservationCar);
- 
+    }else{
+      alert('End date should be grater then start date..');
+    } 
   }
+
+
   toggleEditable(event) {
     if ( event.target.checked ) {
       this.navigation = "included";
@@ -150,5 +155,13 @@ private load() {
     navigation: new FormControl("")
   });
 }
+ValidateDate(sDate: string, eDate: string){
+  this.isValidDate = true;
+  if(eDate < sDate){
+    this.error={isError:true,errorMessage:'End date should be grater then start date.'};
+    this.isValidDate = false;
+  }
+  return this.isValidDate;
+ }
 
 }

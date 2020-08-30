@@ -23,7 +23,8 @@ export class CarsComponent implements OnInit {
   username: string;
   cadmin: string;
   cars: Car[];
-
+  isValidDate: boolean;
+  error:any={isError:false,errorMessage:''};
 
   constructor(private userService: UserService,
     private carAdminService: CarAdminService,
@@ -71,6 +72,8 @@ export class CarsComponent implements OnInit {
       "0"
     );
 console.log(this.selectedValue.id);
+this.isValidDate = this.ValidateDate( this.createQuickReservationForm.value["startDate"],  this.createQuickReservationForm.value["endDate"]);
+if(this.isValidDate){
     this.carAdminService.createQuickReservationCar(qucik).subscribe(
       (res: any) => {
         this.createQuickReservationForm.reset();
@@ -81,6 +84,10 @@ console.log(this.selectedValue.id);
         console.log(err);
       }
     );
+}else
+{
+  alert('End date should be grater then start date..');
+}
   }
   
   onFileChanged(event) {
@@ -140,5 +147,14 @@ console.log(this.selectedValue.id);
       cars: new FormControl(cars, Validators.required)
     });
   }
+
+  ValidateDate(sDate: string, eDate: string){
+    this.isValidDate = true;
+    if(eDate < sDate){
+      this.error={isError:true,errorMessage:'End date should be grater then start date.'};
+      this.isValidDate = false;
+    }
+    return this.isValidDate;
+   }
 
 }
