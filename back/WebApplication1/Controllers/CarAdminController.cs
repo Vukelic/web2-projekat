@@ -574,6 +574,10 @@ namespace WebApplication1.Controllers
             d.MyCarId = car;
             if (CheckAvailability(d))
             {
+                if (CheckAvailabilityInQuickRes(d))
+                {
+
+                
                 try
                 {
                     _dbcontext.QuickReservations.Add(qrmodel);
@@ -581,6 +585,11 @@ namespace WebApplication1.Controllers
 
                 }
                 catch (Exception e)
+                {
+                    return BadRequest();
+                }
+                }
+                else
                 {
                     return BadRequest();
                 }
@@ -940,8 +949,8 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        [Route("SearchAvaiableCars/{from}/{to}/{id}/{model}/{seats}")]
-        public async Task<List<Car>> GetCompanySearch(string from, string to, string id,string model, string seats)
+        [Route("SearchAvaiableCars/{from}/{to}/{id}/{model}/{seats}/{price}")]
+        public async Task<List<Car>> SearchAvaiableCars(string from, string to, string id,string model, string seats,string price)
         {
             var cars = new List<Car>();
             var d1 = Convert.ToDateTime(from);
@@ -953,7 +962,7 @@ namespace WebApplication1.Controllers
            
                 foreach (var item in availabeCars)
                 {
-                    if(item.ModelOfCar == model && item.NumberOfSeats <= Convert.ToInt32(seats))
+                    if(item.ModelOfCar == model && Convert.ToInt32(seats) >= item.NumberOfSeats && Convert.ToDouble(price) >= item.Price)
                     {                              
                                 Date date = new Date() { ReservedFrom = from, ReservedTo = to, IdOfCar = item.Id };
                                 if(CheckAvailability(date))

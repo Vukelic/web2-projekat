@@ -25,6 +25,7 @@ export class MaincCarsComponent implements OnInit {
   company: string;
   model: string;
   seats: string;
+  maxprice:string;
   constructor(private route: ActivatedRoute,
     private carAdminService: CarAdminService,
     private toastrService: ToastrService,
@@ -96,9 +97,10 @@ export class MaincCarsComponent implements OnInit {
     this.from =  this.searchAvaiableCars.value["toDate"];
     this.model =  this.searchAvaiableCars.value["modelName"];
     this.seats =  this.searchAvaiableCars.value["numberOfseats"] +"";
+    this.maxprice = this.searchAvaiableCars.value["maxPrice"] + "";
     console.log(this.to);
     console.log(this.from);
-    this.carAdminService.SearchAvaiableCars(this.to, this.from, this.company, this.model, this.seats).subscribe((res: any) => {
+    this.carAdminService.SearchAvaiableCars(this.to, this.from, this.company, this.model, this.seats,this.maxprice).subscribe((res: any) => {
       this.allCars = res;
        console.log(res);
        this.searchAvaiableCars.reset();
@@ -118,8 +120,7 @@ export class MaincCarsComponent implements OnInit {
   
     this.searchQuickReservation = new FormGroup({
       startDate: new FormControl(startDate, Validators.required),
-      endDate: new FormControl(endDate, Validators.required),
-
+      endDate: new FormControl(endDate, Validators.required)
     });
   }
 
@@ -128,12 +129,14 @@ export class MaincCarsComponent implements OnInit {
     let toDate = "";
     let modelName = "";
     let numberOfseats="";
+    let maxPrice="";
 
     this.searchAvaiableCars = new FormGroup({
       fromDate: new FormControl(fromDate, Validators.required),
       toDate: new FormControl(toDate, Validators.required),
       modelName: new FormControl(modelName, Validators.required),
-      numberOfseats: new FormControl(numberOfseats, Validators.required)
+      numberOfseats: new FormControl(numberOfseats, Validators.required),
+      maxPrice: new FormControl(maxPrice, Validators.required)
     });
   }
 

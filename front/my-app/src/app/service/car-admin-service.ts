@@ -104,7 +104,7 @@ export class CarAdminService {
         return this.http.get<CarCompany[]>(this.BaseURI + "/CarAdmin/GetCompanySearch/"+ name + "/"+ city);
       }
 
-      SearchAvaiableCars(from: string,to: string, id: string, model: string, seats: string):Observable<Car[]>{
-        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/SearchAvaiableCars/" + from + "/"+ to + "/" + id +"/" + model + "/" + seats);
+      SearchAvaiableCars(from: string,to: string, id: string, model: string, seats: string,price:string):Observable<Car[]>{
+        return this.http.get<Car[]>(this.BaseURI + "/CarAdmin/SearchAvaiableCars/" + from + "/"+ to + "/" + id +"/" + model + "/" + seats + "/" + price);
       }
 }

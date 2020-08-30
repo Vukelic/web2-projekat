@@ -12,24 +12,24 @@
                     </div>
                    <form #userForm='ngForm' class="mb-4" autocomplete="off"  (submit)="UpdateUserAccount(userForm)" >
                              <div class="form-group">
-                                <label>Username: <b>{{username}}</b></label>
                                
-                                <input type="text"  readonly #Username="ngModel" name="Username" [(ngModel)]="username"  class="form-control" required>
+                               
+                                <input type="hidden"  readonly #Username="ngModel" name="Username" [(ngModel)]="username"  class="form-control" required>
                                 <label class="text-danger" *ngIf="service.formModel.get('Username').touched && service.formModel.get('Username').errors?.required">This
                                    field is mandatory.</label>
                              </div>
-                                          
+                             <div class="form-group">
+                              <label >Email: <b>{{email}}</b></label>
+                              <input type="email" #Email="ngModel"  name="Email" [(ngModel)]="userForm.Email"   class="form-control" aria-describedby="emailHelp" required>
+                              <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid
+                                email address.</label>
+                             </div>  
                              <div class="form-group">
                                 <label>Password</label>
                                <input type="password" class="form-control"#Password="ngModel" name="Password" [(ngModel)]="userForm.Password" >
                                
                              </div>
-                         <div class="form-group">
-                              <label >Email: <b>{{email}}</b></label>
-                              <input type="email" #Email="ngModel"  name="Email" [(ngModel)]="userForm.Email"   class="form-control" aria-describedby="emailHelp" required>
-                              <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid
-                                email address.</label>
-                             </div>
+                         
                            <div class="form-group">
                              <label >Fullname: <b>{{fullname}}</b></label>
                              <input type="text" #Fullname="ngModel"   name="Fullname" [(ngModel)]="userForm.Fullname"   class="form-control" required>
@@ -41,7 +41,7 @@
                           </div>
                           <div class="form-group">
                              <label >Phone number: <b>{{phoneNumber}}</b></label>
-                             <input type="text" #PhoneNumber="ngModel" name="PhoneNumber"   [(ngModel)]="userForm.PhoneNumber" class="form-control" title="input format: xxx/xxxxxxx" required>
+                             <input type="text" #PhoneNumber="ngModel" name="PhoneNumber"  pattern="^[0-9]{3}\/[0-9]{7}$"  [(ngModel)]="userForm.PhoneNumber" class="form-control" title="input format: xxx/xxxxxxx" required>
                           </div>
                           
                            <div class="col-md-12 text-center ">

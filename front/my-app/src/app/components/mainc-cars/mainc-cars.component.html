@@ -65,8 +65,12 @@
                                     <input class="form-control" type="text" id="modelName" formControlName="modelName" >    
                                 </div>
                                 <div class="form-group">
-                                    <label>Enter a number of seats</label>
+                                    <label>Enter a max number of seats</label>
                                     <input class="form-control" type="number" id="numberOfseats" formControlName="numberOfseats">    
+                                </div>
+                                <div class="form-group">
+                                    <label>Enter a max price</label>
+                                    <input class="form-control" type="number" id="maxPrice" formControlName="maxPrice">    
                                 </div>
                                    <hr>
                                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button type="submit" [disabled]="!searchAvaiableCars.valid" class="btn btn-primary">Check cars</button>
