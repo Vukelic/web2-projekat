@@ -17,7 +17,7 @@ namespace WebApplication1.Models
         public string Description { get; set; }
         public string ModelOfCar { get; set; }
         public int NumberOfSeats { get; set; }
-        public double Price { get; set; } //per day
+        public double Price { get; set; } 
         public double Rating { get; set; }
         public string ImagePic { get; set; }
 

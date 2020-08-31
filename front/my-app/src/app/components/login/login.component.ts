@@ -34,8 +34,6 @@ export class LoginComponent implements OnInit {
 
         const helper = new JwtHelperService();
         const decodedToken = helper.decodeToken(res.token);
-        console.log(decodedToken.role);
-        console.log(decodedToken);
         if(decodedToken.role === "register_user"){
           this.router.navigateByUrl('/mainc');
         }else if(decodedToken.role === "web_admin"){

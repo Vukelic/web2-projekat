@@ -289,7 +289,6 @@ namespace WebApplication1.Controllers
         [Route("GetCar/{id}")]
         public async Task<Object> GetCar(int id)
         {
-            //  var newId = Convert.ToInt32(id);
             var company = await _dbcontext.Cars.FindAsync(id);
 
             if (company is null)
@@ -504,8 +503,6 @@ namespace WebApplication1.Controllers
 
             try
             {
-                // var company = await _dbcontext.CarCompanies.FindAsync(id);
-                //var num = user.CarCompanyId;
                 cars = (await _dbcontext.CarCompanies.Include(c => c.Cars)
                .FirstOrDefaultAsync(company => company.Id == id)).Cars.ToList();
 
@@ -576,8 +573,7 @@ namespace WebApplication1.Controllers
             {
                 if (CheckAvailabilityInQuickRes(d))
                 {
-
-                
+           
                 try
                 {
                     _dbcontext.QuickReservations.Add(qrmodel);
@@ -867,7 +863,6 @@ namespace WebApplication1.Controllers
         [Route("GetMyReport/{id}")]
         public async Task<Object> GetMyReport(string id)
         {
-        //    var myList = new List<ChartModel>();
             ChartModel cm = new ChartModel();
             int i = 0;
             var user = await _userManager.FindByIdAsync(id);
